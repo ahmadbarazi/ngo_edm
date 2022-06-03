@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 Tecnativa - Sergio Teruel
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="view_distribution_schedule_form" model="ir.ui.view">
+        <field name="name">distribution.schedule.form</field>
+        <field name="model">ngo.distribution.schedule</field>
+        <field name="arch" type="xml">
+            <form string="Distribution Schedule">
+                <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="hour_from" widget="float_time"/>
+                            <field name="hour_to" widget="float_time"/>
+                            <field name="distribution_intervals"/>
+                            <label for="monday" />
+                            <div >
+                                <field name="monday" class="oe_inline"/>
+                                <field name="monday_hour_from" widget="float_time" class="oe_inline"/>
+                                <field name="monday_hour_to" widget="float_time" class="oe_inline"/>
+                                <label for="monday_hour_from2"  string=" -" class="oe_inline" />
+                                <field name="monday_hour_from2" widget="float_time" class="oe_inline"/>
+                                <field name="monday_hour_to2" widget="float_time" class="oe_inline"/>
+                            </div>
+                            <label for="tuesday" />
+                            <div >
+                                <field name="tuesday"  class="oe_inline"/>
+                                <field name="tuesday_hour_from" widget="float_time" class="oe_inline"/>
+                                <field name="tuesday_hour_to" widget="float_time" class="oe_inline"/>
+                                <label for="tuesday_hour_from2"  string=" -" class="oe_inline" />
+                                <field name="tuesday_hour_from2" widget="float_time" class="oe_inline"/>
+                                <field name="tuesday_hour_to2" widget="float_time" class="oe_inline"/>
+                            </div>
+                            <label for="wednesday" />
+                            <div >
+                                <field name="wednesday" class="oe_inline"/>
+                                <field name="wednesday_hour_from" widget="float_time" class="oe_inline"/>
+                                <field name="wednesday_hour_to" widget="float_time"  class="oe_inline"/>
+                                <label for="wednesday_hour_from2"  string=" -" class="oe_inline" />
+                                <field name="wednesday_hour_from2" widget="float_time" class="oe_inline"/>
+                                <field name="wednesday_hour_to2" widget="float_time" class="oe_inline"/>                            
+                            </div>
+                            <label for="thursday" />
+                            <div >
+                                <field name="thursday" class="oe_inline"/>
+                                <field name="thursday_hour_from" widget="float_time" class="oe_inline"/>
+                                <field name="thursday_hour_to" widget="float_time" class="oe_inline"/>
+                                <label for="thursday_hour_from2"  string=" -" class="oe_inline" />
+                                <field name="thursday_hour_from2" widget="float_time" class="oe_inline"/>
+                                <field name="thursday_hour_to2" widget="float_time" class="oe_inline"/>                            
+                            </div>
+                            <label for="friday" />
+                            <div >
+                                <field name="friday" class="oe_inline"/>
+                                <field name="friday_hour_from" widget="float_time" class="oe_inline"/>
+                                <field name="friday_hour_to" widget="float_time" class="oe_inline"/>
+                                <label for="friday_hour_from2"  string=" -" class="oe_inline" />
+                                <field name="friday_hour_from2" widget="float_time" class="oe_inline"/>
+                                <field name="friday_hour_to2" widget="float_time" class="oe_inline"/>                            
+                            </div>
+                            <label for="saturday" />
+                            <div >
+                                <field name="saturday" class="oe_inline"/>
+                                <field name="saturday_hour_from" widget="float_time" class="oe_inline"/>
+                                <field name="saturday_hour_to" widget="float_time" class="oe_inline"/>
+                                <label for="saturday_hour_from2"  string=" -" class="oe_inline" />
+                                <field name="saturday_hour_from2" widget="float_time" class="oe_inline"/>
+                                <field name="saturday_hour_to2" widget="float_time" class="oe_inline"/>                            
+                            </div>
+                            <label for="sunday" />
+                             <div >
+                                <field name="sunday" class="oe_inline"/>
+                                <field name="sunday_hour_from" widget="float_time" class="oe_inline"/>
+                                <field name="sunday_hour_to" widget="float_time" class="oe_inline"/>
+                                <label for="sunday_hour_from2"  string=" -" class="oe_inline" />
+                                <field name="sunday_hour_from2" widget="float_time" class="oe_inline"/>
+                                <field name="sunday_hour_to2" widget="float_time" class="oe_inline"/>                            
+                             </div>
+                        </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_distribution_schedule_tree" model="ir.ui.view">
+        <field name="name">distribution.schedule.tree</field>
+        <field name="model">ngo.distribution.schedule</field>
+        <field name="arch" type="xml">
+            <tree string="Distribution Schedule">
+                <field name="name"/>
+                <field name="hour_from" widget="float_time"/>
+                <field name="hour_to" widget="float_time"/>
+                <field name="distribution_intervals"/>
+                <field name="monday"/>
+                <field name="tuesday"/>
+                <field name="wednesday"/>
+                <field name="thursday"/>
+                <field name="friday"/>
+                <field name="saturday"/>
+                <field name="sunday"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_distribution_schedule_search" model="ir.ui.view">
+        <field name="name">distribution.schedule.tree</field>
+        <field name="model">ngo.distribution.schedule</field>
+        <field name="arch" type="xml">
+            <search string="Distribution Schedule">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="distribution_schedule_action" model="ir.actions.act_window">
+        <field name="name">Distribution Schedule</field>
+        <field name="res_model">ngo.distribution.schedule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_distribution_schedule_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Click to set a new delivery schedule for partners.</p>
+        </field>
+    </record>
+
+    <menuitem id="distribution_schedule_menu" parent="ngo_menu_configuration"
+              action="distribution_schedule_action" sequence="30"/>
+
+</odoo>

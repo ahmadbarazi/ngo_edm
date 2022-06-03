@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+        <record id="beneficiary_document1" model="ngo.document.list">
+            <field name="name">شهادة تعليمية</field>
+            <field name="document_type">beneficiary</field>
+        </record>
+        <record id="beneficiary_document2" model="ngo.document.list">
+            <field name="name">افادة وظيفية</field>
+            <field name="document_type">beneficiary</field>
+        </record>
+        <record id="beneficiary_document3" model="ngo.document.list">
+            <field name="name">شهادة خبرة</field>
+            <field name="document_type">beneficiary</field>
+        </record>
+        <record id="application_document1" model="ngo.document.list">
+            <field name="name">اخراج قيد عائلي</field>
+            <field name="document_type">application</field>
+        </record>
+        <record id="application_document2" model="ngo.document.list">
+            <field name="name">Salary Certificate</field>
+            <field name="document_type">application</field>
+        </record>
+    </data>
+
+</odoo>

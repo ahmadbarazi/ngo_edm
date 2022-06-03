@@ -1,0 +1,478 @@
+<!-- Copyright 2017 Navybits 
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+  <data>
+<!--Begin Application Settings-->
+    <record id="view_ngo_application_docs" model="ir.ui.view">
+		<field name="name">application.docs.tree</field>
+		<field name="model">ngo.application.docs</field>
+		<field name="arch" type="xml">
+			<tree string="Application Documents">
+				<field name ="name"/>
+			</tree>
+		</field>
+	</record>   
+
+    <record model="ir.actions.act_window" id="action_ngo_application_docs">
+		<field name="name">Application Documents</field>
+		<field name="res_model">ngo.application.docs</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="view_ngo_application_docs"/>             
+    </record> 
+
+    <record id="view_ngo_application_type" model="ir.ui.view">
+		<field name="name">application.type.tree</field>
+		<field name="model">ngo.application.type</field>
+		<field name="arch" type="xml">
+			<tree string="Application Type">
+			 <field name ="name"/>
+       <field name ="association_id"/>
+        	<!-- <field name ="prefix"/> -->
+			</tree>
+		</field>
+	</record>   
+
+    <record model="ir.actions.act_window" id="action_ngo_application_type">
+		<field name="name">Application Type</field>
+		<field name="res_model">ngo.application.type</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="view_ngo_application_type"/>             
+    </record> 
+
+    <record id="view_ngo_application_decision_list" model="ir.ui.view">
+		<field name="name">application.decision.list.tree</field>
+		<field name="model">ngo.application.decision.list</field>
+		<field name="arch" type="xml">
+			<tree string="Application Decision List">
+				<field name ="name"/>
+				<field name ="description"/>
+			</tree>
+		</field>
+	</record>   
+
+    <record model="ir.actions.act_window" id="action_ngo_application_decision_list">
+		<field name="name">Application Decision List</field>
+		<field name="res_model">ngo.application.decision.list</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="view_ngo_application_decision_list"/>             
+    </record> 
+
+<!--Begin Application Settings-->
+
+
+
+
+    <record id="create_application_form_view" model="ir.ui.view">
+      <field name="name">beneficiary.application.form</field>
+      <field name="model">ngo.beneficiary.application</field>
+      <field name="arch" type="xml">
+        <form string="survey form">
+          <header>
+            <!-- <button groups="test4.workflow_admin" name="draft" states="review" string="Reset to draft" type="workflow"/> -->
+            <!-- <button class="oe_highlight" groups="test4.workflow_de" name="review" states="draft" string="Submit survey for review" type="workflow"/> -->
+            <!-- <button class="oe_highlight" groups="test4.workflow_de" name="reject" states="draft" string="Reject survey" type="workflow"/> -->
+            <!-- <button class="oe_highlight" groups="test4.workflow_admin" name="approved" states="draft,review" string="Approve beneficiary" type="workflow"/> -->
+
+            <button name="action_draft" states="managerapprove,review" string="Reset to draft" type="object"/>
+            <button class="oe_highlight" name="action_review" states="managerapprove" string="Submit for Review" type="object"/>
+            <!-- <button class="oe_highlight" name="action_reject" states="draft" string="Reject Application" type="object"/> -->
+            <!-- <button class="oe_highlight" name="action_approved" states="draft" string="Approve Beneficiary" type="object"/> -->
+            <button class="oe_highlight" name="action_approved" states="draft" string="Submit for Approval" type="object"/>
+
+            <field name="state" widget="statusbar" 
+					statusbar_visible="draft,managerapprove,review"
+                    statusbar_colors='{"review":"blue"}'/>
+          </header>
+          <sheet>
+
+            <div class="oe_title">
+
+                <h1>
+                                 
+                    <field name="code" placeholder="Application Number"/>
+                </h1>
+                <h2>
+                    <field name="association_id" placeholder="Association"/>   
+                    <field name="application_type_id" domain="[('association_id','=', association_id)]" placeholder="Application Type"/>
+                </h2>
+            </div>
+            <group>
+              <group>
+                <!-- <field name="code" /> -->
+                <!-- <field name="name" /> -->
+                <field name="prefix" invisible="1"/>
+
+                <field name="application_date"/>
+                <field name="guide_id"/>
+                <!-- <field name="beneficiary_id" domain="[('detail', '=', '0')]" context="{'default_detail': '0'}"/> -->
+                <!-- <label for="registration_number" string="رقم ومكان السجل" /> -->
+
+                <field name="registration_number"/>
+                <field name="registration_place"/>
+                <!-- <field name="file_no"/> -->
+                <field name="name"/>
+
+                <field name="decision_id"/>
+                <field name="last_revision_date"/>                  
+                <field name="first_beneficiary_name"/>
+                <field name="second_beneficiary_name"/>
+                <!-- <field name="reference"/> -->
+                <field name="phone"/>
+                <field name="electricity_meter_number" placeholder="Electricity Meter#" />
+                <label for="residence_description" string="Residence" />
+                <div class="o_address_format" >
+                    <field name="residence_description_id" placeholder="Residence Description..." class="o_address_street"/>
+                    <field name="residence_type_id" placeholder="Type" class="o_address_city"/>
+                    <field name="residence_state_id" class="o_address_state" placeholder="State" options='{"no_open": True}'/>
+                </div>
+                
+                <field name="family_number_reference"/>
+              </group>
+              <group>
+                <label for="street" string="Address" />
+                <div class="o_address_format" >
+                    <field name="mohafaza" placeholder="Mohafaza" class="o_address_city"/>
+                    <field name="kadaa"  domain= "[('mohafaza_id','=', mohafaza)]" placeholder="Kadaa" class="o_address_city"/>
+                    <field name="city" domain= "[('kadaa_id','=', kadaa)]" placeholder="City" class="o_address_city" />
+                    <field name="region" domain= "[('city_id','=', city)]" class="o_address_state" placeholder="Area" options='{"no_open": True}'/>
+                    <!-- <field name="neighborhood" placeholder="Neighborhood..." class="o_address_street"/> -->
+                    <field name="street" placeholder="Street..." class="o_address_zip"/>
+                    <field name="street_number" placeholder="Street No" class="o_address_zip"/>
+                    <field name="near" placeholder="Near..." class="o_address_street"/>
+                    <field name="building" placeholder="Building" class="o_address_zip"/>
+					          <field name="building_number" placeholder="Bldg No" class="o_address_zip"/>
+                    <field name="floor" placeholder="Floor" class="o_address_zip"/>
+                    <field name="appartment" placeholder="Appartment" class="o_address_zip"/>
+                    <field name="rooms_count" placeholder="Rooms Count" class="o_address_zip"/>
+                    <field name="address_remark" placeholder="Address Remark"/>
+                    <!-- <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/> -->
+                </div>
+                <field name="address_checked"/>
+                <field name="archive_document_number"/>
+                <field name="beneficiaries_phones"/>
+                <field name="like_share_data_with_other_associations"/>
+                <label for="date_localization" string="Location Registration Date" />
+                <div name="location_box">
+                    <span class="oe_inline"> ( On  </span>
+                    <field name="date_localization" nolabel="1" class="oe_inline"/>
+                    <span> : Lat : </span>
+                    <field name="application_latitude" nolabel="1" class="oe_inline"/>
+                    <span> ;  Long:  </span>
+                    <field name="application_longitude" nolabel="1" class="oe_inline"/>
+                    <span>) </span>
+                </div>
+
+              </group>
+            </group>
+            <notebook>
+                <page string="Family Members">
+					<field name="beneficiary_ids" context="{'default_application_id': active_id}"/>
+                    <!-- <field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_lang': lang, 'default_user_id': user_id, 'default_type': 'other'}"> -->
+
+                </page>
+                <page string="Housing Info" >
+                    <label for="house_loan_ids" string="قرض السكن"/>
+					<field name="house_loan_ids" context="{'default_application_id': active_id}">
+						<tree editable="bottom">
+						  <field name="loan_type"/>
+						  <field name="loan_amount"/>
+						  <field name="currency_id"/>
+						  <field name="start_date"/>
+						  <field name="bank"/>
+						  <field name="payment_frequency"/>
+						  <field name="stop_date"/>
+						  <field name="stop_reason"/>
+						</tree>
+					</field>
+					<label for="house_asset_ids" string="موجودات المنزل"/>
+					<field name="house_asset_ids" context="{'default_application_id': active_id}">
+						<tree editable="bottom">
+						  <field name="asset_type"/>
+						  <field name="asset_count"/>
+						  <field name="asset_kind" invisible="1"/>
+						  <field name="asset_state"/>
+						</tree>
+					</field>
+					<label for="property_ids" string="الممتلكات"/>
+					<field name="property_ids" context="{'default_application_id': active_id}">
+						<tree string="الممتلكات" editable="bottom">
+							<field name="property_type"/>
+							<field name="current_value"/>
+							<field name="currency_id"/>
+							<field name="ownership_act"/>
+							<field name="owner_name"/>
+							<field name="property_area"/>
+							<field name="manufacture_year"/>
+							<field name="property_kind" invisible="1"/>
+							<field name="property_usage"/>
+							<field name="monthly_income"/>
+							<field name="active"/>
+							<field name="aquisition_date"/>
+							<field name="stop_date"/>
+						</tree>
+					</field>
+              
+			    </page>
+			    <page string="Expenses" >
+					<field name="expense_ids" context="{'default_application_id': active_id}">
+						<tree editable="bottom">
+						    <field name="expense_category"/>
+							<field name="expense_subcategory"/>
+							<field name="expense_amount" sum="Total Expenses"/>
+							<field name="currency_id"/>
+							<field name="active" invisible="1"/>
+							<field name="stop_date" invisible="1"/>
+						</tree>
+					</field>
+				</page>
+
+                <page string="Income" >
+					<field name="income_ids" context="{'default_application_id': active_id}">
+				        <tree editable="bottom">
+                            <field name="application_id" invisible="1" force_save="1"/>
+							<field name="income_type"/>
+                            <field name="beneficiary_id" options="{'no_create_edit': True}"/>
+							<field name="income_amount" sum="Total Income"/>
+							<field name="currency_id"/>
+							<field name="association_id"/>
+							<field name="sponsor_id"/>
+							<field name="start_date"/>
+							<field name="stop_date"/>
+                        </tree>
+                    </field>
+
+                </page>
+			
+                <page string="Application Revisions" attrs="{'invisible': [('state','!=', 'review')]}">
+            
+					<field name="application_revision_ids" context="{'default_application_id': active_id}">
+						<tree editable="bottom">
+						  <!-- <field name="application_id"/> -->
+						  <field name="application_revision_no" invisible="1"/>
+						  <field name="revision_decision_no"/>
+						  <field name="revision_date"/>
+						  <field name="renewal_reason"/>
+						  <field name="required_docs" widget="many2many_tags"/>
+						  <field name="reviewed_by_id"/>
+              <field name="revision_remark"/>
+						</tree>
+					</field>
+                </page>
+               <page string="Guide Comments" name="additional_info">
+                    <group>
+                        <!-- <field name="partner_id" readonly="1"/>
+                        <field name="approved_by_id"/>
+                        <field name="user_id"/> -->
+                        <field name="notes"/>
+                    </group>
+               </page>
+				<page string="Requests" name ="beneficiary_request">
+					<field name="request_ids" context="{'default_application_id': active_id}">
+						<tree editable="bottom">
+						  <field name="asset_type"/>
+						  <field name="asset_count"/>
+						  <field name="request_date"/>
+						  <field name="delivery_date"/>
+              <field name="remark"/>
+						</tree>
+					</field>
+        </page>
+				<page string="Associations" name ="application_association">
+					<field name="association_ids" context="{'default_application_id': active_id,'parentassociationid':association_id}" >
+						<tree editable="bottom">
+						  <field name="association_id" domain="[('id','!=',context.get('parentassociationid'))]"/>
+						  <field name="benefits"/>
+              <field name="remark"/>
+						</tree>
+					</field>
+        </page>        
+          </notebook>
+		  </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+    <!-- override the automatically generated list view for courses -->
+    <record id="create_application_tree_view" model="ir.ui.view">
+      <field name="name">beneficiary.application.tree</field>
+      <field name="model">ngo.beneficiary.application</field>
+      <field name="arch" type="xml">
+        <tree string="application Tree" >
+            <field name="code"/>
+            <field name="name" invisible="1"/>
+            <field name="application_type_id"/>
+            <field name="first_beneficiary_name"/>
+            <field name="second_beneficiary_name"/>
+            <field name="application_date"/>
+            <field name="decision_id"/>
+            <field name="state"/>
+            <field name="guide_id"/>
+            <field name="approved_by_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="create_application_revision_tree_view" model="ir.ui.view">
+      <field name="name">beneficiary.application.revision.tree</field>
+      <field name="model">ngo.application.revision</field>
+      <field name="arch" type="xml">
+        <tree string="Application Revision Tree">
+          <field name="application_id"/>
+          <!-- <field name="application_id.beneficiary_id.name" optional="hide"/> -->
+          <!-- <field name="application_id.guide_id.name" optional="hide"/> -->
+          <!-- <field name="application_id.state" optional="hide"/> -->
+          <field name="application_revision_no"/>
+          <field name="revision_decision_no"/>
+          <field name="revision_date"/>
+          <field name="renewal_reason"/>
+          <field name="required_docs" widget="many2many_tags"/>
+          <field name="reviewed_by_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="survey_graph_view" model="ir.ui.view">
+      <field name="name">ngo.beneficiary.application.graph</field>
+      <field name="model">ngo.beneficiary.application</field>
+      <field name="arch" type="xml">
+        <graph string="Application graph">
+          <field name="guide_id"/>
+          <field name="decision_id"/>
+          <field name="state"/>
+          <field name="application_type_id"/>
+          <!-- <field name="state_count" type="measure"/> -->
+        </graph>
+      </field>
+    </record>
+
+        <record model="ir.ui.view" id="view_ngo_beneficiary_application_kanban">
+            <field name="name">ngo.beneficiary.application.kanban</field>
+            <field name="model">ngo.beneficiary.application</field>
+            <field name="arch" type="xml">
+                <!-- <kanban class="o_kanban_mobile"> -->
+                <kanban quick_create="false" edit="false" default_group_by="state" >
+
+                    <!-- <field name="message_needaction" invisible="1"/> -->
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="application_date"/>
+                    <field name="application_type_id"/>
+                    <field name="guide_id"/>
+                    <field name="decision_id"/>
+                    <field name="beneficiary_count"/>
+                    <field name="state" readonly="1"/>
+                    <!-- <field name="remark"/> -->
+                    <field name="address_checked"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+						    <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt8">
+                                        <!-- <strong class="o_kanban_record_title"><span><t t-esc="record.name"/></span></strong> -->
+                                        <strong><span><field name="code"/></span></strong>
+                                    </div>
+                                    <div class="o_kanban_record_headings mt8">
+                                        <!-- <strong class="o_kanban_record_title"><span><t t-esc="record.name"/></span></strong> -->
+                                            <div class="float-right" t-if="record.address_checked.raw_value == '1'">
+                                                <span class="fa fa-circle text-success" role="img" aria-label="Address Checked" title="Address Checked" name="addresschecked_true"></span>
+                                            </div>
+                                            <div class="float-right" t-if="record.address_checked.raw_value == '0'">
+                                                <span class="fa fa-circle text-danger" role="img" aria-label="Address Checked" title="Address Checked" name="addresschecked_false"></span>
+                                            </div>
+
+                                            <div class="float-right" t-if="record.decision_id.raw_value == '5'">
+                                                <span class="fa fa-circle text-success" role="img" aria-label="Decision" title="Decision 5" name="decision_5"></span>
+                                            </div>
+                                            <div class="float-right" t-if="record.decision_id.raw_value != '5'">
+                                                <span class="fa fa-circle text-danger" role="img" aria-label="Decision" title="Decision 5" name="decision_not5"></span>
+                                            </div>
+
+                                        <strong><span><field name="application_type_id" /></span></strong>
+                                    </div>
+                                    <!-- <strong><field name="code" /></strong> -->
+                                </div>
+                               <ul>
+                                   <!-- <li id="last_login"/> -->
+                                   <!-- <li t-if="record.application_type_id.raw_value"><field name="application_type_id" /></li> -->
+                                    <li t-if="record.guide_id"><field name="guide_id" /></li>
+                                    <li t-if="record.beneficiay_count"><field name="beneficiary_count" /></li>
+                                    <li t-if="record.decision_id"><field name="decision_id" /></li>
+
+                                    <!-- <li class="float-left" t-if="record.address_checked.raw_value == '1'" > -->
+                                        <!-- <span class="fa fa-circle text-success" role="img" aria-label="Address Checked" title="Address Checked"  name="address_checked_true">Address Checked</span> -->
+                                    <!-- </li> -->
+                                    <!-- <li class="float-left" t-if="record.address_checked.raw_value == '0'" > -->
+                                        <!-- <span class="fa fa-circle text-danger" role="img" aria-label="Address Checked" title="Address Checked" name="address_checked_false">Address Checked</span> -->
+                                    <!-- </li> -->
+
+                                    <!-- <li class="float-left" t-if="record.decision_id.raw_value == '5'" > -->
+                                        <!-- <span class="fa fa-circle text-success" role="img" aria-label="Decision" title="5"  name="decision_5">Decision5</span> -->
+                                    <!-- </li> -->
+                                    <!-- <li class="float-left" t-if="record.decision_id.raw_value != '5'" > -->
+                                        <!-- <span class="fa fa-circle text-danger" role="img" aria-label="Decision" title="5" name="decision_not5">Decision5</span> -->
+                                    <!-- </li> -->
+									
+                               </ul>
+
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span><t t-esc="record.application_date.value"/></span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="state" widget="label_selection" readonly="1" options="{'classes': {'draft': 'default', 'managerapprove': 'success', 'review': 'warning'}}"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+    <record id="view_beneficiary_application_search" model="ir.ui.view">
+        <field name="name">ngo.beneficiary.application.search</field>
+        <field name="model">ngo.beneficiary.application</field>
+        <field name="arch" type="xml">
+            <search string="Applications">
+                <field name="name" filter_domain="['|', ('name','ilike',self), ('code','=like',str(self)+'%')]" string="Application"/>
+                <!-- <separator/> -->
+                <filter string="Draft" name="draftfltr" domain="[('state', '=', 'draft')]"/>
+                <filter string="Manager Approve" name="validatedfltr" domain="[('state', '=', 'managerapprove')]"/>
+                <filter string="Review" name="reviewfltr" domain="[('state', '=', 'review')]"/>
+                <!-- <filter string="Rejected" name="rejectfltr" domain="[('state', '=', 'reject')]"/> -->
+                <separator/>
+                <group expand="0" string="Group By">
+                    <!-- <filter string="Active Guide" name="activeguidegrp" domain="" context="{'group_by':'active'}"/> -->
+                    <filter string="Decision Code" name="decisiongrp" domain="" context="{'group_by':'decision_id'}"/>
+                    <filter string="Guide" name="guidegrp" domain="" context="{'group_by':'guide_id'}"/>
+                    <filter string="Application State" name="stategrp" domain="" context="{'group_by':'state'}"/>
+                    <filter string="Application Type" name="typegrp" domain="" context="{'group_by':'application_type_id'}"/>
+					<separator/>
+                    <filter string="City" name="citygrp" domain="" context="{'group_by':'city'}"/>
+                    <filter string="Region" name="regiongrp" domain="" context="{'group_by':'region'}"/>
+					<separator/>
+                    <filter string="Application Date" name="dategrp" domain="" context="{'group_by':'application_date'}"/>
+                <separator/>
+
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="create_application_list_action" model="ir.actions.act_window">
+        <field name="name">Beneficiary Application</field>
+        <field name="res_model">ngo.beneficiary.application</field>
+        <field name="search_view_id" ref="view_beneficiary_application_search"/>
+        <field name="view_mode">kanban,tree,form,graph</field>
+    </record>
+
+
+	
+  </data>
+</odoo>

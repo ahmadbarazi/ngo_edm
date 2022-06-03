@@ -1,0 +1,18 @@
+<!-- Copyright 2017 Navybits 
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+	<data>
+		<record id="ngo_manager" model="res.groups">
+			<field name="name">Manager/مدير</field>
+		</record>
+		<record id="ngo_supervisor" model="res.groups">
+			<field name="name">Supervisor/مشرف</field>
+		</record>
+		<record id="ngo_dataentry" model="res.groups">
+			<field name="name">Data Entry/إدخال بيانات</field>
+		</record>	
+		<record id="ngo_viewonly" model="res.groups">
+			<field name="name">Viewing/إطلاع</field>
+		</record>			
+	</data>
+</odoo>

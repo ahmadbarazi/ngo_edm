@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ngo_report_standard_template_form_view" model="ir.ui.view">
+        <field name="name">Standard Beneficiary Search Template</field>
+        <field name="model">ngo.report.template</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Standard Search Template">
+                <h1><field name="name"/></h1>
+                <!-- <group col="4"> -->
+                    <!-- <field name="ledger_type" widget="radio" invisible="1"/> -->
+                    <!-- <field name="summary"/> -->
+                <!-- </group> -->
+                <!-- <group col="4"> -->
+                    <!-- <field name="target_move"/> -->
+                    <!-- <field name="reconciled" attrs="{'readonly': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+                    <!-- <field name="compact_account" attrs="{'readonly': [('ledger_type', '!=', 'general')]}"/> -->
+                    <!-- <field name="result_selection" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+                <!-- </group> -->
+                <group col="2">
+					<!-- <group col="4"> -->
+					<group string="معلومات الاستمارة">
+						<!-- <field name="target_move"/> -->
+						<!-- <field name="reconciled" attrs="{'readonly': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+						<!-- <field name="compact_account" attrs="{'readonly': [('ledger_type', '!=', 'general')]}"/> -->
+						<!-- <field name="result_selection" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+						<field name="guide_ids" widget="many2many_tags" />
+						<field name="file_no" />
+						<field name="decision_ids" widget="many2many_tags"/>
+						<field name="application_type_ids" widget="many2many_tags"/>
+						<field name="residence_type_id" />
+						<label for="application_date_from" string="Application Date" />
+						<div class="o_address_format" >
+						<field name="application_date_from" placeholder="From Date" class="o_address_city"/>
+						<label for="application_date_to" string="-" style="font-weight:bold;"/>
+						<field name="application_date_to" placeholder="To Date" class="o_address_city" />
+						</div>
+						<field name="mohafaza" />
+						<field name="kadaa" />
+						<field name="city" />
+						<field name="region" />
+						<!-- <field name="neighborhood" /> -->
+					</group>
+					<!-- <group col="4"> -->
+					<group string="معلومات المستفيد">
+                        <field name="nationality_id" />
+						<field name="first_name" />
+						<field name="father_name" />
+						<field name="mother_name" />
+						<field name="family_name" />
+						<field name="gender" />
+						<field name="size" />                        
+						<field name="marital_status" />
+						<label for="age_from" string="From Age" />
+						<div class="o_address_format" >
+						<field name="age_from" placeholder="From Age" class="oe_inline"/>
+						<label for="application_date_to" string="-" style="font-weight:bold;"/>
+						<field name="age_to" placeholder="To Age" class="oe_inline" />
+						</div>
+                        <field name="has_illness"/>  
+                        <field name="has_handicap"/>  
+                        <field name="is_student"/>  
+					</group>
+                    <!-- <group string="معلومات طبية">
+						<field name="illness_type" />
+						<field name="handicap_type" />
+						<field name="medicine" />
+					</group> -->
+                    <!-- <group string="معلومات أكادمية">
+						<field name="academic_year" />
+						<field name="education_level" />
+						<field name="education_class" />
+					</group> -->
+                </group>
+
+                <!-- <group col="2"> -->
+                    <!-- <group> -->
+                        <!-- <field name="date_from"/> -->
+                    <!-- </group> -->
+                    <!-- <group> -->
+                        <!-- <field name="date_to"/> -->
+                    <!-- </group> -->
+                <!-- </group> -->
+                <!-- <group> -->
+                    <!-- <field name="journal_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
+                <!-- </group> -->
+                <!-- <group col="3"> -->
+                    <!-- <field name="partner_select_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+                <!-- </group> -->
+                <!-- <group col="4"> -->
+                    <!-- <field name="account_in_ex_clude_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
+                    <!-- <field name="account_methode" attrs="{'invisible':[('account_in_ex_clude_ids', '=', [])]}"/> -->
+                <!-- </group> -->
+                <!-- <group col="3"> -->
+                    <!-- <field name="account_group_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
+                <!-- </group> -->
+                <!-- <group col="3"> -->
+                    <!-- <field name="analytic_account_select_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('ledger_type', '!=', 'analytic')]}"/> -->
+                <!-- </group> -->
+                <group col="4">
+                    <!-- <field name="init_balance_history"/> -->
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="ngo_report_standard_template_tree_view" model="ir.ui.view">
+        <field name="name">Beneficiary Search Template</field>
+        <field name="model">ngo.report.template</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Standard Search Template">
+                <field name="name"/>
+                <!-- <field name="ledger_type"/> -->
+                <!-- <field name="summary"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_ngo_standard_report_template" model="ir.actions.act_window">
+        <field name="name">Beneficiaries Search</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ngo.report.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="ngo_report_standard_beneficiary_line_search_view"/>
+        <field name="target">current</field>
+    </record>
+
+</odoo>

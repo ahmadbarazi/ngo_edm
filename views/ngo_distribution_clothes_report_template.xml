@@ -1,0 +1,248 @@
+<openerp>
+    <data>    
+        <record model="report.paperformat" id="paperformat_distribution_clothes_report">
+            <field name="name">paperformat.distribution.clothes.report</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_width">280</field>
+            <field name="page_height">297</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_right">5</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report id="distribution_clothes_report"
+                model="ngo_edm.ngo.distribution.clothes.report.model"
+                string="Distribute clothes"
+                report_type="qweb-html"
+                name="ngo_edm.distribution_clothes_report_view"
+                file="ngo_edm.distribution_clothes"
+                paperformat="paperformat_distribution_clothes_report"
+                menu="False"
+        />
+
+        <template id="distribution_clothes_report_view">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">   
+        <style>
+.reportgroup {
+    height:300px;
+}
+.hheader:after {
+   content: "."; 
+   visibility: hidden; 
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+.hbody:after {
+   content: "."; 
+   visibility: hidden; 
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+#center,#left , #right {
+
+    float:left;
+}
+
+#hcenter {
+    position: relative;
+    left:300px;
+    width: 350px;
+    display: block;
+    height:15px;    
+    line-height: 0.8;
+    text-align: right;  
+}
+
+#left {
+     position: relative;
+     left:0px;
+     width: 300px;
+     display: block;
+     height:20px;
+}
+#center {
+    position: relative;
+    left:300px;
+    width: 350px;
+    display: block;
+    height:20px;    
+    line-height: 0.8;
+    text-align: right;  
+}
+
+#right {
+    position: relative;
+    left:300px;
+    width: 350px;
+     display: block;
+     height:20px;    
+}
+
+.hfooter:after {
+   content: "."; 
+   visibility: hidden; 
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+.blockfooter {
+    display: block; 
+    position: relative; 
+    top:90px;
+}
+
+#fcenter, #fleft,  #fright {
+    float:left;
+    align-content: center; 
+    text-align: center;  
+}
+
+#fleft {
+    position: relative;     
+    left:0px;
+    width: 600px;
+    display: block;
+    height:20px;  
+ 
+}
+#fcenter {
+    position: relative;    
+    left:200px;
+    width: 200px;
+    display: block;    
+    height:20px;    
+}
+
+#fright {
+    position: relative;
+    left:200px;
+    width:200px;
+    display: block;    
+    height:20px;    
+}
+
+</style>
+                        <!-- <div class="header" style="border-bottom: 2px solid black">
+                            <h3 class="text-center">Distribute Food</h3>
+                        </div>                     -->
+                        <t t-set="lineindex" t-value="0" />
+                        <t t-foreach="docs" t-as="doc">
+                            <t t-set="lineindex" t-value="lineindex + 1" />                        
+                            <div class="reportgroup" >
+                                 
+                                 <t t-set="benefeciaries" t-value="doc.application_id.beneficiary_ids"/>
+                                 <t t-set="affectedbenef" t-value="doc.distribution_id.distribution_beneficiary_ids"/>
+                                 <t t-set="membercount" t-value="0" />                                 
+                                 <div class="hheader">
+                                 </div>
+                                    <p t-esc="doc.distribution_id.name" style="text-align: center;font-size:125%;top:10px;"/>
+                                     <!-- <p t-esc="doc.distribution_id.distribution_type_id.name" style="text-align: center;font-size:100%;top:30px;"/> -->
+                                    <div id = 'left'>
+
+                                        <p><span> Ist: </span><span t-esc="doc.application_id.code" /> </p>
+                                        <p><span> Mem: </span><span t-esc="doc.benified_member_count" /> </p>
+                                        <p><span> Dec: </span><span t-esc="doc.application_id.decision_id.name" /> </p>
+                                    </div>    
+                                    <div  class="hbody">
+                                    </div>                                                               
+                                    <div id="hcenter">  
+                                        <tr t-foreach="benefeciaries" t-as="ben">
+                                            <!-- <t t-set="is_first_beneficiary" t-value="ben.is_first_beneficiary"/>
+                                            <t t-set="is_second_beneficiary" t-value="ben.is_second_beneficiary"/> -->
+                                            <tr t-if="ben.is_first_beneficiary == true or ben.is_second_beneficiary == true">
+                                                <p>
+                                                <span t-esc="ben.name" />
+                                                <span t-if="ben.has_handicap == true"> (إ) 
+                                                </span>
+                                                <span t-if="ben.has_illness == true"> (م) 
+                                                </span>  
+                                                    <span t-if="ben.marital_status == 'divorced'"> (ط) 
+                                                </span>
+                                                    <span t-if="ben.marital_status == 'widows'"> (ر) 
+                                                </span>   
+                                                </p>                                                
+                                            </tr>
+                                        </tr>                                     
+                                    </div>
+                                    <div id="right">  
+ 
+                                    </div>
+
+                                    <div  class="hbody">
+                                    </div>                                       
+                                    <div id="left">
+                                    <p></p>
+                                        </div>
+
+                                        <div id="center">
+                                            <tr t-foreach="benefeciaries" t-as="ben">
+                                                <tr t-foreach="affectedbenef" t-as="aben">
+                                                    <tr t-if="ben.application_id == aben.application_id  and ben.id == aben.beneficiary_id.id">
+                                                        <t t-set="membercount" t-value="membercount + 1" />
+                                                        <p>
+                                                        <span t-esc="aben.beneficiary_id.name"  />
+                                                        <span t-if="ben.has_handicap == true"> (إ) 
+                                                        </span>
+                                                        <span t-if="ben.has_illness == true"> (م) 
+                                                        </span>  
+                                                         <span t-if="ben.marital_status == 'divorced'"> (ط) 
+                                                        </span>
+                                                         <span t-if="ben.marital_status == 'widows'"> (ر) 
+                                                        </span>  
+                                                        </p>                                                      
+                                                    </tr>
+                                                </tr>
+                                            </tr>
+                                            <p> </p>
+                                        </div>
+                                        <div id="right">
+                                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('Code128', doc.order_code, 300, 75)"/> 
+                                                <p t-esc="doc.order_code" style="text-align:center;"/>
+                                                
+                                        </div>
+
+                                    <div class ="hfooter">
+                                    </div>
+                                    <div class = "blockfooter">
+                                        <div id="fleft">
+                                        <p style="text-align:right;font-size:125%;top:10px;">
+                                            <span>تاريخ الإستلام: </span>
+                                            <span t-esc="doc.delivery_date_text" />
+                                        </p>
+                                          <p  t-esc="doc.distribution_id.print_remark" />
+                                          <p > يرجى إحضار الهوية بإسم المستفيد</p>
+                                        </div>
+
+                                        <div id="fcenter">
+                                                 <!-- <p t-esc="doc.application_id.decision_id.name" />
+                                             <t t-if="doc.application_id.decision_id.name==''">
+                                                <p> </p>
+                                            </t>
+                                             <p> </p> -->
+                                        </div>
+
+                                        <div id="fright">
+                                            <span  t-esc="doc.application_id.guide_id.code" />
+                                            <span  t-esc="doc.application_id.application_type_id.name" />
+                                        </div>
+                                    </div>
+                                    <!-- <p t-esc="doc.application_id.name"/>                     -->
+                             </div>
+                            <div t-if="lineindex % 4 == 0" style="page-break-after: always;">
+                            </div>                              
+                        </t>
+                </t>        
+            </t>
+        </template>
+    </data>
+</openerp>

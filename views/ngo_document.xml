@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ngo_beneficiary_document_reminder" model="ir.cron">
+        <field name="name">NGO Beneficiary Document Expiration</field>
+        <field name="model_id" ref="model_ngo_beneficiary_document"/>
+        <field name="state">code</field>
+        <field name="code">model.mail_reminder()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record model='ir.ui.view' id='document_list_form_view'>
+        <field name="name">document.list.form</field>
+        <field name="model">ngo.document.list</field>
+        <field name="arch" type="xml">
+            <form string="Document List">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="document_type"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+     <record model='ir.ui.view' id='document_list_tree_view'>
+        <field name="name">document.list.tree</field>
+        <field name="model">ngo.document.list</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="document_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='beneficiary_document_form_view'>
+        <field name="name">ngo.beneficiary.document.form</field>
+        <field name="model">ngo.beneficiary.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <!-- <field name="application_id" invisible="1" force_save="1" /> -->
+                            <field name="application_id"  />
+
+                            <field name="beneficiary_id" />
+                            <field name="name"/>
+                            <field name="document_name"/>
+                            <!-- <field name="doc_attachment_id" widget="many2many_binary" class="oe_inline"/> -->
+                            <field name="doc_attachment_id" filename="doc_name" />
+							<field name="doc_name" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="is_available"/>
+                            <field name="issue_date"/>
+                            <field name="expiry_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='beneficiary_document_tree_view'>
+        <field name="name">ngo.beneficiary.document.tree</field>
+        <field name="model">ngo.beneficiary.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="application_id" force_save="1" />
+                <field name="beneficiary_id" />
+
+                <field name="name"/>
+                <field name="is_available"/>
+                <field name="issue_date"/>
+                <field name="expiry_date"/>
+    			<field name="doc_attachment_id" filename="doc_name" widget="binary" />
+				<field name="doc_name" invisible="1"/>
+				
+				
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="ngo_beneficiary_document_inherit_form_view">
+        <field name="name">ngo.beneficiary.form.view</field>
+        <field name="model">ngo.beneficiary</field>
+        <field name="inherit_id" ref="create_beneficiary_form_view"/>
+        <field name="arch" type="xml">
+            <div class="oe_button_box" position="inside">
+                <button class="oe_stat_button" name="document_view" type="object" icon="fa-list-ol">
+                    <field string="Documents" name="document_count" widget="statinfo"/>
+                </button>
+            </div>
+            <xpath expr="//field[@name='stop_reason']" position="after">
+                <field name="document_ref"/>
+            </xpath>
+
+            <page name="additional_info" position="before">
+                <page name="documents" string="Documents">
+					<field name="document_ids" context="{'default_beneficiary_id': active_id}">
+				        <tree editable="bottom">
+                            <field name="application_id" invisible="1" force_save="1" />
+							<field name="name"/>
+							<field name="document_name"/>
+                            <field name="is_available"/>
+							<field name="description"/>
+							<field name="doc_attachment_id" widget="binary" filename="doc_name"/>
+							<field name="doc_name" invisible="1"/>
+							<field name="issue_date"/>
+							<field name="expiry_date"/>
+
+                        </tree>
+					</field>
+                </page>
+            </page>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="ngo_application_document_inherit_form_view">
+        <field name="name">ngo.application.form.view</field>
+        <field name="model">ngo.beneficiary.application</field>
+        <field name="inherit_id" ref="create_application_form_view"/>
+        <field name="arch" type="xml">
+			<xpath expr="//form/sheet/div[@class='oe_title']" position="before">
+				<div name="button_box" class="oe_button_box" >
+					<button class="oe_stat_button" name="document_view" type="object" icon="fa-list-ol">
+						<field string="Documents" name="document_count" widget="statinfo"/>
+					</button>
+				</div>
+            </xpath>			
+            <xpath expr="//div[@name='location_box']" position="after">
+                <field name="document_ref"/>
+            </xpath>
+            <xpath expr="//div[@name='location_box']" position="after">
+                <field name="document_remaining"/>
+            </xpath>
+            <page name="additional_info" position="before">
+                <page name="documents" string="Documents">
+					<field name="document_ids" context="{'default_application_id': active_id}">
+				        <tree editable="bottom">
+                            <field name="application_id" invisible="1" force_save="1"/>
+							<field name="name"/>
+							<field name="document_name"/>
+							<field name="beneficiary_id" options="{'no_create_edit': True}"/>
+                            <field name="is_available"/>
+							<field name="description"/>
+							<field name="doc_attachment_id" widget="binary" filename="doc_name"/>
+							<field name="doc_name" invisible="1"/>
+							<field name="issue_date"/>
+							<field name="expiry_date"/>
+                        </tree>
+					</field>
+                </page>
+            </page>
+        </field>
+    </record>
+
+</odoo>
