@@ -119,7 +119,7 @@
                 <!-- <field name="reference"/> -->
                 <field name="phone"/>
                 <field name="electricity_meter_number" placeholder="Electricity Meter#" />
-                <label for="residence_description" string="Residence" />
+                <label for="residence_description_id" string="Residence" />
                 <div class="o_address_format" >
                     <field name="residence_description_id" placeholder="Residence Description..." class="o_address_street"/>
                     <field name="residence_type_id" placeholder="Type" class="o_address_city"/>
@@ -164,12 +164,25 @@
 
               </group>
             </group>
-            <notebook>
-                <page string="Family Members">
-					<field name="beneficiary_ids" context="{'default_application_id': active_id}"/>
-                    <!-- <field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_lang': lang, 'default_user_id': user_id, 'default_type': 'other'}"> -->
+              <notebook>
+                 <page string="Family Members">
+					<field name="beneficiary_ids" context="{'default_application_id': active_id}">
 
+	        <tree editable="bottom">
+              <field name="code"/>
+              <field name="first_name"/>
+              <field name="last_name"/>
+              <field name="father_name"/>
+              <field name="mother_name"/>
+              <field name="name"/>
+						  <field name="registration_number"/>
+						  <field name="registration_place"/>
+						  <field name="guide_id"/>
+						  <field name="partner_id"/>
+						</tree>
+            </field>
                 </page>
+
                 <page string="Housing Info" >
                     <label for="house_loan_ids" string="قرض السكن"/>
 					<field name="house_loan_ids" context="{'default_application_id': active_id}">
@@ -213,15 +226,16 @@
 					</field>
               
 			    </page>
+          
 			    <page string="Expenses" >
 					<field name="expense_ids" context="{'default_application_id': active_id}">
 						<tree editable="bottom">
 						    <field name="expense_category"/>
-							<field name="expense_subcategory"/>
+							<!-- <field name="expense_subcategory"/>
 							<field name="expense_amount" sum="Total Expenses"/>
 							<field name="currency_id"/>
 							<field name="active" invisible="1"/>
-							<field name="stop_date" invisible="1"/>
+							<field name="stop_date" invisible="1"/> -->
 						</tree>
 					</field>
 				</page>
@@ -247,22 +261,21 @@
             
 					<field name="application_revision_ids" context="{'default_application_id': active_id}">
 						<tree editable="bottom">
-						  <!-- <field name="application_id"/> -->
+					
 						  <field name="application_revision_no" invisible="1"/>
 						  <field name="revision_decision_no"/>
 						  <field name="revision_date"/>
 						  <field name="renewal_reason"/>
-						  <field name="required_docs" widget="many2many_tags"/>
+						  <!-- <field name="required_docs" widget="many2many_tags"/> -->
 						  <field name="reviewed_by_id"/>
               <field name="revision_remark"/>
 						</tree>
 					</field>
                 </page>
+                
                <page string="Guide Comments" name="additional_info">
                     <group>
-                        <!-- <field name="partner_id" readonly="1"/>
-                        <field name="approved_by_id"/>
-                        <field name="user_id"/> -->
+
                         <field name="notes"/>
                     </group>
                </page>
@@ -285,7 +298,7 @@
               <field name="remark"/>
 						</tree>
 					</field>
-        </page>        
+        </page>
           </notebook>
 		  </sheet>
           <div class="oe_chatter">

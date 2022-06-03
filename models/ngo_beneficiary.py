@@ -85,7 +85,7 @@ class Beneficiary(models.Model):
 
     ##### BEGIN PERSONAL DETAILS #####
     code = fields.Char(string=_(u"Code"), required=True, default=_get_default_code, track_visibility='onchange', copy=False, readonly=True)
-    first_name = fields.Char(string=_(u"Name"), default='')
+    first_name = fields.Char(string=_(u" First Name"), default='')
     father_name = fields.Char(string=_(u"Father Name"), default='')
     mother_name = fields.Char(string=_(u"Mother Name"))
     family_name = fields.Many2one(
@@ -227,6 +227,7 @@ class Beneficiary(models.Model):
     @api.model
     def create(self,vals):
         ### Create beneficiary
+        
         vals['code'] = self.env['ir.sequence'].next_by_code('ngo.beneficiary')
         name=vals['first_name']
         if vals['first_name'] and vals['father_name'] and vals['last_name']:
@@ -255,9 +256,9 @@ class Beneficiary(models.Model):
                                    # 'is_beneficiary':True,
                                    # 'is_responsible': vals_list['is_responsible']
                                  # })
-        if vals['application_id'] and vals['name'] :
+        
             # beneficiary_application = self.env['ngo.beneficiary.application'].browse(vals['application_id'])
-            partner_id = self.env['res.partner'].create({
+        partner_id = self.env['res.partner'].create({
                                 'name': vals['name'],
                                 'display_name':vals['name'],
                                 'active': True,
@@ -265,7 +266,7 @@ class Beneficiary(models.Model):
                                 'is_company':False,
                                 'is_beneficiary':True
                                  })
-            sp.partner_id = partner_id.id
+        sp.partner_id = partner_id.id
 
         return sp        
 

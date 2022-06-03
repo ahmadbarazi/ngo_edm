@@ -397,6 +397,8 @@ class BeneficiaryApplication(models.Model):
             if application.association_id:
                 # raise UserError(application.application_type_id.prefix)
                 app_prefix = application.association_id.prefix
+            else:
+                app_prefix =  False
 
             if app_prefix:
                 # sequence = application.env['ir.sequence'].search([('code','=','ngo.beneficiary.application.'+app_prefix)])
@@ -608,7 +610,8 @@ class BeneficiaryApplication(models.Model):
     def create(self, vals):
 
         sequence_code = 'ngo.beneficiary.application'
-        if vals.get('prefix', '') != '':
+        partnervals=[]
+        if vals.get('prefix', '') != False:
             sequence_code = 'ngo.beneficiary.application.' + \
                 vals.get('prefix', '')
         else:
@@ -624,22 +627,33 @@ class BeneficiaryApplication(models.Model):
 
         if self.region:
             vals['region'] = self.region
+            partnervals['region'] = self.region
         if self.near:
             vals['near'] = self.near
+            partnervals['near'] = self.near
         if self.building:
             vals['building'] = self.building
+            partnervals['building'] = self.building
         if self.floor:
             vals['floor'] = self.floor
+            partnervals['floor'] = self.floor
         if self.mohafaza:
             vals['mohafaza'] = self.mohafaza
+            partnervals['mohafaza'] = self.mohafaza
         if self.kadaa:
             vals['kadaa'] = self.kadaa
+            partnervals['kadaa'] = self.kadaa
         if self.appartment:
             vals['appartment'] = self.appartment
+            partnervals['appartment'] = self.appartment
         if self.neighborhood:
             vals['neighborhood'] = self.neighborhood
+            partnervals['neighborhood'] = self.neighborhood
         if self.building_number:
             vals['building_number'] = self.building_number
+            partnervals['building_number'] = self.building_number
+
+            partnervals['is_application']= True
         # if self.beneficiary_name:
         #     vals['name'] =self.beneficiary_name
 
@@ -647,11 +661,13 @@ class BeneficiaryApplication(models.Model):
         # str(sequence.number_next_actual)
 
         rec = super(BeneficiaryApplication, self).create(vals)
-        rec.message_post(body="Test Message",  message_type="email",
-                         subtype="mail.mt_comment", partner_ids=[3])
-        vals['is_application'] = True
+        #hajjar 220601: partner_ids must be concifgured
+        #check with ahmad barazi concerning message_post
+        # rec.message_post(body="Test Message",  message_type="email",
+        #                  subtype="mail.mt_comment", partner_ids=[1])
+        # vals['is_application'] = True
 
-        partner_id = self.env['res.partner'].create(vals)
+        partner_id = self.env['res.partner'].create(partnervals)
 
         rec.partner_id = partner_id.id
         # rec.code = rec.id

@@ -55,8 +55,8 @@
                 <field name="phone"/>
                 <field name="mobile"/>
 
-                <label for="" string="نوع الكفالة" />
-                <div class="o_address_format" >
+                <!-- <label string="نوع الكفالة" /> -->
+                <div class="o_address_format" string="نوع الكفالة" >
 					<label for="is_student_sponsor" string="كفالة طالب" style="font-weight:bold;"/>
                     <field name="is_student_sponsor" />
                     <span class="o_form_label" style="width: 20% !important">      </span>  

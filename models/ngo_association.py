@@ -125,14 +125,16 @@ class association(models.Model):
                 
     @api.model
     def create(self,vals):
+        partnervals=[]
         ### Create sponsor
         vals['code'] = self.env['ir.sequence'].next_by_code('ngo.association')
         
         sp = super(association,self).create(vals)
 
-        vals['is_association']=True
+        # partnervals['is_association']=True
 
-        partner_id = self.env['res.partner'].create(vals)
+        partner_id = self.env['res.partner'].create(partnervals)
+        partner_id.is_association=True
         sp.partner_id = partner_id.id
 
         return sp

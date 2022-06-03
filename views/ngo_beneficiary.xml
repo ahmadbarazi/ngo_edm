@@ -25,7 +25,7 @@
 		  
             <div name="button_box" class="oe_button_box" >
                 <button name="%(beneficiary_medical_visit_action)d" 
-						type="object"	
+						type="action"	
 						icon="fa-bars"						
                         string="Medical Visits"
 						id="beneficiary_medical_visit_button"

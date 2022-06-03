@@ -104,6 +104,6 @@
         <field name="target">current</field>
     </record>
 
-    <menuitem id="beneficiary_search_menu" name="Beneficiaries Search" sequence="0" parent="ngo_edm.ngo_menu_find" action="action_ngo_standard_report" />
+    <menuitem id="beneficiary_search_menu" name="Beneficiaries Search" sequence="0" parent="ngo_edm_2.ngo_menu_find" action="action_ngo_standard_report" />
 
 </odoo>

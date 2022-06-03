@@ -18,7 +18,7 @@
 #
 ##############################################################################
 from odoo import fields, models, api, exceptions,_
-
+from datetime import datetime
 class Partner(models.Model):
     _inherit = 'res.partner'
 
@@ -40,6 +40,20 @@ class Partner(models.Model):
     appartment = fields.Char(string=_("Appartment"))
     neighborhood = fields.Many2one('ngo.neighborhood',string=_("Neighborhood"))
     building_number = fields.Char(string=_("Building Number"))
+    # state = fields.Selection(string=_(u"Application State"), selection=[('draft', _(u'Draft')), ('managerapprove', _(
+    #     u'Manager Approve')), ('review', _(u'Review'))], track_visibility='onchange', default='draft')
+    # association_id = fields.Many2one('ngo.association',string=_("Association"))
+    # application_type_id = fields.Many2one('ngo.application.type', string=_(
+    #     u"Application Type"))
+    # prefix = fields.Char(string=_("Prefix"), required=False, index=True)
+    # application_date = fields.Date(index=True, default=datetime.today())
+    # guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"))
+    # registration_number = fields.Char(string=_(u"Registration Number"), track_visibility='onchange')
+    # registration_place = fields.Many2one('ngo.kadaa', string=_("Registration Place"), track_visibility='onchange')
+    # decision_id = fields.Many2one('ngo.application.decision.list', string=_(
+    #     u"Application Decision"), track_visibility='onchange')
+    # electricity_meter_number = fields.Char(
+    #     string=_(u"Electricity Meter Number"),size=13)
     # address_remark = fields.Char(
     #     string='Address Remark',
     # )

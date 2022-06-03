@@ -108,17 +108,18 @@ class guide(models.Model):
 
     @api.model
     def create(self,vals):
+        partnervals=[]
         ### Create guide
         vals['code'] = self.env['ir.sequence'].next_by_code('ngo.guide')
+        # partnervals['is_guide']= True
 
         gd = super(guide, self).create(vals)
 
         # gd = super(guide,self).create(vals)
 
-        vals['is_guide']=True
 
-        partner_id = self.env['res.partner'].create(vals)
-        
+        partner_id = self.env['res.partner'].create(partnervals)
+        partner_id.is_guide = True
         gd.partner_id = partner_id.id
         
         return gd

@@ -78,14 +78,16 @@ class sponsor(models.Model):
 
     @api.model
     def create(self,vals):
+        partnervals=[]
         ### Create sponsor
         vals['code'] = self.env['ir.sequence'].next_by_code('ngo.sponsor')
 
         sp = super(sponsor,self).create(vals)
 
-        vals['is_sponsor']=True
+        # partnervals['is_sponsor']=True
 
-        partner_id = self.env['res.partner'].create(vals)
+        partner_id = self.env['res.partner'].create(partnervals)
+        partner_id.is_sponsor= True
         sp.partner_id = partner_id.id
 
         return sp

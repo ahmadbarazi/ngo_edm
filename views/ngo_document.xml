@@ -49,13 +49,13 @@
                 <sheet>
                     <group>
                         <group>
-                            <!-- <field name="application_id" invisible="1" force_save="1" /> -->
+                         
                             <field name="application_id"  />
 
                             <field name="beneficiary_id" />
                             <field name="name"/>
                             <field name="document_name"/>
-                            <!-- <field name="doc_attachment_id" widget="many2many_binary" class="oe_inline"/> -->
+                         
                             <field name="doc_attachment_id" filename="doc_name" />
 							<field name="doc_name" invisible="1"/>
                         </group>
@@ -73,7 +73,7 @@
                 </sheet>
             </form>
         </field>
-    </record>
+    </record> 
 
     <record model='ir.ui.view' id='beneficiary_document_tree_view'>
         <field name="name">ngo.beneficiary.document.tree</field>
@@ -109,7 +109,7 @@
                 <field name="document_ref"/>
             </xpath>
 
-            <page name="additional_info" position="before">
+            <!-- <page name="additional_info" position="before">
                 <page name="documents" string="Documents">
 					<field name="document_ids" context="{'default_beneficiary_id': active_id}">
 				        <tree editable="bottom">
@@ -126,7 +126,7 @@
                         </tree>
 					</field>
                 </page>
-            </page>
+            </page> -->
         </field>
     </record>
 
@@ -148,7 +148,7 @@
             <xpath expr="//div[@name='location_box']" position="after">
                 <field name="document_remaining"/>
             </xpath>
-            <page name="additional_info" position="before">
+            <!-- <page name="additional_info" position="before">
                 <page name="documents" string="Documents">
 					<field name="document_ids" context="{'default_application_id': active_id}">
 				        <tree editable="bottom">
@@ -165,7 +165,7 @@
                         </tree>
 					</field>
                 </page>
-            </page>
+            </page> -->
         </field>
     </record>
 
