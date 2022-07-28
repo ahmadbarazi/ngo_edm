@@ -72,3 +72,5 @@ access_report_ngo_edm_distribution_food_report_view,report.ngo_edm.distribution_
 access_ngo_beneficiary_request_user,ngo.beneficiary.request.user,model_ngo_beneficiary_request,base.group_user,1,1,1,1
 access_report_ngo_edm_distribution_clothes_report_view,report.ngo_edm.distribution_clothes_report_view,model_report_ngo_edm_distribution_clothes_report_view,base.group_user,1,1,1,1
 access_ngo_application_association,ngo.application.association,model_ngo_application_association,base.group_user,1,1,1,1
+access_ngo_report_standard_ledger,ngo.report.standard.ledger,model_ngo_report_standard_ledger,base.group_user,1,1,1,1
+access_ngo_application_type,ngo.application.class,model_ngo_application_class,base.group_user,1,1,1,1

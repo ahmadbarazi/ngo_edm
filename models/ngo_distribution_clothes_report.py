@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api, exceptions, tools
@@ -10,12 +9,13 @@ import openerp
 import json
 import logging
 import random
-		
+
+
 class ngo_distribution_clothes_report_model(models.TransientModel):
     _name = 'ngo_edm.ngo.distribution.clothes.report.model'
     # distribution_id = fields.Many2one('ngo.distribution',string=_('Distribution'))
     # application_id = fields.Many2one('ngo.beneficiary.application',string=_('Application'))
-    distribution_id =  fields.Integer()
+    distribution_id = fields.Integer()
     application_id = fields.Integer()
 
     def get_report(self):
@@ -28,30 +28,30 @@ class ngo_distribution_clothes_report_model(models.TransientModel):
                 'application_id': self.application_id,
             },
         }
-        
+
         return self.env.ref('ngo_edm.distribution_clothes_report').report_action(self, data=data)
-        
+
+
 class Report_ngo_distribution_clothes(models.Model):
     _name = 'report.ngo_edm.distribution_clothes_report_view'
-    
-    distribution_id = fields.Many2one('ngo.distribution',string=_(u"Application"))
-    application_id = fields.Many2one('ngo.beneficiary.application',string=_(u"Application"))# ADD DOMAIN
-    order_code  = fields.Char(_(u"Barcode"))
-    delivery_date_text= fields.Char(_(u"delivery date text"))
+
+    distribution_id = fields.Many2one('ngo.distribution', string=_(u"Application"))
+    application_id = fields.Many2one('ngo.beneficiary.application', string=_(u"Application"))  # ADD DOMAIN
+    order_code = fields.Char(_(u"Barcode"))
+    delivery_date_text = fields.Char(_(u"delivery date text"))
     benified_member_count = fields.Integer(
         string='Benified Members Count'
     )
-    
+
     # @api.depends('distribution_id','application_id')
     # def _get_members_count(self):
     #     # The current user may not have access rights for donations
     #     beneficiaries = self.env["ngo.distribution.beneficiary"].search([("distribution_id","=",self.distribution_id.id),("application_id","=",self.application_id.id)])
     #     return len(beneficiaries)
-    
-    def run_sql(self, qry, params):
-        self._cr.execute(qry,tuple(params))
 
-        
+    def run_sql(self, qry, params):
+        self._cr.execute(qry, tuple(params))
+
     @api.model
     def _get_report_values(self, docids, data=None):
         distribution_id = data['form']['distribution_id']
@@ -60,7 +60,7 @@ class Report_ngo_distribution_clothes(models.Model):
             distribution_id
         ]
 
-        sql =  """  delete from report_ngo_edm_distribution_clothes_report_view;
+        sql = """  delete from report_ngo_edm_distribution_clothes_report_view;
                     insert into report_ngo_edm_distribution_clothes_report_view
                     (distribution_id, application_id, order_code, delivery_date_text, benified_member_count )
                     select A.id  ,  B.application_id, B.order_code, B.delivery_date_text, C.benified_member_count
@@ -70,9 +70,10 @@ class Report_ngo_distribution_clothes(models.Model):
                     on C.application_id = B.application_id and A.id = C.distribution_id
                     where A.id = %s
                     """
-        self.run_sql(sql,  params)                    
+        self.run_sql(sql, params)
         docs = []
-        applicationfordistribute = self.env["report.ngo_edm.distribution_clothes_report_view"].search([("distribution_id","=",distribution_id)])
+        applicationfordistribute = self.env["report.ngo_edm.distribution_clothes_report_view"].search(
+            [("distribution_id", "=", distribution_id)])
         # return {
         #     'doc_ids': docids,
         #     'doc_model': report.model,
@@ -80,6 +81,4 @@ class Report_ngo_distribution_clothes(models.Model):
         # }
         return {
             'docs': applicationfordistribute,
-        }        
-
-
+        }

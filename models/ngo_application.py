@@ -77,7 +77,7 @@ class ApplicationType(models.Model):
     name = fields.Char(string=_("Application Type"))
     prefix = fields.Char(string=_("Prefix"), required=False, index=True)
     association_id = fields.Many2one(
-        'ngo.association', string=_(u"Association"))    
+        'ngo.association', string=_(u"Association"))
 
     _sql_constraints = [('application_type_unique', 'unique (name)', _('Application type must be unique!')),
                         ('application_type_prefix_unique', 'unique (prefix)', _('prefix must be unique!'))]
@@ -103,7 +103,7 @@ class ApplicationType(models.Model):
                     'code': 'ngo.beneficiary.application.' + self.prefix, 'prefix': self.prefix + '-', 'padding': 6}
             newsequence = self.env['ir.sequence']
             sequence = self.env['ir.sequence'].search(
-                [('code', '=', 'ngo.beneficiary.application.'+self.prefix)])
+                [('code', '=', 'ngo.beneficiary.application.' + self.prefix)])
             if not sequence:
                 newsequence.create(vals)
 
@@ -116,6 +116,7 @@ class ApplicationDecisionList(models.Model):
 
     _sql_constraints = [('application_decision_unique',
                          'unique (name)', _('Decision number must be unique!'))]
+
 
 # # general address model to be used in any other model
 # class AddressInfo  (models.Model):
@@ -140,7 +141,7 @@ class ApplicationDecisionList(models.Model):
 
 class BeneficiaryApplication(models.Model):
     _name = 'ngo.beneficiary.application'
-    _inherit = 'mail.thread'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Beneficiary Application"
 
     @api.model
@@ -148,7 +149,7 @@ class BeneficiaryApplication(models.Model):
         for application in self:
             # raise UserError(application.prefix)
             sequence = self.env['ir.sequence'].search(
-                [('code', '=', 'ngo.beneficiary.application.')+self.prefix])
+                [('code', '=', 'ngo.beneficiary.application.') + self.prefix])
             if sequence:
                 return 'استمارة ' + str(sequence.number_next_actual)
             else:
@@ -190,13 +191,15 @@ class BeneficiaryApplication(models.Model):
             # app_prefix=app_type.prefix
 
         # if app_prefix:
-            # sequence = self.env['ir.sequence'].search([('code','=','ngo.beneficiary.application.'+app_prefix)])
+        # sequence = self.env['ir.sequence'].search([('code','=','ngo.beneficiary.application.'+app_prefix)])
         # else:
-            # sequence = self.env['ir.sequence'].search([('code','=','ngo.beneficiary.application')])
+        # sequence = self.env['ir.sequence'].search([('code','=','ngo.beneficiary.application')])
         # next= sequence.get_next_char(sequence.number_next_actual)
         # return next
 
     ##### BEGIN WORKFLOW DETAILS #####
+    net_values = fields.Monetary(string='NET VALUE', compute="_compute_value", readonly="1")
+    currency_id = fields.Many2one('res.currency', string=_("Currency"))
     code = fields.Char('Code', size=32, required=True,
                        track_visibility='onchange', copy=False)
     name = fields.Char('File Number', size=32, required=True,
@@ -209,20 +212,24 @@ class BeneficiaryApplication(models.Model):
         u'Manager Approve')), ('review', _(u'Review'))], track_visibility='onchange', default='draft')
     application_date = fields.Date(index=True, default=datetime.today())
     registration_number = fields.Char(string=_(u"Registration Number"), track_visibility='onchange')
-    registration_place = fields.Many2one('ngo.kadaa', string=_("Registration Place"), track_visibility='onchange')
+    registration_place = fields.Many2one('ngo.kadaa', string=_("Registration Place"), track_visibility='always')
+    application_class = fields.Many2many('ngo.application.class', string="application class", required=True)
+    number_of_benef = fields.Char(string="Nb Of Beneficiaries", compute="family_member_count", store=True)
 
-
-    guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"))
+    guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"), required=True)
     partner_id = fields.Many2one('res.partner', string=_(u"Partner related"))
     reference = fields.Char(string=_(u"Reference"))
     application_revision_ids = fields.One2many(
         'ngo.application.revision', 'application_id')
     beneficiary_name = fields.Char(string=_(u"Beneficiary Name"))
     reasons_for_help = fields.Selection(string=_(u"reasons for help"),
-                                        selection=[('widow', _(u'widow')), ('divorced', _(u'divorced')), ('special_needs', _(u'special needs')),
+                                        selection=[('widow', _(u'widow')), ('divorced', _(u'divorced')),
+                                                   ('special_needs', _(u'special needs')),
                                                    ('education', _(u'education')), ('schoolarship', _(
-                                                       u'schoolarship')), ('job_review', _(u'job review')),
-                                                   ('voluneteer', _(u'voluneteer')), ('acc_voc_training', _(u'accelerated vocational training'))], readonly=False)
+                                                u'schoolarship')), ('job_review', _(u'job review')),
+                                                   ('voluneteer', _(u'voluneteer')),
+                                                   ('acc_voc_training', _(u'accelerated vocational training'))],
+                                        readonly=False)
     is_rejected = fields.Boolean(string=_(u"Rejected"), default=False)
     # date_created = fields.Date(string=_(u"Date"),default=fields.Date.today)
     notes = fields.Text(String=_(u"Additional notes"))
@@ -230,7 +237,8 @@ class BeneficiaryApplication(models.Model):
         'res.users', default=lambda self: self.env.user, readonly=True, string=_(u"Created By"))
     approved_by_id = fields.Many2one(
         'res.users', string=_(u"Approved By"), readonly=True)
-    # beneficiary_id = fields.Many2one('ngo.beneficiary',string=_(u"Beneficiary"))
+    beneficiary_id = fields.Many2one('ngo.beneficiary', string=_(u"Beneficiary"))
+    identity_no = fields.Char(string=_("Identity Number", related='beneficiary_id.identity_no'))
 
     beneficiary_ids = fields.One2many(
         'ngo.beneficiary', 'application_id', string=_(u"Application Members"))
@@ -257,7 +265,7 @@ class BeneficiaryApplication(models.Model):
     residence_state_id = fields.Many2one(
         'ngo.residence.state', string=_(u"Residence State"))
     electricity_meter_number = fields.Char(
-        string=_(u"Electricity Meter Number"),size=13)
+        string=_(u"Electricity Meter Number"), size=13)
     ##### END ADDRESS DETAILS #####
 
     ##### BEGIN FAMILY DETAILS #####
@@ -275,18 +283,17 @@ class BeneficiaryApplication(models.Model):
     ##### END FAMILY DETAILS #####
     # file_no=fields.Char(string=_(u"File Number"))
     first_beneficiary_id = fields.One2many('ngo.beneficiary', 'application_id', domain=[
-                                           ('is_first_beneficiary', '=', True)])
+        ('is_first_beneficiary', '=', True)])
     second_beneficiary_id = fields.One2many('ngo.beneficiary', 'application_id', domain=[
-                                            ('is_second_beneficiary', '=', True)])
+        ('is_second_beneficiary', '=', True)])
     first_beneficiary_name = fields.Char(related='first_beneficiary_id.name', string=_(
         u"First Beneficiary"), store=True, readonly=True)
     second_beneficiary_name = fields.Char(related='second_beneficiary_id.name', string=_(
         u"Second Beneficiary"), store=True, readonly=True)
     family_number_reference = fields.Char(string=_("Family Number Reference"))
-    phone = fields.Char(string=_("Phone"))
+    phone = fields.Char(string=_("Phone"), track_visibility='always', required=True)
     address_checked = fields.Boolean(
         string=_(u"Address Checked"), default=False)
-    phone = fields.Char(string=_("Phone"))
     street_number = fields.Char(string=_("Street Number"))
     neighborhood = fields.Many2one(
         'ngo.neighborhood', string=_("Neighborhood"))
@@ -295,7 +302,7 @@ class BeneficiaryApplication(models.Model):
     mohafaza = fields.Many2one('ngo.mohafaza', string=_("Mohafaza"))
     kadaa = fields.Many2one('ngo.kadaa', string=_("Kadaa"))
     appartment = fields.Char(string=_("Appartment"))
-    address_remark =fields.Char(string=_("Address Remark"))
+    address_remark = fields.Char(string=_("Address Remark"))
     date_localization = fields.Date(
         string=_("Location Registration Date"), default=datetime.today())
     application_latitude = fields.Float(string=_("Geo Latitude"), digits=(16, 5))
@@ -327,37 +334,55 @@ class BeneficiaryApplication(models.Model):
     archive_document_number = fields.Char(
         string='Document Number',
     )
- 
+
     beneficiaries_phones = fields.Char(
-        string='Beneficiaries Phones',compute="get_benficiaries_phone",
+        string='Beneficiaries Phones', compute="get_benficiaries_phone",
     )
-    
-    
+
     # decision_date = fields.Date(
     #     string='Decision Date',
     #     default=fields.Date.context_today,
     # )
-      
-    request_ids = fields.One2many(
-        'ngo.beneficiary.request', 'application_id', string=_(u"House Assets"))   
 
+    request_ids = fields.One2many(
+        'ngo.beneficiary.request', 'application_id', string=_(u"House Assets"))
 
     like_share_data_with_other_associations = fields.Boolean(
-    string=_(u"like to share my data with Other Associations"),)
+        string=_(u"like to share my data with Other Associations"), )
 
     association_id = fields.Many2one(
         'ngo.association', string=_(u"Association"), default=_get_default_Association)
 
     association_ids = fields.One2many(
-        'ngo.application.association', 'application_id', string=_(u"Application Associations"))   
+        'ngo.application.association', 'application_id', string=_(u"Application Associations"))
 
     _sql_constraints = [('code_unique', 'unique(code)',
                          _('Application Code already exists!'))]
 
+    @api.constrains('phone')
+    def check_number(self):
+        for rec in self:
+            number = self.env['ngo.beneficiary.application'].search([('phone', '=', rec.phone), ('id', '!=', rec.id)])
+            if number:
+                raise ValidationError(_("number %s is already exist" % rec.phone))
 
-    
+    @api.depends('beneficiary_ids')
+    def family_member_count(self):
+        for rec in self:
+            rec.number_of_benef = len(rec.beneficiary_ids)
+        return rec.number_of_benef
 
-   
+    @api.depends('income_ids', 'expense_ids')
+    def _compute_value(self):
+        sum = 0
+        for rec in self:
+            for record in rec.income_ids:
+                sum = sum + record.income_amount
+            for record in rec.expense_ids:
+                sum = sum - record.expense_amount
+
+            rec.net_values = sum
+            return rec.net_values
 
     @api.onchange('registration_number')
     def _change_registration_number(self):
@@ -373,7 +398,8 @@ class BeneficiaryApplication(models.Model):
 
     @api.onchange('decision_id')
     def _change_decision(self):
-        decision = self.env['ngo.application.revision'].search([('application_id', '=', self.id),('revision_decision_no', '=', self.decision_id.id)])
+        decision = self.env['ngo.application.revision'].search(
+            [('application_id', '=', self.id), ('revision_decision_no', '=', self.decision_id.id)])
         decisionexists = False
         if decision:
             for dec in decision:
@@ -387,7 +413,7 @@ class BeneficiaryApplication(models.Model):
                 'revision_decision_no': self.decision_id.id
             }
             revision_created = revision_object.create(vals)
- 
+
     @api.onchange('association_id')
     def _compute_application_prefix(self):
         # The current user may not have access rights for donations
@@ -398,20 +424,20 @@ class BeneficiaryApplication(models.Model):
                 # raise UserError(application.application_type_id.prefix)
                 app_prefix = application.association_id.prefix
             else:
-                app_prefix =  False
+                app_prefix = False
 
             if app_prefix:
                 # sequence = application.env['ir.sequence'].search([('code','=','ngo.beneficiary.application.'+app_prefix)])
                 prefix = app_prefix
             # else:
-                # sequence = application.env['ir.sequence'].search([('code','=','ngo.beneficiary.application')])
+            # sequence = application.env['ir.sequence'].search([('code','=','ngo.beneficiary.application')])
             # next= sequence.get_next_char(sequence.number_next_actual)
             application.prefix = prefix
-            
+
             if prefix:
                 sequence = self.env['ir.sequence'].search(
-                    [('code', '=', 'ngo.beneficiary.application.'+prefix)])
-                sequence_code = 'ngo.beneficiary.application.'+prefix
+                    [('code', '=', 'ngo.beneficiary.application.' + prefix)])
+                sequence_code = 'ngo.beneficiary.application.' + prefix
             else:
                 sequence = self.env['ir.sequence'].search(
                     [('code', '=', 'ngo.beneficiary.application')])
@@ -458,7 +484,7 @@ class BeneficiaryApplication(models.Model):
 
     @api.depends('beneficiary_ids', 'beneficiary_ids.phone')
     def get_benficiaries_phone(self):
-        phones=""
+        phones = ""
         if len(self.beneficiary_ids) != 0:
             for bf in self.beneficiary_ids:
                 if bf.phone != False:
@@ -481,7 +507,7 @@ class BeneficiaryApplication(models.Model):
                 # self._message_auto_subscribe_notify(
                 # [rec.user_id.partner_id.id],
                 # template='mail.message_user_assigned')
-                rec.message_post(body="Manager Notification",   message_type="notification",
+                rec.message_post(body="Manager Notification", message_type="notification",
                                  subtype="mail.mt_comment", partner_ids=[rec.user_id.partner_id.id])
             finally:
                 return rec.write({'state': 'review'})
@@ -489,8 +515,8 @@ class BeneficiaryApplication(models.Model):
         # rec.send_email_review()
 
     # def action_reject(self):
-        # self.state = 'reject'
-        # is_rejected = True
+    # self.state = 'reject'
+    # is_rejected = True
 
     def action_approved(self):
         self.approved_by_id = self._uid
@@ -512,8 +538,8 @@ class BeneficiaryApplication(models.Model):
             )
         for rec in self:
             mail_details = {'subject': "notification about review for partner creation",
-                            'body': "<p>Partner needs to be reviewed from the application:"+rec.name+"</p>"
-                            + "<p>User created the application:" + rec.user_id.name,
+                            'body': "<p>Partner needs to be reviewed from the application:" + rec.name + "</p>"
+                                    + "<p>User created the application:" + rec.user_id.name,
                             'partner_ids': recipient_partners
                             }
 
@@ -536,15 +562,15 @@ class BeneficiaryApplication(models.Model):
         base_url = self.env['ir.config_parameter'].sudo(
         ).get_param('web.base.url')
 
-        url_link = base_url+"/"+"web?#"+"id=" + \
-            str(self.partner_id.id)+"&view_type=form&model=res.partner"
+        url_link = base_url + "/" + "web?#" + "id=" + \
+                   str(self.partner_id.id) + "&view_type=form&model=res.partner"
 
         string_button = self._create_button_email(url_link, "View Partner")
 
         subject = "Notification about partner creation"
-        body = "<p>Partner approved</p><p>this email sent from python code</p>"+"<p>=====</p><p>Details:</p><p>Application type: "+self.application_type+"</p><p>Partner name:"+self.partner_id.name + \
-            "</p>"+"<p>User created the application:"+self.user_id.name+"</p>"+"<p>User approved the application:" + \
-            self.approved_by_id.name+"</p>"+"<p>"+string_button+"</p>"+"<p>=====</p>"
+        body = "<p>Partner approved</p><p>this email sent from python code</p>" + "<p>=====</p><p>Details:</p><p>Application type: " + self.application_type + "</p><p>Partner name:" + self.partner_id.name + \
+               "</p>" + "<p>User created the application:" + self.user_id.name + "</p>" + "<p>User approved the application:" + \
+               self.approved_by_id.name + "</p>" + "<p>" + string_button + "</p>" + "<p>=====</p>"
 
         mail_details = self._fill_email(subject, body)
         mail_details['partner_ids'] = recipient_partners
@@ -556,7 +582,7 @@ class BeneficiaryApplication(models.Model):
                           subtype="mt_comment", **mail_details)
 
     def _create_button_email(self, url_link, button_string):
-        string_button = "<a href=\""+url_link+"\" style=\"padding: 5px 10px; font-size: 12px; line-height: 18px; color: #FFFFFF; border-color:#875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px; font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap; background-image: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius:3px\">"+button_string+"</a>"
+        string_button = "<a href=\"" + url_link + "\" style=\"padding: 5px 10px; font-size: 12px; line-height: 18px; color: #FFFFFF; border-color:#875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px; font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap; background-image: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius:3px\">" + button_string + "</a>"
         return string_button
 
     def _fill_email(self, subject, body):
@@ -580,22 +606,24 @@ class BeneficiaryApplication(models.Model):
         partner_created = partner_object.create(vals)
 
         self.beneficiary_id.partner_id = partner_created
-    
+
     def check_applicaton_duplication(self, code):
         exist = self.env['ngo.beneficiary.application'].search([('code', '=', code)])
         if exist:
             ret = True
         else:
-            ret = False 
+            ret = False
         return ret
-        
+
     def write(self, values):
         res = super(BeneficiaryApplication, self).write(values)
         if self.partner_id:
             partnerrecords = self.env['res.partner'].search(
                 [('id', '=', self.partner_id.id)])
-            vals = {'code': self.code,'name': self.name, 'region': self.region, 'near': self.near, 'building': self.building, 'floor': self.floor,
-                    'mohafaza': self.mohafaza, 'kadaa': self.kadaa, 'appartment': self.appartment, 'neighborhood': self.neighborhood, 'building_number': self.building_number}
+            vals = {'code': self.code, 'name': self.name, 'region': self.region, 'near': self.near,
+                    'building': self.building, 'floor': self.floor,
+                    'mohafaza': self.mohafaza, 'kadaa': self.kadaa, 'appartment': self.appartment,
+                    'neighborhood': self.neighborhood, 'building_number': self.building_number}
 
             for partnerrecord in partnerrecords:
                 if partnerrecord.id == self.partner_id.id:
@@ -603,17 +631,22 @@ class BeneficiaryApplication(models.Model):
 
         return res
 
-   
-
+    # @api.model
+    # def create(self, vals):
+    #     res = super(BeneficiaryApplication, self).create(vals)
+    #     if vals:
+    #         message = "Changes info"
+    #         res.application_class.message_post(message)
+    #         return res
 
     @api.model
     def create(self, vals):
-
+        rec = super(BeneficiaryApplication, self).create(vals)
         sequence_code = 'ngo.beneficiary.application'
-        partnervals=[]
+        partnervals = []
         if vals.get('prefix', '') != False:
             sequence_code = 'ngo.beneficiary.application.' + \
-                vals.get('prefix', '')
+                            vals.get('prefix', '')
         else:
             sequence_code = 'ngo.beneficiary.application'
 
@@ -623,7 +656,6 @@ class BeneficiaryApplication(models.Model):
 
         if vals['code'] == sequence.get_next_char(sequence.number_next_actual):
             vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
-
 
         if self.region:
             vals['region'] = self.region
@@ -653,16 +685,23 @@ class BeneficiaryApplication(models.Model):
             vals['building_number'] = self.building_number
             partnervals['building_number'] = self.building_number
 
-            partnervals['is_application']= True
+            partnervals['is_application'] = True
+
+        if vals:
+            rec.sudo().message_post(
+                body=_(f"Application class is changed"),
+
+                message_type='notification',
+                subtype_xmlid="mail.mt_comment",
+            )
         # if self.beneficiary_name:
         #     vals['name'] =self.beneficiary_name
 
         # vals['name'] = 'Application ' + vals['code']
         # str(sequence.number_next_actual)
 
-        rec = super(BeneficiaryApplication, self).create(vals)
-        #hajjar 220601: partner_ids must be concifgured
-        #check with ahmad barazi concerning message_post
+        # hajjar 220601: partner_ids must be concifgured
+        # check with ahmad barazi concerning message_post
         # rec.message_post(body="Test Message",  message_type="email",
         #                  subtype="mail.mt_comment", partner_ids=[1])
         # vals['is_application'] = True
@@ -672,7 +711,6 @@ class BeneficiaryApplication(models.Model):
         rec.partner_id = partner_id.id
         # rec.code = rec.id
         return rec
-
 
 
 class BeneficiaryApplicationRevision(models.Model):
@@ -690,7 +728,7 @@ class BeneficiaryApplicationRevision(models.Model):
     # state = fields.Selection(string=_(u"Application State"), selection=[('draft',_(u'Draft')),('review',_(u'Review')),('reject',_(u'Rejected')),('approved',_(u'Approved'))],default='draft')
 
     revision_date = fields.Date(index=True, default=fields.Date.context_today)
-    application_guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"),)
+    application_guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"), )
     renewal_reason = fields.Char('Renewal Reason')
     required_docs = fields.Many2many(
         'ngo.beneficiary.document', string=_(u"Required Documents"))
@@ -729,13 +767,16 @@ class BeneficiaryLoan(models.Model):
     bank = fields.Many2one('res.bank', string=_(
         u"Bank Name"))  # THIS SHOULD BE AUTOGENERATED
     payment_frequency = fields.Selection(string=_(u"Payment Frequency"),
-                                         selection=[('regular', _(u'Regular')), ('irregular', _(u'Irregular')), ('stopped', _(u'Stopped'))])
+                                         selection=[('regular', _(u'Regular')), ('irregular', _(u'Irregular')),
+                                                    ('stopped', _(u'Stopped'))])
     stop_date = fields.Date(_(u'Stop Date'))
     stop_reason = fields.Char(string=_(u"Stop Reason"))
 
     _sql_constraints = [
-            ('date_check', "CHECK ( (start_date <= stop_date))", "The stop date must be greater than the start date in loan info.")
-        ]
+        ('date_check', "CHECK ( (start_date <= stop_date))",
+         "The stop date must be greater than the start date in loan info.")
+    ]
+
 
 class BeneficiaryHouseAsset(models.Model):
     _name = 'ngo.beneficiary.house.asset'
@@ -749,7 +790,8 @@ class BeneficiaryHouseAsset(models.Model):
     asset_count = fields.Integer(string=_("Asset Count"))
     asset_kind = fields.Char(string=_("Asset Kind"))
     asset_state = fields.Selection(string=_("Asset State"),
-                                   selection=[('bad', _(u'Bad')), ('fair', _(u'Fair')), ('good', _(u'Good')), ('vgood', _(u'Very Good')), ('excellent', _(u'Excellent'))])
+                                   selection=[('bad', _(u'Bad')), ('fair', _(u'Fair')), ('good', _(u'Good')),
+                                              ('vgood', _(u'Very Good')), ('excellent', _(u'Excellent'))])
 
 
 class BeneficiaryRequest(models.Model):
@@ -760,21 +802,23 @@ class BeneficiaryRequest(models.Model):
         'ngo.beneficiary.application', string=_(u"Beneficiary Application"))
     asset_type = fields.Many2one('ngo.asset.type', string=_("Asset Type"))
     asset_count = fields.Integer(string=_("Asset Count"))
-    
+
     request_date = fields.Date(
         string='Request Date',
         default=fields.Date.context_today,
     )
-        
+
     delivery_date = fields.Date(
         string='Delivery Date',
     )
-    
+
     remark = fields.Char(string=_("Remark"))
 
     _sql_constraints = [
-            ('date_check', "CHECK ( (request_date <= delivery_date))", "The delivery date must be greater than the start date in request info.")
-        ]
+        ('date_check', "CHECK ( (request_date <= delivery_date))",
+         "The delivery date must be greater than the start date in request info.")
+    ]
+
 
 class BeneficiaryProperty(models.Model):
     _name = 'ngo.beneficiary.property'
@@ -786,7 +830,9 @@ class BeneficiaryProperty(models.Model):
         'ngo.beneficiary.application', string=_(u"Beneficiary Application"))
 
     property_type = fields.Selection(string=_("Property Type"),
-                                     selection=[('house', _(u'House')), ('car', _(u'Car')), ('property', _(u'Property')), ('shares', _(u'Shares')), ('other', _(u'Other'))])
+                                     selection=[('house', _(u'House')), ('car', _(u'Car')),
+                                                ('property', _(u'Property')), ('shares', _(u'Shares')),
+                                                ('other', _(u'Other'))])
     current_value = fields.Monetary(string=_("Property Value"))
     currency_id = fields.Many2one('res.currency', string=_("Currency"))
     ownership_act = fields.Boolean(string=_("Ownership Act"))
@@ -802,23 +848,26 @@ class BeneficiaryProperty(models.Model):
     stop_date = fields.Date(string=_("Stop Date"))
 
     _sql_constraints = [
-            ('date_check', "CHECK ( (aquisition_date  <= stop_date))", "The stop date must be greater than the aquisition date in application properties.")
-        ]
+        ('date_check', "CHECK ( (aquisition_date  <= stop_date))",
+         "The stop date must be greater than the aquisition date in application properties.")
+    ]
+
+
 class BeneficiaryExpense(models.Model):
     _name = 'ngo.beneficiary.expense'
     _description = "Beneficiary Expense"
 
-    beneficiary_id = fields.Many2one(
-        'ngo.beneficiary', string=_(u"Beneficiary"))
     application_id = fields.Many2one(
         'ngo.beneficiary.application', string=_(u"Beneficiary Application"))
+    beneficiary_id = fields.Many2one(
+        'ngo.beneficiary', string=_(u"Beneficiary"))
     expense_category = fields.Many2one(
         'ngo.expense.category', string=_("Expense Category"))
     expense_subcategory = fields.Many2one(
         'ngo.expense.category', string=_("Expense SubCategory"))
-    expense_amount = fields.Monetary(string=_("Expense Amount"))
+    expense_amount = fields.Monetary(string=_("Expense Amount"), tracking=True, track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', string=_("Currency"))
-    active = fields.Boolean(string=_("Active"))
+    active = fields.Boolean(string=_("Active"), default=True)
     stop_date = fields.Date(string=_("Stop Date"))
 
 
@@ -837,7 +886,7 @@ class BeneficiaryAppRevision(models.Model):
     # state = fields.Selection(string=_(u"Application State"), selection=[('draft',_(u'Draft')),('review',_(u'Review')),('reject',_(u'Rejected')),('approved',_(u'Approved'))],default='draft')
 
     revision_date = fields.Date(index=True, default=datetime.today())
-    application_guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"),)
+    application_guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"), )
     renewal_reason = fields.Char('Renewal Reason')
     required_docs = fields.Many2many(
         'ngo.application.docs', string=_(u"Required Documents"))
@@ -858,14 +907,14 @@ class BeneficiaryAppRevision(models.Model):
 
         # self.assigned_to =  assigned_to
 
+
 class ApplicationAssociation(models.Model):
     _name = "ngo.application.association"
     _description = "Application Association"
 
-
     application_id = fields.Many2one(
         'ngo.beneficiary.application', string=_(u"Beneficiary Application"))
-    
+
     association_id = fields.Many2one(
         'ngo.association', string=_(u"Application association"))
     benefits = fields.Boolean(
@@ -875,6 +924,6 @@ class ApplicationAssociation(models.Model):
     remark = fields.Char(
         string='Remark',
     )
-    
+
     _sql_constraints = [('application_association_unique',
                          'unique (application_id,association_id)', _('Association must be unique for each'))]

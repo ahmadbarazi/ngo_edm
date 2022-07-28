@@ -6,61 +6,63 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Standard Search Template">
-                <h1><field name="name"/></h1>
+                <h1>
+                    <field name="name"/>
+                </h1>
                 <!-- <group col="4"> -->
-                    <!-- <field name="ledger_type" widget="radio" invisible="1"/> -->
-                    <!-- <field name="summary"/> -->
+                <!-- <field name="ledger_type" widget="radio" invisible="1"/> -->
+                <!-- <field name="summary"/> -->
                 <!-- </group> -->
                 <!-- <group col="4"> -->
-                    <!-- <field name="target_move"/> -->
-                    <!-- <field name="reconciled" attrs="{'readonly': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
-                    <!-- <field name="compact_account" attrs="{'readonly': [('ledger_type', '!=', 'general')]}"/> -->
-                    <!-- <field name="result_selection" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+                <!-- <field name="target_move"/> -->
+                <!-- <field name="reconciled" attrs="{'readonly': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+                <!-- <field name="compact_account" attrs="{'readonly': [('ledger_type', '!=', 'general')]}"/> -->
+                <!-- <field name="result_selection" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
                 <!-- </group> -->
                 <group col="2">
-					<!-- <group col="4"> -->
-					<group string="معلومات الاستمارة">
-						<!-- <field name="target_move"/> -->
-						<!-- <field name="reconciled" attrs="{'readonly': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
-						<!-- <field name="compact_account" attrs="{'readonly': [('ledger_type', '!=', 'general')]}"/> -->
-						<!-- <field name="result_selection" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
-						<field name="guide_ids" widget="many2many_tags" />
-						<field name="file_no" />
-						<field name="decision_ids" widget="many2many_tags"/>
-						<field name="application_type_ids" widget="many2many_tags"/>
-						<field name="residence_type_id" />
-						<label for="application_date_from" string="Application Date" />
-						<div class="o_address_format" >
-						<field name="application_date_from" placeholder="From Date" class="o_address_city"/>
-						<label for="application_date_to" string="-" style="font-weight:bold;"/>
-						<field name="application_date_to" placeholder="To Date" class="o_address_city" />
-						</div>
-						<field name="mohafaza" />
-						<field name="kadaa" />
-						<field name="city" />
-						<field name="region" />
-						<!-- <field name="neighborhood" /> -->
-					</group>
-					<!-- <group col="4"> -->
-					<group string="معلومات المستفيد">
-                        <field name="nationality_id" />
-						<field name="first_name" />
-						<field name="father_name" />
-						<field name="mother_name" />
-						<field name="family_name" />
-						<field name="gender" />
-						<field name="size" />                        
-						<field name="marital_status" />
-						<label for="age_from" string="From Age" />
-						<div class="o_address_format" >
-						<field name="age_from" placeholder="From Age" class="oe_inline"/>
-						<label for="application_date_to" string="-" style="font-weight:bold;"/>
-						<field name="age_to" placeholder="To Age" class="oe_inline" />
-						</div>
-                        <field name="has_illness"/>  
-                        <field name="has_handicap"/>  
-                        <field name="is_student"/>  
-					</group>
+                    <!-- <group col="4"> -->
+                    <group string="معلومات الاستمارة">
+                        <!-- <field name="target_move"/> -->
+                        <!-- <field name="reconciled" attrs="{'readonly': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+                        <!-- <field name="compact_account" attrs="{'readonly': [('ledger_type', '!=', 'general')]}"/> -->
+                        <!-- <field name="result_selection" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+                        <field name="guide_ids" widget="many2many_tags"/>
+                        <field name="file_no"/>
+                        <field name="decision_ids" widget="many2many_tags"/>
+                        <field name="application_type_ids" widget="many2many_tags"/>
+                        <field name="residence_type_id"/>
+                        <label for="application_date_from" string="Application Date"/>
+                        <div class="o_address_format">
+                            <field name="application_date_from" placeholder="From Date" class="o_address_city"/>
+                            <label for="application_date_to" string="-" style="font-weight:bold;"/>
+                            <field name="application_date_to" placeholder="To Date" class="o_address_city"/>
+                        </div>
+                        <field name="mohafaza"/>
+                        <field name="kadaa"/>
+                        <field name="city"/>
+                        <field name="region"/>
+                        <!-- <field name="neighborhood" /> -->
+                    </group>
+                    <!-- <group col="4"> -->
+                    <group string="معلومات المستفيد">
+                        <field name="nationality_id"/>
+                        <field name="first_name"/>
+                        <field name="father_name"/>
+                        <field name="mother_name"/>
+                        <field name="family_name"/>
+                        <field name="gender"/>
+                        <field name="size"/>
+                        <field name="marital_status"/>
+                        <label for="age_from" string="From Age"/>
+                        <div class="o_address_format">
+                            <field name="age_from" placeholder="From Age" class="oe_inline"/>
+                            <label for="application_date_to" string="-" style="font-weight:bold;"/>
+                            <field name="age_to" placeholder="To Age" class="oe_inline"/>
+                        </div>
+                        <field name="has_illness"/>
+                        <field name="has_handicap"/>
+                        <field name="is_student"/>
+                    </group>
                     <!-- <group string="معلومات طبية">
 						<field name="illness_type" />
 						<field name="handicap_type" />
@@ -74,28 +76,28 @@
                 </group>
 
                 <!-- <group col="2"> -->
-                    <!-- <group> -->
-                        <!-- <field name="date_from"/> -->
-                    <!-- </group> -->
-                    <!-- <group> -->
-                        <!-- <field name="date_to"/> -->
-                    <!-- </group> -->
+                <!-- <group> -->
+                <!-- <field name="date_from"/> -->
                 <!-- </group> -->
                 <!-- <group> -->
-                    <!-- <field name="journal_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
+                <!-- <field name="date_to"/> -->
+                <!-- </group> -->
+                <!-- </group> -->
+                <!-- <group> -->
+                <!-- <field name="journal_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
                 <!-- </group> -->
                 <!-- <group col="3"> -->
-                    <!-- <field name="partner_select_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
+                <!-- <field name="partner_select_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('ledger_type', 'not in', ('partner', 'aged',))]}"/> -->
                 <!-- </group> -->
                 <!-- <group col="4"> -->
-                    <!-- <field name="account_in_ex_clude_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
-                    <!-- <field name="account_methode" attrs="{'invisible':[('account_in_ex_clude_ids', '=', [])]}"/> -->
+                <!-- <field name="account_in_ex_clude_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
+                <!-- <field name="account_methode" attrs="{'invisible':[('account_in_ex_clude_ids', '=', [])]}"/> -->
                 <!-- </group> -->
                 <!-- <group col="3"> -->
-                    <!-- <field name="account_group_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
+                <!-- <field name="account_group_ids" widget="many2many_tags" options="{'no_create': True}"/> -->
                 <!-- </group> -->
                 <!-- <group col="3"> -->
-                    <!-- <field name="analytic_account_select_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('ledger_type', '!=', 'analytic')]}"/> -->
+                <!-- <field name="analytic_account_select_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('ledger_type', '!=', 'analytic')]}"/> -->
                 <!-- </group> -->
                 <group col="4">
                     <!-- <field name="init_balance_history"/> -->

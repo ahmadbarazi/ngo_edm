@@ -21,7 +21,7 @@
 #############################################################################
 
 from datetime import datetime, date, timedelta
-from odoo import models, fields, api, _ 
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError, Warning
 
 
@@ -54,15 +54,14 @@ class NgoBeneficiaryDocument(models.Model):
     _name = 'ngo.beneficiary.document'
     _description = 'Beneficiary Documents'
 
-
     def _get_default_code(self):
         sequence_code = 'ngo.beneficiary.document'
         sequence = self.env['ir.sequence'].search(
-                [('code', '=', 'ngo.beneficiary.document')])
+            [('code', '=', 'ngo.beneficiary.document')])
         next = sequence.get_next_char(sequence.number_next_actual)
-        self.env['ir.sequence'].next_by_code(sequence_code)   
+        self.env['ir.sequence'].next_by_code(sequence_code)
         return next
-    
+
     def mail_reminder(self):
         now = datetime.now() + timedelta(days=1)
         date_now = now.date()
@@ -89,19 +88,20 @@ class NgoBeneficiaryDocument(models.Model):
                 if exp_date < date.today():
                     raise Warning('Your Document Is Already Expired.')
 
-    name = fields.Char(string=_(u"Document Number"), required=True, copy=False,default=_get_default_code, 
-    readonly=True)
+    name = fields.Char(string=_(u"Document Number"), required=True, copy=False, default=_get_default_code,
+                       readonly=True)
     document_name = fields.Many2one('ngo.document.list', string=_(u"Document"), required=True)
     description = fields.Text(string=_(u"Description"), copy=False)
     expiry_date = fields.Date(string=_(u"Expiry Date"), copy=False)
     application_id = fields.Many2one('ngo.beneficiary.application', string=_(u"Application"))
-    beneficiary_id = fields.Many2one('ngo.beneficiary',string=_(u"Beneficiary"), domain="[('application_id','=',application_id)]")
+    beneficiary_id = fields.Many2one('ngo.beneficiary', string=_(u"Beneficiary"),
+                                     domain="[('application_id','=',application_id)]")
     doc_attachment_id = fields.Binary(string=_(u"Attachment"), attachment=True)
     doc_name = fields.Char(_(u"Attachment Name"))
     issue_date = fields.Date(string=_(u"Issue Date"), default=fields.Date.context_today, copy=False)
     is_available = fields.Selection([('exist', 'موجود'),
-                                      ('missing', 'غير موجود'),
-                                      ('na', 'غير ممكن الحصول')], string=_(u"Availability"))
+                                     ('missing', 'غير موجود'),
+                                     ('na', 'غير ممكن الحصول')], string=_(u"Availability"))
 
     # @api.model
     # def create(self, vals):
@@ -117,35 +117,36 @@ class NgoBeneficiaryDocument(models.Model):
 
     # @api.constrains('url_file', 'url_file_fname')
     # def _check_url_file_fname(self):
-        # rec = self.search([('url_file_fname', '=', self.url_file_fname)])
-        # if len(rec) > 1:
-            # raise ValidationError(_(
-                # "This file name is already used on an existing record. "
-                # "Please use another file name or delete the url_file on :\n"
-                # "Model: %s Id: %s" % (self._name, rec.id)
-            # ))
+    # rec = self.search([('url_file_fname', '=', self.url_file_fname)])
+    # if len(rec) > 1:
+    # raise ValidationError(_(
+    # "This file name is already used on an existing record. "
+    # "Please use another file name or delete the url_file on :\n"
+    # "Model: %s Id: %s" % (self._name, rec.id)
+    # ))
+
 
 class NgoApplicationDocument(models.Model):
     _name = 'ngo.application.document'
     _description = 'Application Documents'
 
     # def mail_reminder(self):
-        # now = datetime.now() + timedelta(days=1)
-        # date_now = now.date()
-        # match = self.search([])
-        # for i in match:
-            # if i.expiry_date:
-                # exp_date = i.expiry_date - timedelta(days=7)
-                # if date_now >= exp_date:
-                    # mail_content = "  Hello  " + i.beneficiary_id.name + ",<br>Your Document " + i.name + "is going to expire on " + \
-                                   # str(i.expiry_date) + ". Please renew it before expiry date"
-                    # main_content = {
-                        # 'subject': _('Document-%s Expired On %s') % (i.name, i.expiry_date),
-                        # 'author_id': self.env.user.partner_id.id,
-                        # 'body_html': mail_content,
-                        # 'email_to': i.beneficiary_id.work_email,
-                    # }
-                    # self.env['mail.mail'].create(main_content).send()
+    # now = datetime.now() + timedelta(days=1)
+    # date_now = now.date()
+    # match = self.search([])
+    # for i in match:
+    # if i.expiry_date:
+    # exp_date = i.expiry_date - timedelta(days=7)
+    # if date_now >= exp_date:
+    # mail_content = "  Hello  " + i.beneficiary_id.name + ",<br>Your Document " + i.name + "is going to expire on " + \
+    # str(i.expiry_date) + ". Please renew it before expiry date"
+    # main_content = {
+    # 'subject': _('Document-%s Expired On %s') % (i.name, i.expiry_date),
+    # 'author_id': self.env.user.partner_id.id,
+    # 'body_html': mail_content,
+    # 'email_to': i.beneficiary_id.work_email,
+    # }
+    # self.env['mail.mail'].create(main_content).send()
 
     @api.constrains('expiry_date')
     def check_expr_date(self):
@@ -165,19 +166,17 @@ class NgoApplicationDocument(models.Model):
     doc_name = fields.Char(_(u"Attachment Name"))
     issue_date = fields.Date(string=_(u"Issue Date"), default=fields.Date.context_today, copy=False)
     is_available = fields.Selection([('exist', 'موجود'),
-                                      ('missing', 'غير موجود'),
-                                      ('na', 'غير ممكن الحصول')], string=_(u"Availability"))
+                                     ('missing', 'غير موجود'),
+                                     ('na', 'غير ممكن الحصول')], string=_(u"Availability"))
 
 
 class NgoBeneficiary(models.Model):
     _inherit = 'ngo.beneficiary'
 
-
     def _document_count(self):
         for each in self:
             document_ids = self.env['ngo.beneficiary.document'].search([('beneficiary_id', '=', each.id)])
             each.document_count = len(document_ids)
-
 
     def document_view(self):
         self.ensure_one()
@@ -209,13 +208,14 @@ class NgoBeneficiary(models.Model):
         for doc in beneficiary_docs:
             current_beneficiary_doc = self.document_ids.filtered(lambda x: x.document_name.id == doc.id)
             if current_beneficiary_doc:
-                if current_beneficiary_doc.description and current_beneficiary_doc.description!='':
-                    doc_ref=doc_ref + doc.name + " " + current_beneficiary_doc.description + " - "
+                if current_beneficiary_doc.description and current_beneficiary_doc.description != '':
+                    doc_ref = doc_ref + doc.name + " " + current_beneficiary_doc.description + " - "
                 else:
-                    doc_ref=doc_ref + doc.name + " - " 
+                    doc_ref = doc_ref + doc.name + " - "
             else:
-                doc_ref=doc_ref + doc.name + " - "  
-        self.document_ref=doc_ref                 
+                doc_ref = doc_ref + doc.name + " - "
+        self.document_ref = doc_ref
+
 
 class NgoApplication(models.Model):
     _inherit = 'ngo.beneficiary.application'
@@ -224,7 +224,6 @@ class NgoApplication(models.Model):
         for each in self:
             document_ids = self.env['ngo.beneficiary.document'].search([('application_id', '=', each.id)])
             each.document_count = len(document_ids)
-
 
     def document_view(self):
         self.ensure_one()
@@ -249,8 +248,6 @@ class NgoApplication(models.Model):
     document_count = fields.Integer(compute='_document_count', string=_(u"# Documents"))
     document_ref = fields.Char(string=_(u"Documents"), compute='get_application_documents')
     document_remaining = fields.Char(string=_(u"Remaining Documents"), compute='get_remaianing_application_documents')
-    
-        
 
     @api.depends('document_ids', 'document_ids.description')
     def get_application_documents(self):
@@ -259,18 +256,18 @@ class NgoApplication(models.Model):
         for doc in application_docs:
             current_app_doc = self.document_ids.filtered(lambda x: x.document_name.id == doc.id)
             if current_app_doc:
-                if current_app_doc.description and current_app_doc.description!='':
-                    doc_ref=doc_ref + doc.name + " " + current_app_doc.description + " - "
+                if current_app_doc.description and current_app_doc.description != '':
+                    doc_ref = doc_ref + doc.name + " " + current_app_doc.description + " - "
                 else:
-                    doc_ref=doc_ref + doc.name + " - "
+                    doc_ref = doc_ref + doc.name + " - "
             else:
-                doc_ref=doc_ref + doc.name + " - "
-        self.document_ref=doc_ref                 
+                doc_ref = doc_ref + doc.name + " - "
+        self.document_ref = doc_ref
 
     @api.depends('document_ids', 'document_ids.description')
     def get_remaianing_application_documents(self):
         doc_ref = []
-        doc_exist =[]
+        doc_exist = []
         application_docs = self.env['ngo.document.list'].search([('document_type', '=', 'application')])
         for doc in application_docs:
             doc_ref.append(doc.name)
@@ -282,11 +279,14 @@ class NgoApplication(models.Model):
 
         remaining_docs = ""
         for val in doc_remaining:
-            remaining_docs = remaining_docs + val  + " - "
-            
-        self.document_remaining=remaining_docs    
+            remaining_docs = remaining_docs + val + " - "
+
+        self.document_remaining = remaining_docs
+
+
 class NgoBeneficiaryAttachment(models.Model):
     _inherit = 'ir.attachment'
 
-    beneficiary_doc_attach_rel = fields.Many2many('ngo.beneficiary.document', 'doc_attachment_id', 'attach_id3', 'doc_id',
-                                      string=_(u"Attachment"), invisible=1)
+    beneficiary_doc_attach_rel = fields.Many2many('ngo.beneficiary.document', 'doc_attachment_id', 'attach_id3',
+                                                  'doc_id',
+                                                  string=_(u"Attachment"), invisible=1)

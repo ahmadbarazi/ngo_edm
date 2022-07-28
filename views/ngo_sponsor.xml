@@ -1,183 +1,191 @@
 <!-- Copyright 2017 Navybits 
     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
-  <data>
-<!--Begin Sponsor Settings-->
-    <record id="view_ngo_sponsor_type" model="ir.ui.view">
-		<field name="name">sponsor.type.tree</field>
-		<field name="model">ngo.sponsor.type</field>
-		<field name="arch" type="xml">
-			<tree string="Sponsor Type">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
+    <data>
+        <!--Begin Sponsor Settings-->
+        <record id="view_ngo_sponsor_type" model="ir.ui.view">
+            <field name="name">sponsor.type.tree</field>
+            <field name="model">ngo.sponsor.type</field>
+            <field name="arch" type="xml">
+                <tree string="Sponsor Type">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
 
-    <record model="ir.actions.act_window" id="action_ngo_sponsor_type">
-		<field name="name">Sponsor Type</field>
-		<field name="res_model">ngo.sponsor.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_sponsor_type"/>             
-    </record> 
+        <record model="ir.actions.act_window" id="action_ngo_sponsor_type">
+            <field name="name">Sponsor Type</field>
+            <field name="res_model">ngo.sponsor.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_ngo_sponsor_type"/>
+        </record>
 
-<!--End Sponsor Settings-->
-  
-    <record id="create_sponsor_form_view" model="ir.ui.view">
-      <field name="name">sponsor.form</field>
-      <field name="model">ngo.sponsor</field>
-      <field name="arch" type="xml">
-        <form string="sponsor form">
-          <sheet>
+        <!--End Sponsor Settings-->
 
-            <div name="button_box" class="oe_button_box" >
-                <button name="%(sponsor_beneficiary_income_action)d" 
-						type="action"	
-						icon="fa-bars"						
-                        string="Beneficiaries"
-						id="sponsor_beneficiary_income_button"
-                        class="oe_stat_button">
-                </button>
-            </div>
-            <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-            <div class="oe_title">
-                <h1>
-                    <field name="name" placeholder="Sponsor Name" required="True"/>
-                </h1>
-                <h2>
-                    <field name="sponsor_type_id" placeholder="Sponsor Type" />
-                </h2>
-            </div>
+        <record id="create_sponsor_form_view" model="ir.ui.view">
+            <field name="name">sponsor.form</field>
+            <field name="model">ngo.sponsor</field>
+            <field name="arch" type="xml">
+                <form string="sponsor form">
+                    <sheet>
 
-            <group>
-              <group>
-                <field name="code"/>
-                <field name="active"/>
-                <field name="phone"/>
-                <field name="mobile"/>
+                        <div name="button_box" class="oe_button_box">
+                            <button name="%(sponsor_beneficiary_income_action)d"
+                                    type="action"
+                                    icon="fa-bars"
+                                    string="Beneficiaries"
+                                    id="sponsor_beneficiary_income_button"
+                                    class="oe_stat_button">
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" text="Archived" bg_color="bg-danger"
+                                attrs="{'invisible': [('active', '=', True)]}"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Sponsor Name" required="True"/>
+                            </h1>
+                            <h2>
+                                <field name="sponsor_type_id" placeholder="Sponsor Type"/>
+                            </h2>
+                        </div>
 
-                <!-- <label string="نوع الكفالة" /> -->
-                <div class="o_address_format" string="نوع الكفالة" >
-					<label for="is_student_sponsor" string="كفالة طالب" style="font-weight:bold;"/>
-                    <field name="is_student_sponsor" />
-                    <span class="o_form_label" style="width: 20% !important">      </span>  
-					<label for="is_orphan_sponsor" string="كفالة يتيم" style="font-weight:bold;"/>
-                    <field name="is_orphan_sponsor"  />
-                    <span class="o_form_label" style="width: 20% !important">         </span>  
-					<label for="is_family_sponsor" string="كفالة عائلة" style="font-weight:bold;"/>
-                    <field name="is_family_sponsor"  />
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="active"/>
+                                <field name="phone"/>
+                                <field name="mobile"/>
 
-                </div>
+                                <!-- <label string="نوع الكفالة" /> -->
+                                <div class="o_address_format" string="نوع الكفالة">
+                                    <label for="is_student_sponsor" string="كفالة طالب" style="font-weight:bold;"/>
+                                    <field name="is_student_sponsor"/>
+                                    <span class="o_form_label" style="width: 20% !important"></span>
+                                    <label for="is_orphan_sponsor" string="كفالة يتيم" style="font-weight:bold;"/>
+                                    <field name="is_orphan_sponsor"/>
+                                    <span class="o_form_label" style="width: 20% !important"></span>
+                                    <label for="is_family_sponsor" string="كفالة عائلة" style="font-weight:bold;"/>
+                                    <field name="is_family_sponsor"/>
 
-                <field name="fax"/>
-                <field name="email" widget="email" context="{'gravatar_image': True}"/>
-                <field name="website" widget="url" placeholder="e.g. https://www.edm.com.lb"/>
-                <field name="partner_id" readonly="1"/>
-                <field name="notes"/>
-              </group>
-              <group>
-                <label for="street" string="Home Address"/>
-                <div class="o_address_format">
-                    <field name="street" placeholder="Street..." class="o_address_street"/>
-                    <field name="near" placeholder="Near..." class="o_address_street"/>
-                    <field name="city" placeholder="City" class="o_address_city"/>
-                    <field name="region" class="o_address_state" placeholder="Area" options='{"no_open": True}'/>
-                    <field name="building" placeholder="Building" class="o_address_zip"/>
-                    <field name="floor" placeholder="Floor" class="o_address_zip"/>
-                    <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
-                </div>
+                                </div>
 
-                <label for="work_street" string="Work Address"/>
-                <div class="o_address_format">
-                    <field name="work_street" placeholder="Street..." class="o_address_street"/>
-                    <field name="work_near" placeholder="Near..." class="o_address_street"/>
-                    <field name="work_city" placeholder="City" class="o_address_city"/>
-                    <field name="work_region" class="o_address_state" placeholder="Area" options='{"no_open": True}'/>
-                    <field name="work_building" placeholder="Building" class="o_address_zip"/>
-                    <field name="work_floor" placeholder="Floor" class="o_address_zip"/>
-                    <field name="work_country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
-                </div>
+                                <field name="fax"/>
+                                <field name="email" widget="email" context="{'gravatar_image': True}"/>
+                                <field name="website" widget="url" placeholder="e.g. https://www.edm.com.lb"/>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="notes"/>
+                            </group>
+                            <group>
+                                <label for="street" string="Home Address"/>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="near" placeholder="Near..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="region" class="o_address_state" placeholder="Area"
+                                           options='{"no_open": True}'/>
+                                    <field name="building" placeholder="Building" class="o_address_zip"/>
+                                    <field name="floor" placeholder="Floor" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options='{"no_open": True, "no_create": True}'/>
+                                </div>
 
-              </group>
-            </group>
+                                <label for="work_street" string="Work Address"/>
+                                <div class="o_address_format">
+                                    <field name="work_street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="work_near" placeholder="Near..." class="o_address_street"/>
+                                    <field name="work_city" placeholder="City" class="o_address_city"/>
+                                    <field name="work_region" class="o_address_state" placeholder="Area"
+                                           options='{"no_open": True}'/>
+                                    <field name="work_building" placeholder="Building" class="o_address_zip"/>
+                                    <field name="work_floor" placeholder="Floor" class="o_address_zip"/>
+                                    <field name="work_country_id" placeholder="Country" class="o_address_country"
+                                           options='{"no_open": True, "no_create": True}'/>
+                                </div>
 
-            <!-- <notebook> -->
-              <!-- <page string="Beneficiaries"> -->
-                <!-- <group> -->
-                  <!-- <field name="beneficiary_ids"/> -->
-                <!-- </group> -->
-              <!-- </page> -->
-              <!-- <page string="Notes"> -->
-                <!-- <group> -->
-                  <!-- <field name="notes"/> -->
-                <!-- </group> -->
-              <!-- </page> -->
-            <!-- </notebook> -->
-          </sheet>
-        </form>
-      </field>
-    </record>
-    <!-- override the automatically generated list view for courses -->
-    <record id="sponsor_tree_view" model="ir.ui.view">
-      <field name="name">sponsor.tree</field>
-      <field name="model">ngo.sponsor</field>
-      <field name="arch" type="xml">
-        <tree string="sponsor Tree">
-          <field name="code"/>
-          <field name="name"/>
-          <field name="phone"/>
-          <field name="mobile"/>
-          <field name="email"/>
-          <field name="is_student_sponsor"/>
-          <field name="is_orphan_sponsor"/>
-          <field name="is_family_sponsor"/>
-          <field name="active" optional="hide"/>
-          <field name="street" optional="hide"/>
-          <field name="region" optional="hide"/>
-          <field name="city" optional="hide"/>
-        </tree>
-      </field>
-    </record>
+                            </group>
+                        </group>
 
-    <record id="view_sponsor_search" model="ir.ui.view">
-        <field name="name">ngo.sponsor.search</field>
-        <field name="model">ngo.sponsor</field>
-        <field name="arch" type="xml">
-            <search string="Sponsors">
-                <field name="name" filter_domain="['|', ('name','ilike',self), ('code','=like',str(self)+'%')]" string="Sponsor"/>
-                <filter string="Archived" name="inactivesponsorfltr" domain="[('active','=',False)]"/>
-				<separator/>
+                        <!-- <notebook> -->
+                        <!-- <page string="Beneficiaries"> -->
+                        <!-- <group> -->
+                        <!-- <field name="beneficiary_ids"/> -->
+                        <!-- </group> -->
+                        <!-- </page> -->
+                        <!-- <page string="Notes"> -->
+                        <!-- <group> -->
+                        <!-- <field name="notes"/> -->
+                        <!-- </group> -->
+                        <!-- </page> -->
+                        <!-- </notebook> -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- override the automatically generated list view for courses -->
+        <record id="sponsor_tree_view" model="ir.ui.view">
+            <field name="name">sponsor.tree</field>
+            <field name="model">ngo.sponsor</field>
+            <field name="arch" type="xml">
+                <tree string="sponsor Tree">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="phone"/>
+                    <field name="mobile"/>
+                    <field name="email"/>
+                    <field name="is_student_sponsor"/>
+                    <field name="is_orphan_sponsor"/>
+                    <field name="is_family_sponsor"/>
+                    <field name="active" optional="hide"/>
+                    <field name="street" optional="hide"/>
+                    <field name="region" optional="hide"/>
+                    <field name="city" optional="hide"/>
+                </tree>
+            </field>
+        </record>
 
-                <filter string="Student Sponsor" name="studentsponsorfltr" domain="[('is_student_sponsor','=',True)]"/>
-                <filter string="Orphan Sponsor" name="orphansponsorfltr" domain="[('is_orphan_sponsor','=',True)]"/>
-                <filter string="Family Sponsor" name="familysponsorfltr" domain="[('is_family_sponsor','=',True)]"/>
-				<separator/>
+        <record id="view_sponsor_search" model="ir.ui.view">
+            <field name="name">ngo.sponsor.search</field>
+            <field name="model">ngo.sponsor</field>
+            <field name="arch" type="xml">
+                <search string="Sponsors">
+                    <field name="name" filter_domain="['|', ('name','ilike',self), ('code','=like',str(self)+'%')]"
+                           string="Sponsor"/>
+                    <filter string="Archived" name="inactivesponsorfltr" domain="[('active','=',False)]"/>
+                    <separator/>
 
-                <!-- <filter string="Equity" name="equityacc" domain="[('internal_group','=', 'equity')]"/> -->
-                <!-- <separator/> -->
-                <!-- <filter string="Account with Entries" name="used" domain="[('used', '=', True)]"/> -->
-                <!-- <separator/> -->
-                <!-- <field name="user_type_id"/> -->
-                <group expand="0" string="Group By">
-                    <!-- <filter string="Active Guide" name="activeguidegrp" domain="" context="{'group_by':'active'}"/> -->
-                    <filter string="Sponsor Type" name="sponsortypegrp" domain="" context="{'group_by':'sponsor_type_id'}"/>
-					<separator/>
-                    <filter string="City" name="citysponsorgrp" domain="" context="{'group_by':'city'}"/>
-                    <filter string="Region" name="regionsponsorgrp" domain="" context="{'group_by':'region'}"/>
-					<separator/>
+                    <filter string="Student Sponsor" name="studentsponsorfltr"
+                            domain="[('is_student_sponsor','=',True)]"/>
+                    <filter string="Orphan Sponsor" name="orphansponsorfltr" domain="[('is_orphan_sponsor','=',True)]"/>
+                    <filter string="Family Sponsor" name="familysponsorfltr" domain="[('is_family_sponsor','=',True)]"/>
+                    <separator/>
 
-                </group>
-                <!-- <searchpanel class="account_root"> -->
+                    <!-- <filter string="Equity" name="equityacc" domain="[('internal_group','=', 'equity')]"/> -->
+                    <!-- <separator/> -->
+                    <!-- <filter string="Account with Entries" name="used" domain="[('used', '=', True)]"/> -->
+                    <!-- <separator/> -->
+                    <!-- <field name="user_type_id"/> -->
+                    <group expand="0" string="Group By">
+                        <!-- <filter string="Active Guide" name="activeguidegrp" domain="" context="{'group_by':'active'}"/> -->
+                        <filter string="Sponsor Type" name="sponsortypegrp" domain=""
+                                context="{'group_by':'sponsor_type_id'}"/>
+                        <separator/>
+                        <filter string="City" name="citysponsorgrp" domain="" context="{'group_by':'city'}"/>
+                        <filter string="Region" name="regionsponsorgrp" domain="" context="{'group_by':'region'}"/>
+                        <separator/>
+
+                    </group>
+                    <!-- <searchpanel class="account_root"> -->
                     <!-- <field name="root_id" icon="fa-filter"/> -->
-                <!-- </searchpanel> -->
-            </search>
-        </field>
-    </record>
-	
-    <record id="sponsor_list_action" model="ir.actions.act_window">
-      <field name="name">Sponsor List</field>
-      <field name="res_model">ngo.sponsor</field>
-      <!-- <field name="view_type">form</field> -->
-      <field name="view_mode">tree,form</field>
-    </record>
-  </data>
+                    <!-- </searchpanel> -->
+                </search>
+            </field>
+        </record>
+
+        <record id="sponsor_list_action" model="ir.actions.act_window">
+            <field name="name">Sponsor List</field>
+            <field name="res_model">ngo.sponsor</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
 </odoo>

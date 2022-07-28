@@ -1,5 +1,5 @@
- # -*- coding: utf-8 -*-
- ##############################################################################
+# -*- coding: utf-8 -*-
+##############################################################################
 #   
 #    Copyright (C) 2017 Navybits (<http://www.navybits.com>).
 #
@@ -17,8 +17,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from odoo import fields, models, api, exceptions,_
+from odoo import fields, models, api, exceptions, _
 from datetime import datetime
+
+
 class Partner(models.Model):
     _inherit = 'res.partner'
 
@@ -31,14 +33,14 @@ class Partner(models.Model):
     is_responsible = fields.Boolean(string=_(u"Is Responsible"))
     is_association = fields.Boolean(string=_(u"Is Association"))
     is_guide = fields.Boolean(string=_(u"Is Guide"))
-    region = fields.Many2one('ngo.region',string=_(u"Region"))
+    region = fields.Many2one('ngo.region', string=_(u"Region"))
     near = fields.Char(string=_(u"Near"))
     building = fields.Char(string=_(u"Building"))
     floor = fields.Char(string=_(u"Floor #"))
-    mohafaza = fields.Many2one('ngo.mohafaza',string=_("Mohafaza"))
-    kadaa = fields.Many2one('ngo.kadaa',string=_("Kadaa"))
+    mohafaza = fields.Many2one('ngo.mohafaza', string=_("Mohafaza"))
+    kadaa = fields.Many2one('ngo.kadaa', string=_("Kadaa"))
     appartment = fields.Char(string=_("Appartment"))
-    neighborhood = fields.Many2one('ngo.neighborhood',string=_("Neighborhood"))
+    neighborhood = fields.Many2one('ngo.neighborhood', string=_("Neighborhood"))
     building_number = fields.Char(string=_("Building Number"))
     # state = fields.Selection(string=_(u"Application State"), selection=[('draft', _(u'Draft')), ('managerapprove', _(
     #     u'Manager Approve')), ('review', _(u'Review'))], track_visibility='onchange', default='draft')
@@ -80,4 +82,3 @@ class Partner(models.Model):
         string=_(u"# of Distributions"),
         readonly=True
     )
-    

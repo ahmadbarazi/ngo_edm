@@ -1,714 +1,806 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<!--Begin Address Settings-->
+    <!--Begin Address Settings-->
     <record id="view_ngo_mohafaza" model="ir.ui.view">
-		<field name="name">mohafaza.tree</field>
-		<field name="model">ngo.mohafaza</field>
-		<field name="arch" type="xml">
-			<tree string="Mohafaza">
-				<field name="code"/>
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>  
+        <field name="name">mohafaza.tree</field>
+        <field name="model">ngo.mohafaza</field>
+        <field name="arch" type="xml">
+            <tree string="Mohafaza">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
 
     <record id="view_ngo_kadaa" model="ir.ui.view">
-		<field name="name">kadaa.tree</field>
-		<field name="model">ngo.kadaa</field>
-		<field name="arch" type="xml">
-			<tree string="Kadaa">
-				<field name="code"/>
-				<field name ="name"/>
-				<field name="mohafaza_id"/>
-			</tree>
-		</field>
-	</record>  	
+        <field name="name">kadaa.tree</field>
+        <field name="model">ngo.kadaa</field>
+        <field name="arch" type="xml">
+            <tree string="Kadaa">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="mohafaza_id"/>
+            </tree>
+        </field>
+    </record>
 
     <record id="view_ngo_city" model="ir.ui.view">
-		<field name="name">city.tree</field>
-		<field name="model">ngo.city</field>
-		<field name="arch" type="xml">
-			<tree string="Region">
-				<field name ="name"/>
-				<field name ="country_id"/>
-			</tree>
-		</field>
-	</record>   
+        <field name="name">city.tree</field>
+        <field name="model">ngo.city</field>
+        <field name="arch" type="xml">
+            <tree string="Region">
+                <field name="name"/>
+                <field name="country_id"/>
+            </tree>
+        </field>
+    </record>
 
     <record model="ir.actions.act_window" id="action_ngo_mohafaza">
-		<field name="name">Mohafaza</field>
-		<field name="res_model">ngo.mohafaza</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_mohafaza"/>             
-    </record> 
+        <field name="name">Mohafaza</field>
+        <field name="res_model">ngo.mohafaza</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_mohafaza"/>
+    </record>
 
     <record model="ir.actions.act_window" id="action_ngo_kadaa">
-		<field name="name">Kadaa</field>
-		<field name="res_model">ngo.kadaa</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_kadaa"/>             
-    </record> 
+        <field name="name">Kadaa</field>
+        <field name="res_model">ngo.kadaa</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_kadaa"/>
+    </record>
 
 
     <record model="ir.actions.act_window" id="action_ngo_city">
-		<field name="name">Region</field>
-		<field name="res_model">ngo.city</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_city"/>             
-    </record> 
-
-    <record id="view_ngo_region" model="ir.ui.view">
-		<field name="name">region.tree</field>
-		<field name="model">ngo.region</field>
-		<field name="arch" type="xml">
-			<tree string="Region">
-				<field name ="name"/>
-				<field name ="city_id"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_region">
-		<field name="name">Region</field>
-		<field name="res_model">ngo.region</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_region"/>             
-    </record> 
-<!--End Address Settings-->
-
-<!--Begin Residence Settings-->
-    <record id="view_ngo_loan_type" model="ir.ui.view">
-		<field name="name">loan.type.tree</field>
-		<field name="model">ngo.loan.type</field>
-		<field name="arch" type="xml">
-			<tree string="Loan Type">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_loan_type">
-		<field name="name">Loan Type</field>
-		<field name="res_model">ngo.loan.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_loan_type"/>             
-    </record> 
-
-    <record id="view_ngo_asset_type" model="ir.ui.view">
-		<field name="name">asset.type.tree</field>
-		<field name="model">ngo.asset.type</field>
-		<field name="arch" type="xml">
-			<tree string="Asset Type">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_asset_type">
-		<field name="name">Asset Type</field>
-		<field name="res_model">ngo.asset.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_asset_type"/>             
-    </record> 
-
-    <record id="view_ngo_residence_description" model="ir.ui.view">
-		<field name="name">residence.description.tree</field>
-		<field name="model">ngo.residence.description</field>
-		<field name="arch" type="xml">
-			<tree string="Residence Description">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_residence_description">
-		<field name="name">Residence Description</field>
-		<field name="res_model">ngo.residence.description</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_residence_description"/>             
-    </record> 
-
-    <record id="view_ngo_residence_type" model="ir.ui.view">
-		<field name="name">residence.type.tree</field>
-		<field name="model">ngo.residence.type</field>
-		<field name="arch" type="xml">
-			<tree string="Residence Type">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_residence_type">
-		<field name="name">Residence Type</field>
-		<field name="res_model">ngo.residence.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_residence_type"/>             
-    </record> 
-
-    <record id="view_ngo_residence_state" model="ir.ui.view">
-		<field name="name">residence.state.tree</field>
-		<field name="model">ngo.residence.state</field>
-		<field name="arch" type="xml">
-			<tree string="Residence State">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_residence_state">
-		<field name="name">Residence State</field>
-		<field name="res_model">ngo.residence.state</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_residence_state"/>             
-    </record> 
-
-<!--End Residence Settings-->
-
-<!--Begin Education Settings-->
-    <record id="view_ngo_education_level" model="ir.ui.view">
-		<field name="name">education.level.tree</field>
-		<field name="model">ngo.education.level</field>
-		<field name="arch" type="xml">
-			<tree string="Education Levels">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_education_level">
-		<field name="name">Education Level</field>
-		<field name="res_model">ngo.education.level</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_education_level"/>             
-    </record> 
-
-    <record id="view_ngo_education_institution_type" model="ir.ui.view">
-		<field name="name">education.institution.type.tree</field>
-		<field name="model">ngo.education.institution.type</field>
-		<field name="arch" type="xml">
-			<tree string="Education Institution Types">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_education_institution_type">
-		<field name="name">Education Institution Type</field>
-		<field name="res_model">ngo.education.institution.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_education_institution_type"/>             
-    </record> 
-
-    <record id="view_ngo_education_institution" model="ir.ui.view">
-		<field name="name">education.institution.tree</field>
-		<field name="model">ngo.education.institution</field>
-		<field name="arch" type="xml">
-			<tree string="Education Institution">
-				<field name ="name"/>
-				<field name ="education_institution_type"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_education_institution">
-		<field name="name">Education Institution</field>
-		<field name="res_model">ngo.education.institution</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_education_institution"/>             
-    </record> 
-
-    <record id="view_ngo_education_class" model="ir.ui.view">
-		<field name="name">education.class.tree</field>
-		<field name="model">ngo.education.class</field>
-		<field name="arch" type="xml">
-			<tree string="Education Class">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_education_class">
-		<field name="name">Education Class</field>
-		<field name="res_model">ngo.education.class</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_education_class"/>             
-    </record> 
-<!--End Education Settings-->
-
-<!--Begin Medical Settings-->
-    <record id="view_ngo_illness_type" model="ir.ui.view">
-		<field name="name">illness.type.tree</field>
-		<field name="model">ngo.illness.type</field>
-		<field name="arch" type="xml">
-			<tree string="Illness Type">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_illness_type">
-		<field name="name">Illness Type</field>
-		<field name="res_model">ngo.illness.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_illness_type"/>             
-    </record> 
-
-    <record id="view_ngo_handicap_type" model="ir.ui.view">
-		<field name="name">handicap.type.tree</field>
-		<field name="model">ngo.handicap.type</field>
-		<field name="arch" type="xml">
-			<tree string="Handicap Type">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_handicap_type">
-		<field name="name">Handicap Type</field>
-		<field name="res_model">ngo.handicap.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_handicap_type"/>             
-    </record> 
-
-    <record id="view_ngo_medicine" model="ir.ui.view">
-		<field name="name">medicine.tree</field>
-		<field name="model">ngo.medicine</field>
-		<field name="arch" type="xml">
-			<tree string="Medicine">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_medicine">
-		<field name="name">Medicine</field>
-		<field name="res_model">ngo.medicine</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_medicine"/>             
-    </record> 
-<!--End Medical Settings-->
-
-<!--Begin Job Settings-->
-    <record id="view_ngo_career" model="ir.ui.view">
-		<field name="name">career.tree</field>
-		<field name="model">ngo.career</field>
-		<field name="arch" type="xml">
-			<tree string="Career">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_career">
-		<field name="name">Career</field>
-		<field name="res_model">ngo.career</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_career"/>             
-    </record> 
-
-    <record id="view_ngo_job_title" model="ir.ui.view">
-		<field name="name">job.title.tree</field>
-		<field name="model">ngo.job.title</field>
-		<field name="arch" type="xml">
-			<tree string="Job Title">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_job_title">
-		<field name="name">Job Title</field>
-		<field name="res_model">ngo.job.title</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_job_title"/>             
-    </record> 
-
-    <record id="view_ngo_job_type" model="ir.ui.view">
-		<field name="name">job.type.tree</field>
-		<field name="model">ngo.job.type</field>
-		<field name="arch" type="xml">
-			<tree string="Job Type">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_job_type">
-		<field name="name">Job Type</field>
-		<field name="res_model">ngo.job.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_job_type"/>             
-    </record> 
-
-    <record id="view_ngo_job_state" model="ir.ui.view">
-		<field name="name">job.state.tree</field>
-		<field name="model">ngo.job.state</field>
-		<field name="arch" type="xml">
-			<tree string="Job State">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_job_state">
-		<field name="name">Job State</field>
-		<field name="res_model">ngo.job.state</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_job_state"/>             
-    </record> 
-
-<!--End Job Settings-->
-
-<!--Begin Miscelleneous Settings-->
-    <record id="view_ngo_family_relationship" model="ir.ui.view">
-		<field name="name">ngo.family.relationship.tree</field>
-		<field name="model">ngo.family.relationship</field>
-		<field name="arch" type="xml">
-			<tree string="Family Relationship">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_family_relationship">
-		<field name="name">Family Relationship</field>
-		<field name="res_model">ngo.family.relationship</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_family_relationship"/>             
-    </record> 
-
-    <record id="view_ngo_doctrine" model="ir.ui.view">
-		<field name="name">doctrine.tree</field>
-		<field name="model">ngo.doctrine</field>
-		<field name="arch" type="xml">
-			<tree string="Doctrine">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_doctrine">
-		<field name="name">Doctrine</field>
-		<field name="res_model">ngo.doctrine</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_doctrine"/>             
-    </record> 
-
-    <record id="view_ngo_size" model="ir.ui.view">
-		<field name="name">size.tree</field>
-		<field name="model">ngo.size</field>
-		<field name="arch" type="xml">
-			<tree string="Size">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_size">
-		<field name="name">Size</field>
-		<field name="res_model">ngo.size</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_size"/>             
-    </record> 
-
-    <record id="view_ngo_expense_category" model="ir.ui.view">
-		<field name="name">expense.category.tree</field>
-		<field name="model">ngo.expense.category</field>
-		<field name="arch" type="xml">
-			<tree string="Expense Category">
-				<field name ="name"/>
-				<field name ="parent_id"/>
-
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_expense_category">
-		<field name="name">Expense Category</field>
-		<field name="res_model">ngo.expense.category</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_expense_category"/>             
-    </record> 
-
-    <record id="view_ngo_income_type" model="ir.ui.view">
-		<field name="name">income.type.tree</field>
-		<field name="model">ngo.income.type</field>
-		<field name="arch" type="xml">
-			<tree string="Income Type">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_income_type">
-		<field name="name">Income Type</field>
-		<field name="res_model">ngo.income.type</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_income_type"/>             
-    </record> 
-
-    <record id="view_ngo_education_specialty" model="ir.ui.view">
-		<field name="name">education.specialty.tree</field>
-		<field name="model">ngo.education.specialty</field>
-		<field name="arch" type="xml">
-			<tree string="Education Specialty">
-				<field name ="name"/>
-			</tree>
-		</field>
-	</record>   
-
-    <record model="ir.actions.act_window" id="action_ngo_education_specialty">
-		<field name="name">Education Specialty</field>
-		<field name="res_model">ngo.education.specialty</field>
-		<field name="view_mode">tree,form</field>
-		<field name="view_id" ref="view_ngo_education_specialty"/>             
-    </record> 
-
-<!--End Miscelleneous Settings-->
-
-    <record id="res_config_settings_view_form" model="ir.ui.view">
-		<field name="name">NGO</field>
-		<field name="model">res.config.settings</field>
-		<field name="inherit_id" ref="base.res_config_settings_view_form" />
-		<field name="arch" type="xml">
-			<xpath expr="//div[hasclass('app_settings_block')]" position="after">
-				<div class="app_settings_block" data-string="NGO" string="NGO" data-key="ngo_edm">		
-					<h2> Address Settings</h2>
-                    <div class="row mt16 o_settings_container" name="address_setting_container">
-						<div class="col-xs-12 col-md-6 o_setting_box" id="address_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-								<button name="%(action_ngo_mohafaza)d" string="Mohafaza" type="action" icon="fa-arrow-right" class="btn-link"/>
-								<div class="mt16">
-								<button name="%(action_ngo_kadaa)d" string="Kadaa" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-								<div class="mt16">
-								<button name="%(action_ngo_city)d" string="City" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>								
-								<div class="mt16">
-								<button name="%(action_ngo_region)d" string="Region" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-								<div class="mt16">
-								<button name="%(action_ngo_loan_type)d" string="House Loan Types" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-								<div class="mt16">
-								<button name="%(action_ngo_asset_type)d" string="Asset Types" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-
-							</div>				
-						</div>
-						<div class="col-xs-12 col-md-6 o_setting_box" id="address_setting_right">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-								<button name="%(action_ngo_residence_description)d" string="Residence Description" type="action" icon="fa-arrow-right" class="btn-link"/>
-								<div class="mt16">
-								<button name="%(action_ngo_residence_type)d" string="Residence Type" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-								<div class="mt16">
-								<button name="%(action_ngo_residence_state)d" string="Residence State" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- <h2> Residence Settings</h2> -->
-                    <!-- <div class="row mt16 o_settings_container" name="residence_setting_container"> -->
-						<!-- <div class="col-xs-12 col-md-6 o_setting_box" > -->
-							<!-- <div class="o_setting_left_pane"></div> -->
-							<!-- <div class="o_setting_right_pane"> -->
-									<!-- <button name="%(action_ngo_loan_type)d" string="House Loan Types" type="action" icon="fa-arrow-right" class="btn-link"/> -->
-									<!-- <div class="mt16"> -->
-									<!-- <button name="%(action_ngo_asset_type)d" string="Asset Types" type="action" icon="fa-arrow-right" class="btn-link"/> -->
-									<!-- </div> -->
-							<!-- </div> -->
-						<!-- </div> -->
-						<!-- <div class="col-xs-12 col-md-6 o_setting_box"> -->
-							<!-- <div class="o_setting_left_pane"></div> -->
-							<!-- <div class="o_setting_right_pane"> -->
-								<!-- <button name="%(action_ngo_residence_description)d" string="Residence Description" type="action" icon="fa-arrow-right" class="btn-link"/> -->
-								<!-- <div class="mt16"> -->
-								<!-- <button name="%(action_ngo_residence_type)d" string="Residence Type" type="action" icon="fa-arrow-right" class="btn-link"/> -->
-								<!-- </div> -->
-								<!-- <div class="mt16"> -->
-								<!-- <button name="%(action_ngo_residence_state)d" string="Residence State" type="action" icon="fa-arrow-right" class="btn-link"/> -->
-								<!-- </div> -->
-
-							<!-- </div> -->
-						<!-- </div> -->
-					<!-- </div>				 -->
-
-					<h2> Education Settings</h2>
-                    <div class="row mt16 o_settings_container" name="residence_setting_container">
-						<div class="col-xs-12 col-md-6 o_setting_box" id="education_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-								<button name="%(action_ngo_education_institution_type)d" string="Education Institution Types" type="action" icon="fa-arrow-right" class="btn-link"/>
-								<div class="mt16">
-								<button name="%(action_ngo_education_institution)d" string="Education Institution" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-								<div class="mt16">
-								<button name="%(action_ngo_education_specialty)d" string="Education Specialty" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-
-							</div>
-						</div>				
-						<div class="col-xs-12 col-md-6 o_setting_box">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-								<button name="%(action_ngo_education_level)d" string="Education Levels" type="action" icon="fa-arrow-right" class="btn-link"/>
-								<div class="mt16">
-								<button name="%(action_ngo_education_class)d" string="Education Class" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-							</div>
-                        </div>
-					</div>
-
-					<h2> Medical Settings</h2>
-                    <div class="row mt16 o_settings_container" name="medical_setting_container">
-						<div class="col-xs-12 col-md-6 o_setting_box" id="medical_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-								<button name="%(action_ngo_illness_type)d" string="Illness Types" type="action" icon="fa-arrow-right" class="btn-link"/>
-								<div class="mt16">
-								<button name="%(action_ngo_handicap_type)d" string="Handicap Types" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-							</div>	
-						</div>
-						<div class="col-xs-12 col-md-6 o_setting_box">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-							<button name="%(action_ngo_medicine)d" string="Medicine" type="action" icon="fa-arrow-right" class="btn-link"/>
-							</div>
-						</div>
-					</div>
-
-					<h2> Job Settings</h2>
-                    <div class="row mt16 o_settings_container" name="job_setting_container">
-						<div class="col-xs-12 col-md-6 o_setting_box" id="job_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-									<button name="%(action_ngo_career)d" string="Career" type="action" icon="fa-arrow-right" class="btn-link"/>
-									<div class="mt16">
-									<button name="%(action_ngo_job_title)d" string="Job Title" type="action" icon="fa-arrow-right" class="btn-link"/>
-									</div>
-								</div>
-							</div>				
-						<div class="col-xs-12 col-md-6 o_setting_box" id="job_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-									<!-- <div class="mt16"> -->
-									<button name="%(action_ngo_job_type)d" string="Job Type" type="action" icon="fa-arrow-right" class="btn-link"/>
-									<!-- </div> -->
-									<div class="mt16">
-									<button name="%(action_ngo_job_state)d" string="Job State" type="action" icon="fa-arrow-right" class="btn-link"/>
-									</div>
-							</div>
-						</div>
-					</div>
-
-					<h2> Miscelleneous Settings</h2>
-                    <div class="row mt16 o_settings_container" name="miscelleneous_setting_container">
-						<div class="col-xs-12 col-md-6 o_setting_box" id="miscelleneous_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-									<button name="%(action_ngo_family_relationship)d" string="Family Relationship" type="action" icon="fa-arrow-right" class="btn-link"/>
-									<div class="mt16">
-									<button name="%(action_ngo_doctrine)d" string="Doctrine" type="action" icon="fa-arrow-right" class="btn-link"/>
-									</div>
-									<div class="mt16">
-									<button name="%(action_ngo_size)d" string="Size" type="action" icon="fa-arrow-right" class="btn-link"/>
-									</div>
-							</div>
-						</div>				
-						<div class="col-xs-12 col-md-6 o_setting_box" id="miscelleneous_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-								<button name="%(action_ngo_expense_category)d" string="Expense Category" type="action" icon="fa-arrow-right" class="btn-link"/>
-								<div class="mt16">
-								<button name="%(action_ngo_income_type)d" string="Income Type" type="action" icon="fa-arrow-right" class="btn-link"/>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<h2> Beneficiary Application Settings</h2>
-                    <div class="row mt16 o_settings_container" name="application_setting_container">
-						<div class="col-xs-12 col-md-6 o_setting_box" id="application_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-									<button name="%(action_ngo_application_docs)d" string="Application Documents" type="action" icon="fa-arrow-right" class="btn-link"/>
-									<div class="mt16">
-									<button name="%(action_ngo_application_type)d" string="Application Type" type="action" icon="fa-arrow-right" class="btn-link"/>
-									</div>
-							</div>
-						</div>				
-						<div class="col-xs-12 col-md-6 o_setting_box" id="application_setting_2">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-								<button name="%(action_ngo_application_decision_list)d" string="Decision List" type="action" icon="fa-arrow-right" class="btn-link"/>
-							</div>
-						</div>
-					</div>
-
-					<h2> Association/Sponsor Settings</h2>
-                    <div class="row mt16 o_settings_container" name="other_setting_container">
-						<div class="col-xs-12 col-md-6 o_setting_box" id="other_setting">
-							<div class="o_setting_left_pane"></div>
-							<div class="o_setting_right_pane">
-									<button name="%(action_ngo_sponsor_type)d" string="Sponsor Type" type="action" icon="fa-arrow-right" class="btn-link"/>
-									<div class="mt16">
-									<button name="%(action_ngo_association_type)d" string="Association Type" type="action" icon="fa-arrow-right" class="btn-link"/>
-									</div>
-									<div class="mt16">
-									<button name="%(action_ngo_association_specialty)d" string="Association Specialty" type="action" icon="fa-arrow-right" class="btn-link"/>
-									</div>
-
-							</div>
-						</div>				
-						<!-- <div class="col-xs-12 col-md-6 o_setting_box" id="application_setting_2"> -->
-							<!-- <div class="o_setting_left_pane"></div> -->
-							<!-- <div class="o_setting_right_pane"> -->
-								<!-- <button name="%(action_ngo_application_decision_list)d" string="Decision List" type="action" icon="fa-arrow-right" class="btn-link"/> -->
-							<!-- </div> -->
-						<!-- </div> -->
-					</div>
-
-				</div>	
-			</xpath>
-		</field>
+        <field name="name">Region</field>
+        <field name="res_model">ngo.city</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_city"/>
     </record>
 
-	<!-- <record id="view_account_config_settings" model="ir.ui.view"> -->
-		<!-- <field name="name">res.config.settings.view.inherit.res.partner</field> -->
-		<!-- <field name="model">res.config.settings</field> -->
-		<!-- <field name="inherit_id" ref="account.res_config_settings_view_form"/> -->
-		<!-- <field name="arch" type="xml"> -->
-			<!-- <xpath expr="//div[@id='invoicing_settings']" position="after"> -->
-			<!-- <h2>Customer Accounts</h2> -->
-				<!-- <div class="row mt16 o_settings_container" id="Accounts"> -->
-					<!-- <div class="col-xs-12 col-md-6 o_setting_box"> -->
-						<!-- <div class="o_setting_right_pane">		 -->
-							<!-- <div> -->
-								<!-- <label for='default_account_payable_id' /> -->
-								<!-- <field name="default_account_payable_id" required='0'/> -->
-							<!-- </div> -->
-							<!-- <div> -->
-								<!-- <label for='default_account_receivable_id'/> -->
-								<!-- <field name="default_account_receivable_id" required='0'/> -->
-							<!-- </div>					 -->
-						<!-- </div>			 -->
-					<!-- </div>	 -->
-				<!-- </div> -->
-			<!-- </xpath> -->
-		<!-- </field> -->
-	<!-- </record> -->
-        <record id="ngo_settings_action" model="ir.actions.act_window">
-            <field name="name">Settings</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">res.config.settings</field>
-            <field name="view_mode">form</field>
-            <field name="target">inline</field>
-            <field name="context">{'module' : 'ngo_edm'}</field>
-        </record>
+    <record id="view_ngo_region" model="ir.ui.view">
+        <field name="name">region.tree</field>
+        <field name="model">ngo.region</field>
+        <field name="arch" type="xml">
+            <tree string="Region">
+                <field name="name"/>
+                <field name="city_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_region">
+        <field name="name">Region</field>
+        <field name="res_model">ngo.region</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_region"/>
+    </record>
+    <!--End Address Settings-->
+
+    <!--Begin Residence Settings-->
+    <record id="view_ngo_loan_type" model="ir.ui.view">
+        <field name="name">loan.type.tree</field>
+        <field name="model">ngo.loan.type</field>
+        <field name="arch" type="xml">
+            <tree string="Loan Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_loan_type">
+        <field name="name">Loan Type</field>
+        <field name="res_model">ngo.loan.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_loan_type"/>
+    </record>
+
+    <record id="view_ngo_asset_type" model="ir.ui.view">
+        <field name="name">asset.type.tree</field>
+        <field name="model">ngo.asset.type</field>
+        <field name="arch" type="xml">
+            <tree string="Asset Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_asset_type">
+        <field name="name">Asset Type</field>
+        <field name="res_model">ngo.asset.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_asset_type"/>
+    </record>
+
+    <record id="view_ngo_residence_description" model="ir.ui.view">
+        <field name="name">residence.description.tree</field>
+        <field name="model">ngo.residence.description</field>
+        <field name="arch" type="xml">
+            <tree string="Residence Description">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_residence_description">
+        <field name="name">Residence Description</field>
+        <field name="res_model">ngo.residence.description</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_residence_description"/>
+    </record>
+
+    <record id="view_ngo_residence_type" model="ir.ui.view">
+        <field name="name">residence.type.tree</field>
+        <field name="model">ngo.residence.type</field>
+        <field name="arch" type="xml">
+            <tree string="Residence Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_residence_type">
+        <field name="name">Residence Type</field>
+        <field name="res_model">ngo.residence.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_residence_type"/>
+    </record>
+
+    <record id="view_ngo_residence_state" model="ir.ui.view">
+        <field name="name">residence.state.tree</field>
+        <field name="model">ngo.residence.state</field>
+        <field name="arch" type="xml">
+            <tree string="Residence State">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_residence_state">
+        <field name="name">Residence State</field>
+        <field name="res_model">ngo.residence.state</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_residence_state"/>
+    </record>
+
+    <!--End Residence Settings-->
+
+    <!--Begin Education Settings-->
+    <record id="view_ngo_education_level" model="ir.ui.view">
+        <field name="name">education.level.tree</field>
+        <field name="model">ngo.education.level</field>
+        <field name="arch" type="xml">
+            <tree string="Education Levels">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_education_level">
+        <field name="name">Education Level</field>
+        <field name="res_model">ngo.education.level</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_education_level"/>
+    </record>
+
+    <record id="view_ngo_education_institution_type" model="ir.ui.view">
+        <field name="name">education.institution.type.tree</field>
+        <field name="model">ngo.education.institution.type</field>
+        <field name="arch" type="xml">
+            <tree string="Education Institution Types">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_education_institution_type">
+        <field name="name">Education Institution Type</field>
+        <field name="res_model">ngo.education.institution.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_education_institution_type"/>
+    </record>
+
+    <record id="view_ngo_education_institution" model="ir.ui.view">
+        <field name="name">education.institution.tree</field>
+        <field name="model">ngo.education.institution</field>
+        <field name="arch" type="xml">
+            <tree string="Education Institution">
+                <field name="name"/>
+                <field name="education_institution_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_education_institution">
+        <field name="name">Education Institution</field>
+        <field name="res_model">ngo.education.institution</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_education_institution"/>
+    </record>
+
+    <record id="view_ngo_education_class" model="ir.ui.view">
+        <field name="name">education.class.tree</field>
+        <field name="model">ngo.education.class</field>
+        <field name="arch" type="xml">
+            <tree string="Education Class">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_education_class">
+        <field name="name">Education Class</field>
+        <field name="res_model">ngo.education.class</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_education_class"/>
+    </record>
+    <!--End Education Settings-->
+
+    <!--Begin Medical Settings-->
+    <record id="view_ngo_illness_type" model="ir.ui.view">
+        <field name="name">illness.type.tree</field>
+        <field name="model">ngo.illness.type</field>
+        <field name="arch" type="xml">
+            <tree string="Illness Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_illness_type">
+        <field name="name">Illness Type</field>
+        <field name="res_model">ngo.illness.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_illness_type"/>
+    </record>
+
+    <record id="view_ngo_handicap_type" model="ir.ui.view">
+        <field name="name">handicap.type.tree</field>
+        <field name="model">ngo.handicap.type</field>
+        <field name="arch" type="xml">
+            <tree string="Handicap Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_handicap_type">
+        <field name="name">Handicap Type</field>
+        <field name="res_model">ngo.handicap.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_handicap_type"/>
+    </record>
+
+    <record id="view_ngo_medicine" model="ir.ui.view">
+        <field name="name">medicine.tree</field>
+        <field name="model">ngo.medicine</field>
+        <field name="arch" type="xml">
+            <tree string="Medicine">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_medicine">
+        <field name="name">Medicine</field>
+        <field name="res_model">ngo.medicine</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_medicine"/>
+    </record>
+    <!--End Medical Settings-->
+
+    <!--Begin Job Settings-->
+    <record id="view_ngo_career" model="ir.ui.view">
+        <field name="name">career.tree</field>
+        <field name="model">ngo.career</field>
+        <field name="arch" type="xml">
+            <tree string="Career">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_career">
+        <field name="name">Career</field>
+        <field name="res_model">ngo.career</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_career"/>
+    </record>
+
+    <record id="view_ngo_job_title" model="ir.ui.view">
+        <field name="name">job.title.tree</field>
+        <field name="model">ngo.job.title</field>
+        <field name="arch" type="xml">
+            <tree string="Job Title">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_job_title">
+        <field name="name">Job Title</field>
+        <field name="res_model">ngo.job.title</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_job_title"/>
+    </record>
+
+    <record id="view_ngo_job_type" model="ir.ui.view">
+        <field name="name">job.type.tree</field>
+        <field name="model">ngo.job.type</field>
+        <field name="arch" type="xml">
+            <tree string="Job Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_job_type">
+        <field name="name">Job Type</field>
+        <field name="res_model">ngo.job.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_job_type"/>
+    </record>
+
+    <record id="view_ngo_job_state" model="ir.ui.view">
+        <field name="name">job.state.tree</field>
+        <field name="model">ngo.job.state</field>
+        <field name="arch" type="xml">
+            <tree string="Job State">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_job_state">
+        <field name="name">Job State</field>
+        <field name="res_model">ngo.job.state</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_job_state"/>
+    </record>
+
+    <!--End Job Settings-->
+
+    <!--Begin Miscelleneous Settings-->
+    <record id="view_ngo_family_relationship" model="ir.ui.view">
+        <field name="name">ngo.family.relationship.tree</field>
+        <field name="model">ngo.family.relationship</field>
+        <field name="arch" type="xml">
+            <tree string="Family Relationship">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_family_relationship">
+        <field name="name">Family Relationship</field>
+        <field name="res_model">ngo.family.relationship</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_family_relationship"/>
+    </record>
+
+    <record id="view_ngo_doctrine" model="ir.ui.view">
+        <field name="name">doctrine.tree</field>
+        <field name="model">ngo.doctrine</field>
+        <field name="arch" type="xml">
+            <tree string="Doctrine">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_doctrine">
+        <field name="name">Doctrine</field>
+        <field name="res_model">ngo.doctrine</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_doctrine"/>
+    </record>
+
+    <record id="view_ngo_size" model="ir.ui.view">
+        <field name="name">size.tree</field>
+        <field name="model">ngo.size</field>
+        <field name="arch" type="xml">
+            <tree string="Size">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_size">
+        <field name="name">Size</field>
+        <field name="res_model">ngo.size</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_size"/>
+    </record>
+
+    <record id="view_ngo_expense_category" model="ir.ui.view">
+        <field name="name">expense.category.tree</field>
+        <field name="model">ngo.expense.category</field>
+        <field name="arch" type="xml">
+            <tree string="Expense Category">
+                <field name="name"/>
+                <field name="parent_id"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_expense_category">
+        <field name="name">Expense Category</field>
+        <field name="res_model">ngo.expense.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_expense_category"/>
+    </record>
+
+    <record id="view_ngo_income_type" model="ir.ui.view">
+        <field name="name">income.type.tree</field>
+        <field name="model">ngo.income.type</field>
+        <field name="arch" type="xml">
+            <tree string="Income Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_income_type">
+        <field name="name">Income Type</field>
+        <field name="res_model">ngo.income.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_income_type"/>
+    </record>
+
+    <record id="view_ngo_education_specialty" model="ir.ui.view">
+        <field name="name">education.specialty.tree</field>
+        <field name="model">ngo.education.specialty</field>
+        <field name="arch" type="xml">
+            <tree string="Education Specialty">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_education_specialty">
+        <field name="name">Education Specialty</field>
+        <field name="res_model">ngo.education.specialty</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ngo_education_specialty"/>
+    </record>
+
+    <record id="view_ngo_application_type_new" model="ir.ui.view">
+        <field name="name">application.type.tree</field>
+        <field name="model">ngo.application.class</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_ngo_application_type_new">
+        <field name="name">Application Type</field>
+        <field name="res_model">ngo.application.class</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_ngo_application_type_new"/>
+    </record>
+
+    <!--End Miscelleneous Settings-->
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">NGO</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('app_settings_block')]" position="after">
+                <div class="app_settings_block" data-string="NGO" string="NGO" data-key="ngo_edm">
+                    <h2>Address Settings</h2>
+                    <div class="row mt16 o_settings_container" name="address_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="address_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_mohafaza)d" string="Mohafaza" type="action"
+                                        icon="fa-arrow-right" class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_kadaa)d" string="Kadaa" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_city)d" string="City" type="action" icon="fa-arrow-right"
+                                            class="btn-link"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_region)d" string="Region" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_loan_type)d" string="House Loan Types" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_asset_type)d" string="Asset Types" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="address_setting_right">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_residence_description)d" string="Residence Description"
+                                        type="action" icon="fa-arrow-right" class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_residence_type)d" string="Residence Type" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_residence_state)d" string="Residence State" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <h2> Residence Settings</h2> -->
+                    <!-- <div class="row mt16 o_settings_container" name="residence_setting_container"> -->
+                    <!-- <div class="col-xs-12 col-md-6 o_setting_box" > -->
+                    <!-- <div class="o_setting_left_pane"></div> -->
+                    <!-- <div class="o_setting_right_pane"> -->
+                    <!-- <button name="%(action_ngo_loan_type)d" string="House Loan Types" type="action" icon="fa-arrow-right" class="btn-link"/> -->
+                    <!-- <div class="mt16"> -->
+                    <!-- <button name="%(action_ngo_asset_type)d" string="Asset Types" type="action" icon="fa-arrow-right" class="btn-link"/> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- <div class="col-xs-12 col-md-6 o_setting_box"> -->
+                    <!-- <div class="o_setting_left_pane"></div> -->
+                    <!-- <div class="o_setting_right_pane"> -->
+                    <!-- <button name="%(action_ngo_residence_description)d" string="Residence Description" type="action" icon="fa-arrow-right" class="btn-link"/> -->
+                    <!-- <div class="mt16"> -->
+                    <!-- <button name="%(action_ngo_residence_type)d" string="Residence Type" type="action" icon="fa-arrow-right" class="btn-link"/> -->
+                    <!-- </div> -->
+                    <!-- <div class="mt16"> -->
+                    <!-- <button name="%(action_ngo_residence_state)d" string="Residence State" type="action" icon="fa-arrow-right" class="btn-link"/> -->
+                    <!-- </div> -->
+
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- </div>				 -->
+
+                    <h2>Education Settings</h2>
+                    <div class="row mt16 o_settings_container" name="residence_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="education_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_education_institution_type)d"
+                                        string="Education Institution Types" type="action" icon="fa-arrow-right"
+                                        class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_education_institution)d" string="Education Institution"
+                                            type="action" icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_education_specialty)d" string="Education Specialty"
+                                            type="action" icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_education_level)d" string="Education Levels" type="action"
+                                        icon="fa-arrow-right" class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_education_class)d" string="Education Class" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Medical Settings</h2>
+                    <div class="row mt16 o_settings_container" name="medical_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="medical_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_illness_type)d" string="Illness Types" type="action"
+                                        icon="fa-arrow-right" class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_handicap_type)d" string="Handicap Types" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_medicine)d" string="Medicine" type="action"
+                                        icon="fa-arrow-right" class="btn-link"/>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>application class</h2>
+                    <div class="row mt16 o_settings_container" name="medical_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="medical_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_application_type_new)d" string="application class"
+                                        type="action" icon="fa-arrow-right" class="btn-link"/>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h2>Beneficiaries</h2>
+                    <div class="row mt16 o_settings_container" name="crm_timesheet">
+                        <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="expenses"/>
+                            </div>
+
+                            <div class="o_setting_right_pane" id="crm_timesheet_id">
+                                <label string="Expense" for="expenses"/>
+                                <div class="text-muted">
+                                    To Hide The Expense Page
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" name="crm_timesheet">
+                        <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="hide_benfeciary_size"/>
+                            </div>
+
+                            <div class="o_setting_right_pane" id="crm_timesheet_id">
+                                <label string="Size" for="hide_benfeciary_size"/>
+                                <div class="text-muted">
+                                    To Hide The Size Field
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Job Settings</h2>
+                    <div class="row mt16 o_settings_container" name="job_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="job_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_career)d" string="Career" type="action" icon="fa-arrow-right"
+                                        class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_job_title)d" string="Job Title" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="job_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <!-- <div class="mt16"> -->
+                                <button name="%(action_ngo_job_type)d" string="Job Type" type="action"
+                                        icon="fa-arrow-right" class="btn-link"/>
+                                <!-- </div> -->
+                                <div class="mt16">
+                                    <button name="%(action_ngo_job_state)d" string="Job State" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Miscelleneous Settings</h2>
+                    <div class="row mt16 o_settings_container" name="miscelleneous_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="miscelleneous_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_family_relationship)d" string="Family Relationship"
+                                        type="action" icon="fa-arrow-right" class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_doctrine)d" string="Doctrine" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_size)d" string="Size" type="action" icon="fa-arrow-right"
+                                            class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="miscelleneous_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_expense_category)d" string="Expense Category" type="action"
+                                        icon="fa-arrow-right" class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_income_type)d" string="Income Type" type="action"
+                                            icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Beneficiary Application Settings</h2>
+                    <div class="row mt16 o_settings_container" name="application_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="application_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_application_docs)d" string="Application Documents"
+                                        type="action" icon="fa-arrow-right" class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_application_type)d" string="Application Type"
+                                            type="action" icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="application_setting_2">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_application_decision_list)d" string="Decision List"
+                                        type="action" icon="fa-arrow-right" class="btn-link"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Association/Sponsor Settings</h2>
+                    <div class="row mt16 o_settings_container" name="other_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="other_setting">
+                            <div class="o_setting_left_pane"></div>
+                            <div class="o_setting_right_pane">
+                                <button name="%(action_ngo_sponsor_type)d" string="Sponsor Type" type="action"
+                                        icon="fa-arrow-right" class="btn-link"/>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_association_type)d" string="Association Type"
+                                            type="action" icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="%(action_ngo_association_specialty)d" string="Association Specialty"
+                                            type="action" icon="fa-arrow-right" class="btn-link"/>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- <div class="col-xs-12 col-md-6 o_setting_box" id="application_setting_2"> -->
+                        <!-- <div class="o_setting_left_pane"></div> -->
+                        <!-- <div class="o_setting_right_pane"> -->
+                        <!-- <button name="%(action_ngo_application_decision_list)d" string="Decision List" type="action" icon="fa-arrow-right" class="btn-link"/> -->
+                        <!-- </div> -->
+                        <!-- </div> -->
+                    </div>
+
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record id="view_account_config_settings" model="ir.ui.view"> -->
+    <!-- <field name="name">res.config.settings.view.inherit.res.partner</field> -->
+    <!-- <field name="model">res.config.settings</field> -->
+    <!-- <field name="inherit_id" ref="account.res_config_settings_view_form"/> -->
+    <!-- <field name="arch" type="xml"> -->
+    <!-- <xpath expr="//div[@id='invoicing_settings']" position="after"> -->
+    <!-- <h2>Customer Accounts</h2> -->
+    <!-- <div class="row mt16 o_settings_container" id="Accounts"> -->
+    <!-- <div class="col-xs-12 col-md-6 o_setting_box"> -->
+    <!-- <div class="o_setting_right_pane">		 -->
+    <!-- <div> -->
+    <!-- <label for='default_account_payable_id' /> -->
+    <!-- <field name="default_account_payable_id" required='0'/> -->
+    <!-- </div> -->
+    <!-- <div> -->
+    <!-- <label for='default_account_receivable_id'/> -->
+    <!-- <field name="default_account_receivable_id" required='0'/> -->
+    <!-- </div>					 -->
+    <!-- </div>			 -->
+    <!-- </div>	 -->
+    <!-- </div> -->
+    <!-- </xpath> -->
+    <!-- </field> -->
+    <!-- </record> -->
+    <record id="ngo_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'ngo_edm'}</field>
+    </record>
 
 </odoo>

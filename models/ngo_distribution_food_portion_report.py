@@ -9,12 +9,13 @@ import openerp
 import json
 import logging
 import random
-		
+
+
 class ngo_distribution_food_portion_report_model(models.TransientModel):
     _name = 'ngo_edm.ngo.distribution.food.portion.report.model'
     # distribution_id = fields.Many2one('ngo.distribution',string=_('Distribution'))
     # application_id = fields.Many2one('ngo.beneficiary.application',string=_('Application'))
-    distribution_id =  fields.Integer()
+    distribution_id = fields.Integer()
     application_id = fields.Integer()
 
     def get_report(self):
@@ -27,10 +28,10 @@ class ngo_distribution_food_portion_report_model(models.TransientModel):
                 'application_id': self.application_id,
             },
         }
-        
+
         return self.env.ref('ngo_edm.distribution_food_portion_report').report_action(self, data=data)
-                 
-        
+
+
 class Report_ngo_distribution_food_portion(models.AbstractModel):
     """Abstract Model for report template.
     for `_name` model, please use `report.` as prefix then add `module_name.report_name`.
@@ -39,10 +40,10 @@ class Report_ngo_distribution_food_portion(models.AbstractModel):
     _name = 'report.ngo_edm.distribution_food_portion_report_view'
 
     def run_sql(self, qry, params):
-        self._cr.execute(qry,tuple(params))
+        self._cr.execute(qry, tuple(params))
         _res = self._cr.dictfetchall()
         return _res
-        
+
     @api.model
     def _get_report_values(self, docids, data=None):
         # report_obj = self.env['ir.actions.report']
@@ -56,7 +57,7 @@ class Report_ngo_distribution_food_portion(models.AbstractModel):
             distribution_id
         ]
 
-        sql =  """select C.id application_id, A.name distribution_name,
+        sql = """select C.id application_id, A.name distribution_name,
                     F.name first_beneficiary, S.name second_beneficiary, dc.name decision
                     from public.ngo_distribution A 
                     inner join public.ngo_distribution_line B  on  A.id= B.distribution_id
@@ -68,7 +69,7 @@ class Report_ngo_distribution_food_portion(models.AbstractModel):
                     where C.id = %s and A.id = %s
                     """
         docs = []
-        applicationfordistribute = self.run_sql(sql,  params)
+        applicationfordistribute = self.run_sql(sql, params)
         # return {
         #     'doc_ids': docids,
         #     'doc_model': report.model,

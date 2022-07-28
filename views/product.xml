@@ -14,7 +14,7 @@
         <field name="arch" type="xml">
             <filter name="filter_to_sell" position="after">
                 <filter name="filter_donation" string="Donation"
-                    domain="[('donation', '=', True)]"/>
+                        domain="[('donation', '=', True)]"/>
             </filter>
         </field>
     </record>
@@ -23,7 +23,7 @@
         <field name="name">donation.product.template.form</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
-        <field name="arch"  type="xml">
+        <field name="arch" type="xml">
             <div name="options" position="inside">
                 <div name="donation">
                     <field name="donation"/>
@@ -31,9 +31,9 @@
                 </div>
                 <div name="in_kind_donation">
                     <field name="in_kind_donation"
-                        attrs="{'invisible': [('donation', '=', False)]}"/>
+                           attrs="{'invisible': [('donation', '=', False)]}"/>
                     <label for="in_kind_donation"
-                        attrs="{'invisible': [('donation', '=', False)]}"/>
+                           attrs="{'invisible': [('donation', '=', False)]}"/>
                 </div>
             </div>
         </field>

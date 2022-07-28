@@ -1,183 +1,194 @@
 <!-- Copyright 2017 Navybits 
     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
-  <data>
-    <record id="create_guide_form_view" model="ir.ui.view">
-      <field name="name">guide.form</field>
-      <field name="model">ngo.guide</field>
-      <field name="arch" type="xml">
-        <form string="guide form">
-          <sheet>
-            <div name="button_box" class="oe_button_box" >
-                <button name="%(guide_beneficiary_action)d" 
-						type="action"
-						icon="fa-bars"						
-                        string="Beneficiaries"
-						id="guide_beneficiary_list_button"
-                        class="oe_stat_button">
-                </button>
-            </div>
-            <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-            <field name="image_1920" widget='image' class="oe_avatar" options='{"zoom": true,"preview_image":"image_128"}'/>
-            <div class="oe_title">
-                <h1>
-                    <field name="name" placeholder="Guide Name" required="True"/>
-                </h1>
-                <!-- <h2> -->
-                    <!-- <field name="sponsor_type_id" placeholder="Sponsor Type" /> -->
-                <!-- </h2> -->
-            </div>
+    <data>
+        <record id="create_guide_form_view" model="ir.ui.view">
+            <field name="name">guide.form</field>
+            <field name="model">ngo.guide</field>
+            <field name="arch" type="xml">
+                <form string="guide form">
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button name="%(guide_beneficiary_action)d"
+                                    type="action"
+                                    icon="fa-bars"
+                                    string="Beneficiaries"
+                                    id="guide_beneficiary_list_button"
+                                    class="oe_stat_button">
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" text="Archived" bg_color="bg-danger"
+                                attrs="{'invisible': [('active', '=', True)]}"/>
+                        <field name="image_1920" widget='image' class="oe_avatar"
+                               options='{"zoom": true,"preview_image":"image_128"}'/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Guide Name" required="True"/>
+                            </h1>
+                            <!-- <h2> -->
+                            <!-- <field name="sponsor_type_id" placeholder="Sponsor Type" /> -->
+                            <!-- </h2> -->
+                        </div>
 
-            <group>
-              <group>
-                <field name="code"/>
-                <field name="active"/>
-                <field name="phone"/>
-                <field name="mobile"/>
-                <field name="fax"/>
-                <field name="email" widget="email" context="{'gravatar_image': True}"/>
-                <field name="website" widget="url" placeholder="e.g. https://www.edm.com.lb"/>
-                <field name="partner_id" eval="False"/>
-                <field name="notes"/>
-              </group>
-              <group>
-                <label for="street" string="Home Address"/>
-                <div class="o_address_format">
-                    <field name="street" placeholder="Street..." class="o_address_street"/>
-                    <field name="near" placeholder="Near..." class="o_address_street"/>
-                    <field name="city" placeholder="City" class="o_address_city"/>
-                    <field name="region" class="o_address_state" placeholder="Area" options='{"no_open": True}'/>
-                    <field name="building" placeholder="Building" class="o_address_zip"/>
-                    <field name="floor" placeholder="Floor" class="o_address_zip"/>
-                    <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
-                </div>
-              </group>
-            </group>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="active"/>
+                                <field name="phone"/>
+                                <field name="mobile"/>
+                                <field name="fax"/>
+                                <field name="email" widget="email" context="{'gravatar_image': True}"/>
+                                <field name="website" widget="url" placeholder="e.g. https://www.edm.com.lb"/>
+                                <field name="partner_id" eval="False"/>
+                                <field name="notes"/>
+                            </group>
+                            <group>
+                                <label for="street" string="Home Address"/>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="near" placeholder="Near..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="region" class="o_address_state" placeholder="Area"
+                                           options='{"no_open": True}'/>
+                                    <field name="building" placeholder="Building" class="o_address_zip"/>
+                                    <field name="floor" placeholder="Floor" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options='{"no_open": True, "no_create": True}'/>
+                                </div>
+                            </group>
+                        </group>
 
 
-            <!-- <notebook> -->
-              <!-- <page string="Beneficiaries"> -->
-                <!-- <group> -->
-                  <!-- <field name="beneficiary_ids"/> -->
-                <!-- </group> -->
-              <!-- </page> -->
-              <!-- <page string="Notes"> -->
-                <!-- <group> -->
-                  <!-- <field name="notes"/> -->
-                <!-- </group> -->
-              <!-- </page> -->
-            <!-- </notebook> -->
-          </sheet>
-        </form>
-      </field>
-    </record>
-    <!-- override the automatically generated list view for courses -->
-    <record id="guide_tree_view" model="ir.ui.view">
-      <field name="name">guide.tree</field>
-      <field name="model">ngo.guide</field>
-      <field name="arch" type="xml">
-        <tree string="guide Tree" >
-          <field name="code"/>
-          <field name="name"/>
-          <field name="phone"/>
-          <field name="mobile"/>
-          <field name="email"/>
-          <field name="active" optional="hide"/>
-          <field name="street" optional="hide"/>
-          <field name="region" optional="hide"/>
-          <field name="city" optional="hide"/>
-          <!-- <field name="address"/> -->
-          <!-- <field name="job"/> -->
-        </tree>
-      </field>
-    </record>
-	
-    <record id="view_guide_search" model="ir.ui.view">
-        <field name="name">ngo.guide.search</field>
-        <field name="model">ngo.guide</field>
-        <field name="arch" type="xml">
-            <search string="Guides">
-                <field name="name" filter_domain="['|', ('name','ilike',self), ('code','=like',str(self)+'%')]" string="Guide"/>
-                <filter string="Archived" name="inactiveguidefltr" domain="[('active','=',False)]"/>
-                <!-- <filter string="City" name="city" domain="[('internal_type','=','payable')]"/> -->
-                <!-- <filter string="Equity" name="equityacc" domain="[('internal_group','=', 'equity')]"/> -->
-                <!-- <filter string="Assets" name="assetsacc" domain="[('internal_group','=', 'asset')]"/> -->
-                <!-- <filter string="Liability" name="liabilityacc" domain="[('internal_group','=', 'liability')]"/> -->
-                <!-- <filter string="Income" name="incomeacc" domain="[('internal_group','=', 'income')]"/> -->
-                <!-- <filter string="Expenses" name="expensesacc" domain="[('internal_group','=', 'expense')]"/> -->
-                <!-- <separator/> -->
-                <!-- <filter string="Account with Entries" name="used" domain="[('used', '=', True)]"/> -->
-                <!-- <separator/> -->
-                <!-- <field name="user_type_id"/> -->
-                <group expand="0" string="Group By">
-                    <!-- <filter string="Active Guide" name="activeguidegrp" domain="" context="{'group_by':'active'}"/> -->
-                    <filter string="City" name="cityguidegrp" domain="" context="{'group_by':'city'}"/>
-                    <filter string="Region" name="regionguidegrp" domain="" context="{'group_by':'region'}"/>
-
-                </group>
-                <!-- <searchpanel class="account_root"> -->
-                    <!-- <field name="root_id" icon="fa-filter"/> -->
-                <!-- </searchpanel> -->
-            </search>
-        </field>
-    </record>
-
-        <record id="ngo_kanban_view_guides" model="ir.ui.view">
-           <field name="name">ngo.guide.kanban</field>
-           <field name="model">ngo.guide</field>
-           <field name="priority">10</field>
-           <field name="arch" type="xml">
-               <kanban class="o_hr_employee_kanban">
-                   <field name="id"/>
-                   <field name="active"/>
-                   <templates>
-                       <t t-name="kanban-box">
-                       <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
-                           <field name="image_128" widget="image" class="o_kanban_image_fill_left o_hr_rounded_circle" options="{'zoom': true, 'background': true, 'preventClicks': false}"/>
-
-                            <div class="oe_kanban_details">
-                               <div class="o_kanban_record_top">
-                                   <div class="o_kanban_record_headings">
-                                       <strong class="o_kanban_record_title">
-                                            <!-- <div class="float-right" t-if="record.active.raw_value == 'True'"> -->
-                                                <!-- <span class="fa fa-circle text-success" role="img" aria-label="Active" title="Active" name="active_state"></span> -->
-                                            <!-- </div> -->
-                                            <!-- <div class="float-right" t-if="record.active.raw_value == 'False'"> -->
-                                                <!-- <span class="fa fa-circle text-danger" role="img" aria-label="Archived" title="Archived" name="archived_state"></span> -->
-                                            <!-- </div> -->
-                                            <!-- <div class="float-right" t-if="record.hr_presence_state.raw_value == 'to_define'"> -->
-                                                <!-- <span class="fa fa-circle text-warning" role="img" aria-label="To define" title="To define" name="presence_to_define"></span> -->
-                                            <!-- </div> -->
-                                            <field name="name" placeholder="Employee's Name"/>
-                                            <field name="code" placeholder="Employee's Code"/>
-
-                                       </strong>
-                                       <!-- <span t-if="record.job_title.raw_value" class="o_kanban_record_subtitle"><field name="job_title"/></span> -->
-                                   </div>
-                               </div>
-                               <!-- <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="hr.group_hr_manager"/> -->
-                               <ul>
-                                   <!-- <li id="last_login"/> -->
-                                   <li t-if="record.email.raw_value" class="o_text_overflow"><field name="email" /></li>
-                                   <li t-if="record.mobile.raw_value"><field name="mobile" /></li>
-                               </ul>
-                           </div>
-                       </div>
-                       </t>
-                   </templates>
-               </kanban>
+                        <!-- <notebook> -->
+                        <!-- <page string="Beneficiaries"> -->
+                        <!-- <group> -->
+                        <!-- <field name="beneficiary_ids"/> -->
+                        <!-- </group> -->
+                        <!-- </page> -->
+                        <!-- <page string="Notes"> -->
+                        <!-- <group> -->
+                        <!-- <field name="notes"/> -->
+                        <!-- </group> -->
+                        <!-- </page> -->
+                        <!-- </notebook> -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- override the automatically generated list view for courses -->
+        <record id="guide_tree_view" model="ir.ui.view">
+            <field name="name">guide.tree</field>
+            <field name="model">ngo.guide</field>
+            <field name="arch" type="xml">
+                <tree string="guide Tree">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="phone"/>
+                    <field name="mobile"/>
+                    <field name="email"/>
+                    <field name="active" optional="hide"/>
+                    <field name="street" optional="hide"/>
+                    <field name="region" optional="hide"/>
+                    <field name="city" optional="hide"/>
+                    <!-- <field name="address"/> -->
+                    <!-- <field name="job"/> -->
+                </tree>
             </field>
         </record>
 
-    <record id="guide_list_action" model="ir.actions.act_window">
-        <field name="name">Guide List</field>
-        <field name="res_model">ngo.guide</field>
-        <field name="search_view_id" ref="view_guide_search"/>
-        <field name="view_id" ref="guide_tree_view"/>
-        <!-- <field name="view_type">form</field> -->
-        <field name="view_mode">tree,kanban,form</field>
-    </record>
+        <record id="view_guide_search" model="ir.ui.view">
+            <field name="name">ngo.guide.search</field>
+            <field name="model">ngo.guide</field>
+            <field name="arch" type="xml">
+                <search string="Guides">
+                    <field name="name" filter_domain="['|', ('name','ilike',self), ('code','=like',str(self)+'%')]"
+                           string="Guide"/>
+                    <filter string="Archived" name="inactiveguidefltr" domain="[('active','=',False)]"/>
+                    <!-- <filter string="City" name="city" domain="[('internal_type','=','payable')]"/> -->
+                    <!-- <filter string="Equity" name="equityacc" domain="[('internal_group','=', 'equity')]"/> -->
+                    <!-- <filter string="Assets" name="assetsacc" domain="[('internal_group','=', 'asset')]"/> -->
+                    <!-- <filter string="Liability" name="liabilityacc" domain="[('internal_group','=', 'liability')]"/> -->
+                    <!-- <filter string="Income" name="incomeacc" domain="[('internal_group','=', 'income')]"/> -->
+                    <!-- <filter string="Expenses" name="expensesacc" domain="[('internal_group','=', 'expense')]"/> -->
+                    <!-- <separator/> -->
+                    <!-- <filter string="Account with Entries" name="used" domain="[('used', '=', True)]"/> -->
+                    <!-- <separator/> -->
+                    <!-- <field name="user_type_id"/> -->
+                    <group expand="0" string="Group By">
+                        <!-- <filter string="Active Guide" name="activeguidegrp" domain="" context="{'group_by':'active'}"/> -->
+                        <filter string="City" name="cityguidegrp" domain="" context="{'group_by':'city'}"/>
+                        <filter string="Region" name="regionguidegrp" domain="" context="{'group_by':'region'}"/>
+
+                    </group>
+                    <!-- <searchpanel class="account_root"> -->
+                    <!-- <field name="root_id" icon="fa-filter"/> -->
+                    <!-- </searchpanel> -->
+                </search>
+            </field>
+        </record>
+
+        <record id="ngo_kanban_view_guides" model="ir.ui.view">
+            <field name="name">ngo.guide.kanban</field>
+            <field name="model">ngo.guide</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban">
+                    <field name="id"/>
+                    <field name="active"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                                <field name="image_128" widget="image"
+                                       class="o_kanban_image_fill_left o_hr_rounded_circle"
+                                       options="{'zoom': true, 'background': true, 'preventClicks': false}"/>
+
+                                <div class="oe_kanban_details">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <!-- <div class="float-right" t-if="record.active.raw_value == 'True'"> -->
+                                                <!-- <span class="fa fa-circle text-success" role="img" aria-label="Active" title="Active" name="active_state"></span> -->
+                                                <!-- </div> -->
+                                                <!-- <div class="float-right" t-if="record.active.raw_value == 'False'"> -->
+                                                <!-- <span class="fa fa-circle text-danger" role="img" aria-label="Archived" title="Archived" name="archived_state"></span> -->
+                                                <!-- </div> -->
+                                                <!-- <div class="float-right" t-if="record.hr_presence_state.raw_value == 'to_define'"> -->
+                                                <!-- <span class="fa fa-circle text-warning" role="img" aria-label="To define" title="To define" name="presence_to_define"></span> -->
+                                                <!-- </div> -->
+                                                <field name="name" placeholder="Employee's Name"/>
+                                                <field name="code" placeholder="Employee's Code"/>
+
+                                            </strong>
+                                            <!-- <span t-if="record.job_title.raw_value" class="o_kanban_record_subtitle"><field name="job_title"/></span> -->
+                                        </div>
+                                    </div>
+                                    <!-- <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="hr.group_hr_manager"/> -->
+                                    <ul>
+                                        <!-- <li id="last_login"/> -->
+                                        <li t-if="record.email.raw_value" class="o_text_overflow">
+                                            <field name="email"/>
+                                        </li>
+                                        <li t-if="record.mobile.raw_value">
+                                            <field name="mobile"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="guide_list_action" model="ir.actions.act_window">
+            <field name="name">Guide List</field>
+            <field name="res_model">ngo.guide</field>
+            <field name="search_view_id" ref="view_guide_search"/>
+            <field name="view_id" ref="guide_tree_view"/>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
 
 
-  </data>
+    </data>
 </odoo>

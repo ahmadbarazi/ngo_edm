@@ -19,10 +19,11 @@
 ##############################################################################
 from odoo import fields, models, api, exceptions, _
 
+
 class SponsorType(models.Model):
     _name = "ngo.sponsor.type"
-    _description= "Sponsor Type"
-    name = fields.Char(string = _("Sponsor Type"))
+    _description = "Sponsor Type"
+    name = fields.Char(string=_("Sponsor Type"))
     _sql_constraints = [('sponsor_type_unique', 'unique (name)', _('Sponsor Type must be unique!'))]
 
 
@@ -31,13 +32,14 @@ class sponsor(models.Model):
 
     @api.model
     def _get_default_code(self):
-        sequence = self.env['ir.sequence'].search([('code','=','ngo.sponsor')])
-        next= sequence.get_next_char(sequence.number_next_actual)
+        sequence = self.env['ir.sequence'].search([('code', '=', 'ngo.sponsor')])
+        next = sequence.get_next_char(sequence.number_next_actual)
         return next
 
     name = fields.Char(string=_(u"Name"))
-    code = fields.Char(string=_(u"Code"), required=True, default=_get_default_code, track_visibility='onchange', copy=False, readonly=True)
-    sponsor_type_id = fields.Many2one('ngo.sponsor.type',string=_("Type"))
+    code = fields.Char(string=_(u"Code"), required=True, default=_get_default_code, track_visibility='onchange',
+                       copy=False, readonly=True)
+    sponsor_type_id = fields.Many2one('ngo.sponsor.type', string=_("Type"))
     active = fields.Boolean(string=_(u"Active"), default=True)
     phone = fields.Char()
     mobile = fields.Char()
@@ -48,9 +50,9 @@ class sponsor(models.Model):
     is_orphan_sponsor = fields.Boolean(string=_(u"Orphan Sponsor"), default=False)
     is_student_sponsor = fields.Boolean(string=_(u"Student Sponsor"), default=False)
 
-    country_id = fields.Many2one('res.country',string=_(u"Country"))
-    city = fields.Many2one('ngo.city',string=_(u"City"))
-    region = fields.Many2one('ngo.region',string=_(u"Region"))
+    country_id = fields.Many2one('res.country', string=_(u"Country"))
+    city = fields.Many2one('ngo.city', string=_(u"City"))
+    region = fields.Many2one('ngo.region', string=_(u"Region"))
     street = fields.Char(string=_(u"Street"))
     near = fields.Char(string=_(u"Near"))
     beside = fields.Char(string=_(u"Beside"))
@@ -59,9 +61,9 @@ class sponsor(models.Model):
     building = fields.Char(string=_(u"Building"))
     floor = fields.Char(string=_(u"Floor #"))
 
-    work_country_id = fields.Many2one('res.country',string=_(u"Country"))
-    work_city = fields.Many2one('ngo.city',string=_(u"City"))
-    work_region = fields.Many2one('ngo.region',string=_(u"Region"))
+    work_country_id = fields.Many2one('res.country', string=_(u"Country"))
+    work_city = fields.Many2one('ngo.city', string=_(u"City"))
+    work_region = fields.Many2one('ngo.region', string=_(u"Region"))
     work_street = fields.Char(string=_(u"Street"))
     work_near = fields.Char(string=_(u"Near"))
     work_building = fields.Char(string=_(u"Building"))
@@ -69,25 +71,26 @@ class sponsor(models.Model):
 
     notes = fields.Text(string=_(u"Notes"))
     ##### BEGIN BENEFICIARY DETAILS #####
-    beneficiary_ids = fields.Many2many('ngo.beneficiary',string=_(u"Beneficiaries"))
+    beneficiary_ids = fields.Many2many('ngo.beneficiary', string=_(u"Beneficiaries"))
 
     ### The link to the partner associated with
     ### It may benefit us in some way, i guess ?
-    partner_id = fields.Many2one('res.partner',string=_(u"Partner id"))
+    partner_id = fields.Many2one('res.partner', string=_(u"Partner id"))
+
     ##### BEGIN BENEFICIARY DETAILS #####
 
     @api.model
-    def create(self,vals):
-        partnervals=[]
+    def create(self, vals):
+        partnervals = []
         ### Create sponsor
         vals['code'] = self.env['ir.sequence'].next_by_code('ngo.sponsor')
 
-        sp = super(sponsor,self).create(vals)
+        sp = super(sponsor, self).create(vals)
 
         # partnervals['is_sponsor']=True
 
         partner_id = self.env['res.partner'].create(partnervals)
-        partner_id.is_sponsor= True
+        partner_id.is_sponsor = True
         sp.partner_id = partner_id.id
 
         return sp

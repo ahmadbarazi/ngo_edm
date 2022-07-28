@@ -17,12 +17,12 @@
     <record id="view_partner_form" model="ir.ui.view">
         <field name="name">distribution.button.res.partner.form</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button class="oe_stat_button" type="action"
-                    name="%(ngo_edm_2.partner_distribution_action)d"
-                    icon="fa-heart-o">
+                        name="%(ngo_edm.partner_distribution_action)d"
+                        icon="fa-heart-o">
                     <field string="Distributions" name="distribution_count" widget="statinfo"/>
                 </button>
             </xpath>

@@ -1,4 +1,3 @@
-
 import logging
 from contextlib import closing
 from io import StringIO
@@ -16,20 +15,23 @@ class ngo_distribution_receiving(models.TransientModel):
     _description = "Distributions Receiving"
 
     barcode = fields.Char(string=_(u"Bon Barcode"), size=18, )
-    barcode_scan =  fields.Boolean(string=_(u"Scan Barcode"))
-    distribution_line_id = fields.Many2one('ngo.distribution.line',string=_(u"Distribution Line"), required=False)
-    application_code = fields.Char(related='distribution_line_id.application_id.code',string=_(u"Application Code"), store=True, readonly=True)
-    application_name = fields.Char(related='distribution_line_id.application_id.name',string=_(u"Application name"), store=True, readonly=True)
-    distribution_name = fields.Char(related='distribution_line_id.distribution_id.name',string=_(u"distribution name"), store=True, readonly=True)
-    receipt_date =   fields.Datetime(related='distribution_line_id.receipt_date',string=_(u"distribution name"), store=True, readonly=True)
-    state =    fields.Selection (related='distribution_line_id.state',string=_(u"state"), store=True, readonly=True)
+    barcode_scan = fields.Boolean(string=_(u"Scan Barcode"))
+    distribution_line_id = fields.Many2one('ngo.distribution.line', string=_(u"Distribution Line"), required=False)
+    application_code = fields.Char(related='distribution_line_id.application_id.code', string=_(u"Application Code"),
+                                   store=True, readonly=True)
+    application_name = fields.Char(related='distribution_line_id.application_id.name', string=_(u"Application name"),
+                                   store=True, readonly=True)
+    distribution_name = fields.Char(related='distribution_line_id.distribution_id.name', string=_(u"distribution name"),
+                                    store=True, readonly=True)
+    receipt_date = fields.Datetime(related='distribution_line_id.receipt_date', string=_(u"distribution name"),
+                                   store=True, readonly=True)
+    state = fields.Selection(related='distribution_line_id.state', string=_(u"state"), store=True, readonly=True)
     duration = fields.Integer(compute='_duration_tellnow')
-    beneficiary_ids = fields.One2many('ngo.beneficiary',compute="_compute_beneficiary_ids" )
+    beneficiary_ids = fields.One2many('ngo.beneficiary', compute="_compute_beneficiary_ids")
 
     def _compute_beneficiary_ids(self):
         # You need to search the IDs of the drivers
         self.beneficiary_ids = self.distribution_line_id.application_id.beneficiary_ids
-
 
     # distributionline_ids = fields.One2many(
     #     "ngo.distribution.receiving.line",
@@ -44,31 +46,27 @@ class ngo_distribution_receiving(models.TransientModel):
     #         if len(self.barcode) > 18:
     #             raise ValidationError('Number of characters must not exceed 18')
 
-
-
     @api.depends('receipt_date')
     def _duration_tellnow(self):
         if self.receipt_date:
-            self.duration =  int((datetime.now()- self.receipt_date).seconds/60)
+            self.duration = int((datetime.now() - self.receipt_date).seconds / 60)
         else:
             self.duration = 0
 
     @api.onchange('barcode')
-    def _barcode_changed(self):    
+    def _barcode_changed(self):
         self.find_distribution()
-
 
     # @api.onchange('barcode_scan')
     # def _barcode_scan_changed(self):    
     #     if self.barcode_scan ==False:
     #        self.barcode_scan ==True
- 
 
     def find_distribution(self):
         """Load distribution line templates to create/update."""
-        DATE_FORMAT = "%Y-%m-%d "        
+        DATE_FORMAT = "%Y-%m-%d "
         if self.barcode:
-            if self.barcode != "": 
+            if self.barcode != "":
                 distributionlines = self.env["ngo.distribution.line"].search([("order_code", "=", self.barcode)])
                 if distributionlines:
                     for distributionline in distributionlines:
@@ -77,7 +75,7 @@ class ngo_distribution_receiving(models.TransientModel):
                             distributionline.state = "delivered"
                         self.distribution_line_id = distributionline.id
                         self.beneficiary_ids = self.distribution_line_id.application_id.beneficiary_ids
-       
+
     # @api.model
     # def _get_lang_selection_options(self):
     #     """Gets the available languages for the selection."""
@@ -116,11 +114,6 @@ class ngo_distribution_receiving(models.TransientModel):
     #     self.state = "ready"
     #     return self._reopen()
 
-
-
-
-
- 
 # class ngo_distribution_receiving_line(models.TransientModel):
 #     _name = "ngo.distribution.receiving.line"
 #     _description = (
