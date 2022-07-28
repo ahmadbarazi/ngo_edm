@@ -160,7 +160,8 @@ class NgoApplicationDocument(models.Model):
     document_name = fields.Many2one('ngo.document.list', string=_(u"Document"), required=True)
     description = fields.Text(string=_(u"Description"), copy=False)
     expiry_date = fields.Date(string=_(u"Expiry Date"), copy=False)
-    application_id = fields.Many2one('ngo.beneficiary.application', string=_(u"Application"))
+    application_id = fields.Many2one('ngo.beneficiary.application', string=_(u"Application")
+                                    , index=True,auto_join=True)
     beneficiary_id = fields.Many2one('ngo.beneficiary', invisible=1, copy=False)
     doc_attachment_id = fields.Binary(string=_(u"Attachment"), attachment=True)
     doc_name = fields.Char(_(u"Attachment Name"))
@@ -228,7 +229,7 @@ class NgoApplication(models.Model):
     def document_view(self):
         self.ensure_one()
         domain = [
-            ('application_id', '=', self.id)]
+            ('application_id', '=', self.id )]
         return {
             'name': _('Documents'),
             'domain': domain,
@@ -241,7 +242,7 @@ class NgoApplication(models.Model):
                            Click to Create for New Documents
                         </p>'''),
             'limit': 80,
-            'context': "{'default_application_id': '%s'}" % self.id
+            'context': {'default_application_id': self.id}
         }
 
     document_ids = fields.One2many('ngo.beneficiary.document', 'application_id', string=_(u"Documents"))
