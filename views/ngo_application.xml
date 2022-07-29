@@ -180,7 +180,7 @@
                                 <field name="beneficiary_ids"
                                        context="{'default_application_id': active_id , 'form_view_ref': 'ngo_edm.create_beneficiary_form_view'}">
 
-                                    <tree editable="bottom">
+                                    <tree editable="bottom" class="custom_class_tree">
                                         <field name="id"/>
                                         <field name="code"/>
                                         <field name="first_name"/>

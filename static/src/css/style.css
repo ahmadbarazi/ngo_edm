@@ -1,0 +1,16 @@
+.table-responsive .table{
+    table-layout: auto !important;
+}
+
+.table-responsive th{
+    min-width: 150px !important;
+    width: fit-content !important;
+}
+.table-responsive th:last-child{
+    min-width: fit-content !important;
+    width: fit-content !important;
+}
+.table-responsive th:first-child{
+    min-width: fit-content !important;
+    width: fit-content !important;
+}

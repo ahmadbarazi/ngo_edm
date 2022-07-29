@@ -36,10 +36,11 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','mail','resource'],
+    'depends': ['base', 'account', 'mail', 'resource', 'web'],
 
     # always loaded
     'data': [
+        # 'views/template.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
         # 'views/views.xml',
@@ -75,13 +76,18 @@
         'views/ngo_menu.xml',
         'views/ngo_standard.xml',
         'views/ngo_standard_report_template_view.xml',
-        'wizard/ngo_standard_report_view.xml'
+        'wizard/ngo_standard_report_view.xml',
+
         # # 'views/donation_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         # 'demo/demo.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'ngo_edm/static/src/css/style.css']
+    },
     'application': True,
     'installable': True,
     'auto_install': False,
