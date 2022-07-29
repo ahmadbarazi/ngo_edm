@@ -180,21 +180,22 @@
                                 <field name="beneficiary_ids"
                                        context="{'default_application_id': active_id , 'form_view_ref': 'ngo_edm.create_beneficiary_form_view'}">
 
-                                    <tree editable="bottom" class="custom_class_tree">
-                                        <field name="id"/>
-                                        <field name="code"/>
+                                    <tree editable="1">
+<!--                                        <field name="id"/>-->
+                                        <button name="action_open_contract_form" type="object" icon="fa-external-link"/>
+                                        <field name="code" />
                                         <field name="first_name"/>
-                                        <field name="family_name"/>
-                                        <field name="last_name"/>
                                         <field name="father_name"/>
+                                        <field name="family_name"/>
+                                        <field name="last_name" invisible="1"/>
                                         <field name="mother_name"/>
-                                        <field name="name"/>
+                                        <field name="name" invisible="1"/>
                                         <field name="mobile"/>
                                         <field name="identity_no"/>
-                                        <field name="first_beneficiary_name"/>
-                                        <field name="second_beneficiary_name"/>
-                                        <field name="registration_number"/>
                                         <field name="registration_place"/>
+                                        <field name="registration_number"/>
+                                        <field name="is_first_beneficiary"/>
+                                        <field name="is_second_beneficiary"/>
                                         <field name="guide_id"/>
                                         <field name="partner_id"/>
                                     </tree>

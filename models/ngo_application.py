@@ -144,6 +144,7 @@ class BeneficiaryApplication(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Beneficiary Application"
 
+
     @api.model
     def _get_default_application_name(self):
         for application in self:

@@ -63,6 +63,17 @@ class Beneficiary(models.Model):
     _description = "Beneficiary"
     _inherit = ['mail.thread', 'mail.activity.mixin', 'resource.mixin', 'image.mixin']
 
+
+    def action_open_contract_form(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "ngo.beneficiary",
+            "views": [[False, "form"]],
+            "res_id": self.id,
+        }
+
+
     @api.model
     def _default_image(self):
         image_path = get_module_resource('ngo_edm', 'static/src/img', 'default_image.png')
@@ -127,10 +138,6 @@ class Beneficiary(models.Model):
     is_second_beneficiary = fields.Boolean(String=_(u"Second Beneficiary"), default=False)
     detail = fields.Selection(string=_(u"Type"), selection=[('0', 'عائلة'), ('1', 'فرد')], required=True, default='1')
     image_1920 = fields.Image(default=_default_image)
-
-    # ahmad
-    first_beneficiary_name = fields.Char(string=_(u"First Beneficiary Name"))
-    second_beneficiary_name = fields.Char(string=_(u"Second Beneficiary Name"))
 
     ##### END PERSONAL DETAILS #####
 
