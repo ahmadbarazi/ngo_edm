@@ -88,20 +88,17 @@
 
                             </div>
                             <field name="last_name" invisible="1"/>
-                            <field name="detail" invisible="1" options="{'horizontal': true}" widget="radio"
-                                   attrs="{'readonly': [('id', '>', 0)]}" placeholder="Beneficiary Type"/>
-                            <label for="is_first_beneficiary" string="المستفيد الأول"
-                                   attrs="{'invisible': [('is_second_beneficiary','=', True)]}"/>
-                            <div class="o_address_format" attrs="{'invisible': [('is_responsible','=', True)]}">
-                                <field name="is_first_beneficiary"
-                                       attrs="{'invisible': [('is_second_beneficiary','=', True)]}"/>
-                                <span class="o_form_label" style="width: 30% !important"></span>
-                                <label for="is_second_beneficiary" string="المستفيد الثاني"
-                                       attrs="{'invisible': [('is_first_beneficiary','=', True)]}"
-                                       style="font-weight:bold;"/>
-                                <field name="is_second_beneficiary"
-                                       attrs="{'invisible': [('is_first_beneficiary','=', True)]}"/>
-                            </div>
+                            <field name="detail" invisible="1" options="{'horizontal': true}" widget="radio" attrs="{'readonly': [('id', '>', 0)]}" placeholder="Beneficiary Type"/>
+<!--                            <label for="is_first_beneficiary" string="المستفيد الأول"-->
+<!--                                   attrs="{'invisible': [('is_second_beneficiary','=', True)]}"/>-->
+<!--                            <div class="o_address_format" attrs="{'invisible': [('is_responsible','=', True)]}">-->
+                                <field name="is_first_beneficiary" attrs="{'invisible': [('is_second_beneficiary','=', True)]}"/>
+<!--                                <span class="o_form_label" style="width: 30% !important"></span>-->
+<!--                                <label for="is_second_beneficiary" string="المستفيد الثاني"-->
+<!--                                       attrs="{'invisible': [('is_first_beneficiary','=', True)]}"-->
+<!--                                       style="font-weight:bold;"/>-->
+                                <field name="is_second_beneficiary" attrs="{'invisible': [('is_first_beneficiary','=', True)]}"/>
+<!--                            </div>-->
 
                             <field name="is_student"/>
                             <field name="has_handicap"/>
