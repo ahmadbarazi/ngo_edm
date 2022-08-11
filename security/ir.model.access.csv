@@ -74,3 +74,6 @@ access_report_ngo_edm_distribution_clothes_report_view,report.ngo_edm.distributi
 access_ngo_application_association,ngo.application.association,model_ngo_application_association,base.group_user,1,1,1,1
 access_ngo_report_standard_ledger,ngo.report.standard.ledger,model_ngo_report_standard_ledger,base.group_user,1,1,1,1
 access_ngo_application_type,ngo.application.class,model_ngo_application_class,base.group_user,1,1,1,1
+access_ngo_report_standard_ledger_line,ngo.report.standard.ledger.line,model_ngo_report_standard_ledger_line,base.group_user,1,1,1,1
+access_wizard_beneficiary_search,wizard_beneficiary_search,model_wizard_beneficiary_search,base.group_user,1,1,1,1
+access_wizard_beneficiary_search_line,wizard_beneficiary_search_line,model_wizard_beneficiary_search_line,base.group_user,1,1,1,1
