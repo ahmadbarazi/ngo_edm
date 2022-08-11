@@ -320,6 +320,13 @@
                                     </tree>
                                 </field>
                             </page>
+                            <page string="related distribution" name="related_distribution">
+                                <field name="distribution_ids">
+                                    <tree editable="0">
+                                        <field name="distribution_id"/>
+                                    </tree>
+                                </field>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
@@ -506,10 +513,15 @@
                            filter_domain="[('beneficiary_ids.name' , 'ilike' , self)]"/>
                     <field name="beneficiary_ids" string="mobile"
                            filter_domain="[('beneficiary_ids.mobile' , 'ilike' , self)]"/>
+
                     <field name="beneficiary_ids" string="code"
                            filter_domain="[('beneficiary_ids.code' , 'ilike' , self)]"/>
-                    <field name="application_type_id" string="application type"
-                           filter_domain="[('application_type_id.name' , 'ilike' , self)]"/>
+
+                    <field name="request_ids" string="Request"
+                           filter_domain="[('request_ids.asset_type' , 'ilike' , self)]"/>
+
+<!--                    <field name="application_type_id" string="application type"-->
+<!--                           filter_domain="[('application_type_id.name' , 'ilike' , self)]"/>-->
                     <!-- <separator/> -->
 
                     <filter string="Draft" name="draftfltr" domain="[('state', '=', 'draft')]"/>
