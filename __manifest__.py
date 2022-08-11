@@ -77,6 +77,7 @@
         'views/ngo_standard.xml',
         'views/ngo_standard_report_template_view.xml',
         'wizard/ngo_standard_report_view.xml',
+        'wizard/wizard_beneficiary_search_view.xml'
 
         # # 'views/donation_report.xml',
     ],
