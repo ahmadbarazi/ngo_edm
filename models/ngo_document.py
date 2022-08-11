@@ -195,7 +195,7 @@ class NgoBeneficiary(models.Model):
                            Click to Create for New Documents
                         </p>'''),
             'limit': 80,
-            'context': "{'default_beneficiary_id': '%s'}" % self.id
+            'context': {'default_application_id': self.id}
         }
 
     document_ids = fields.One2many('ngo.beneficiary.document', 'beneficiary_id', string=_(u"Documents"))
