@@ -228,8 +228,8 @@ class NgoDistribution(models.Model):
         compute_sudo=True
     )
 
-    code = fields.Char('Code', size=32, required=True, copy=False, default=_get_default_code)
-    name = fields.Char()
+    code = fields.Char('Code', size=32, required=True, copy=False, default='new')
+    name = fields.Char(default=_get_default_code)
     distribution_type_id = fields.Many2one(
         'ngo.distribution.type',
         string=_(u"Distribution Type"),
@@ -858,12 +858,9 @@ class NgoDistribution(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get('state', '') == 'draft':
-            sequence = self.env['ir.sequence'].search([('code', '=', 'ngo.distribution')])
-            if vals.get('state', '') == sequence.get_next_char(sequence.number_next_actual):
-                vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
-        # vals['name'] = 'Application ' + vals['code']
-        # str(sequence.number_next_actual)
+        sequence = self.env['ir.sequence'].search([('code', '=', 'ngo.distribution')])
+        sequence_code = 'ngo.distribution'
+        vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
         rec = super(NgoDistribution, self).create(vals)
         return rec
 
