@@ -100,7 +100,7 @@ class Beneficiary(models.Model):
     code = fields.Char(string=_(u"Code"), required=True, default=_get_default_code, track_visibility='onchange',
                        copy=False, readonly=True)
     first_name = fields.Char(string=_(u" First Name"), default='')
-    father_name = fields.Char(string=_(u"Father Name"), default='')
+    father_name = fields.Char(string=_(u"Father Name"))
     mother_name = fields.Char(string=_(u"Mother Name"))
     family_name = fields.Many2one(
         comodel_name='partner.family.name',
@@ -245,12 +245,16 @@ class Beneficiary(models.Model):
 
     @api.model
     def default_get(self, fields):
+        # father_name = self.application_id.father_name_computed
         expense_hide = self.env['ir.config_parameter'].sudo().get_param('ngo_edm.expenses')
         size_hide = self.env['ir.config_parameter'].sudo().get_param('ngo_edm.hide_benfeciary_size')
         res = super(Beneficiary, self).default_get(fields)
+        app_id = self.env['ngo.beneficiary'].search([('application_id', '=', self.env.context.get('default_application_id'))])
         res.update({
             'hide_benfeciary_expense': expense_hide,
-            'hide_size': size_hide
+            'hide_size': size_hide,
+            'father_name': app_id.application_id.father_name_computed.father_name,
+            'family_name': app_id.application_id.father_name_computed.family_name,
         })
         return res
 

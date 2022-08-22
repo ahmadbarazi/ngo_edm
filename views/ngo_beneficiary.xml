@@ -59,7 +59,7 @@
                         <group>
                             <field name="code"/>
                             <!-- <field name="parent_id" attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
-                            <field name="father_name" attrs="{'invisible': [('is_responsible','=', True)]}"/>
+                            <field name="father_name" readonly="0" attrs="{'invisible': [('is_responsible','=', True)]}"/>
                             <field name="mother_name" attrs="{'invisible': [('is_responsible','=', True)]}"/>
 
                             <field name="active" invisible="1"/>

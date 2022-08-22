@@ -145,16 +145,16 @@ class BeneficiaryApplication(models.Model):
     _description = "Beneficiary Application"
 
 
-    @api.model
-    def _get_default_application_name(self):
-        for application in self:
+    # @api.model
+    # def _get_default_application_name(self):
+    #     for application in self:
             # raise UserError(application.prefix)
-            sequence = self.env['ir.sequence'].search(
-                [('code', '=', 'ngo.beneficiary.application.') + self.prefix])
-            if sequence:
-                return 'استمارة ' + str(sequence.number_next_actual)
-            else:
-                return ''
+            # sequence = self.env['ir.sequence'].search(
+            #     [('code', '=', 'ngo.beneficiary.application.') + self.prefix])
+            # if sequence:
+            #     return 'استمارة ' + str(sequence.number_next_actual)
+            # else:
+            #     return ''
 
     # @api.model
     # def _get_default_code(self):
@@ -203,8 +203,9 @@ class BeneficiaryApplication(models.Model):
     currency_id = fields.Many2one('res.currency', string=_("Currency"))
     code = fields.Char('Code', size=32, required=True,
                        track_visibility='onchange', copy=False)
-    name = fields.Char('File Number', size=32, required=True,
-                       default=_get_default_application_name)
+
+    name = fields.Char(string=_("Application name"),related='first_beneficiary_id.name')
+
     application_type_id = fields.Many2one('ngo.application.type', string=_(
         u"Application Type"), default=_get_default_application_type)
     decision_id = fields.Many2one('ngo.application.decision.list', string=_(
@@ -241,8 +242,47 @@ class BeneficiaryApplication(models.Model):
     beneficiary_id = fields.Many2one('ngo.beneficiary', string=_(u"Beneficiary"))
     identity_no = fields.Char(string=_("Identity Number", related='beneficiary_id.identity_no'))
 
-    beneficiary_ids = fields.One2many(
-        'ngo.beneficiary', 'application_id', string=_(u"Application Members"))
+    beneficiary_ids = fields.One2many('ngo.beneficiary', 'application_id', string=_(u"Application Members"))
+
+    father_name_computed = fields.Many2one('ngo.beneficiary',store=True, compute='get_fathername')
+
+
+    @api.depends('beneficiary_ids')
+    def get_fathername(self):
+        for rec in self:
+            if len(rec.beneficiary_ids) > 0:
+                for line in rec.beneficiary_ids:
+                    rec.father_name_computed = line
+                    break
+            else:
+                rec.father_name_computed = False
+
+
+    #todo fix the infinite loop that is triggered when saving
+
+    # @api.onchange('beneficiary_ids')
+    # def onchange_bene(self):
+    #     sequence = self.env['ir.sequence'].search([('code', '=', 'ngo.beneficiary')])
+    #     next = sequence.get_next_char(sequence.number_next_actual)
+    #     for rec in self:
+    #         benefData = rec.beneficiary_ids
+    #         lines = []
+    #         vals = {
+    #             'code': next,
+    #             'last_name': benefData[0].last_name,
+    #             'father_name': benefData[0].father_name,
+    #             'mother_name': benefData[0].mother_name,
+    #         }
+    #         lines.append((0, 0, vals))
+    #         rec.beneficiary_ids = lines
+
+
+    # @api.depends('beneficiary_ids')
+    # def _get_nextvalue(self):
+    #     if len(self.beneficiary_ids) == 0:
+    #         return ''
+    #     else:
+    #         first_line = self.beneficiary_ids[0].last_name
 
     ##### BEGIN ADDRESS DETAILS #####
     country_id = fields.Many2one('res.country', string=_("Country"))
@@ -276,10 +316,51 @@ class BeneficiaryApplication(models.Model):
         'ngo.beneficiary.house.asset', 'application_id', string=_(u"House Assets"))
     property_ids = fields.One2many(
         'ngo.beneficiary.property', 'application_id', string=_(u"Family Property"))
+
+    #todo track the expense_ids using message_post
     expense_ids = fields.One2many(
         'ngo.beneficiary.expense', 'application_id', string=_(u"Expenses"))
     income_ids = fields.One2many(
         'ngo.beneficiary.income', 'application_id', string=_(u"Income"))
+
+    users_to_notify = fields.Many2many('res.users', string=_(u"Users to notify"))
+
+    #bug using write the function dont work
+    # using _write works but cant check if the "expense_ids" nor the expense_amount changing
+    # cant track it in this class since it is not writing in this class but in its parent class
+
+    # def write(self, vals):
+    #     res = super(BeneficiaryApplication, self).write(vals)
+    #     if 'expense_ids' in vals:
+    #         for record in self:
+    #             partner_ids = []
+    #             for rec in record.expense_ids:
+    #                 for val in record.users_to_notify:
+    #                     partner_ids.append(val.partner_id.id)
+    #                     value_name = dict()
+    #                 record.sudo().message_post(
+    #                     body=(_(f"the expense has been changed to {record.expense_ids.expense_amount}")),
+    #                     partner_ids=partner_ids,
+    #                     message_type='notification',
+    #                     subtype_xmlid="mail.mt_comment",)
+    #     return res
+
+    #bug using onchange works but getting error that i cant use message_post and i should
+    # use message_notify which dont work
+
+    # @api.onchange('expense_ids')
+    # def onchange_expence(self):
+    #     for record in self:
+    #         partner_ids = []
+    #         for rec in record.expense_ids:
+    #             for val in record.users_to_notify:
+    #                 partner_ids.append(val.partner_id.id)
+    #                 value_name = dict()
+    #             record.sudo().message_post(
+    #                 body=(_(f"the expense has been changed to {record.expense_ids.expense_amount}")),
+    #                 partner_ids=partner_ids,
+    #                 message_type='notification',
+    #                 subtype_xmlid="mail.mt_comment", )
 
     ##### END FAMILY DETAILS #####
     # file_no=fields.Char(string=_(u"File Number"))
@@ -857,6 +938,7 @@ class BeneficiaryProperty(models.Model):
 class BeneficiaryExpense(models.Model):
     _name = 'ngo.beneficiary.expense'
     _description = "Beneficiary Expense"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     application_id = fields.Many2one(
         'ngo.beneficiary.application', string=_(u"Beneficiary Application"))
@@ -866,7 +948,8 @@ class BeneficiaryExpense(models.Model):
         'ngo.expense.category', string=_("Expense Category"))
     expense_subcategory = fields.Many2one(
         'ngo.expense.category', string=_("Expense SubCategory"))
-    expense_amount = fields.Monetary(string=_("Expense Amount"), tracking=True, track_visibility='onchange')
+    #todo track the change of the expense ammount
+    expense_amount = fields.Float(string=_("Expense Amount"),track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', string=_("Currency"))
     active = fields.Boolean(string=_("Active"), default=True)
     stop_date = fields.Date(string=_("Stop Date"))
