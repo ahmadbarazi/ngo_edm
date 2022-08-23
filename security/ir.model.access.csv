@@ -77,3 +77,4 @@ access_ngo_application_type,ngo.application.class,model_ngo_application_class,ba
 access_ngo_report_standard_ledger_line,ngo.report.standard.ledger.line,model_ngo_report_standard_ledger_line,base.group_user,1,1,1,1
 access_wizard_beneficiary_search,wizard_beneficiary_search,model_wizard_beneficiary_search,base.group_user,1,1,1,1
 access_wizard_beneficiary_search_line,wizard_beneficiary_search_line,model_wizard_beneficiary_search_line,base.group_user,1,1,1,1
+access_application_class_type,application_class_type,model_application_class_type,base.group_user,1,1,1,1

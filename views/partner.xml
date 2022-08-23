@@ -29,4 +29,34 @@
         </field>
     </record>
 
+        <record id="res_users_view_form_inherit" model="ir.ui.view">
+            <field name="name">res_users_view_form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook/page[1]" position="after">
+                    <page string="NGO" name="ngo">
+                        <group>
+                            <field name="guide"/>
+                        </group>
+
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+<!--        <record id="res_users_view_form.inherit" model="ir.ui.view">-->
+<!--            <field name="name">res_users_view_form.inherit</field>-->
+<!--            <field name="model">res.users</field>-->
+<!--            <field name="inherit_id" ref="base.view_users_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="guide"/>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+
+
+
 </odoo>

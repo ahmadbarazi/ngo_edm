@@ -6,3 +6,9 @@ class ResConfigSettings(models.TransientModel):
 
     expenses = fields.Boolean("hide expenses", config_parameter='ngo_edm.expenses')
     hide_benfeciary_size = fields.Boolean("hide size", config_parameter='ngo_edm.hide_benfeciary_size')
+
+
+class Users(models.Model):
+    _inherit = ['res.users']
+
+    guide = fields.Many2one('ngo.guide')

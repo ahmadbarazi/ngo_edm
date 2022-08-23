@@ -17,3 +17,4 @@ from . import ngo_distribution_clothes_report
 from . import ngo_distribution_receiving
 from . import res_config_settings
 from . import application_type
+from . import application_class_type

@@ -71,6 +71,7 @@
         'views/ngo_distribution_food_portion_report_template.xml',
         'views/ngo_distribution_food_report_template.xml',
         'views/ngo_distribution_receiving.xml',
+        'views/application_class_type.xml',
         # # 'wizard/wizard_beneficiary_search_view.xml',
         'report/distribution_report_view.xml',
         'views/ngo_menu.xml',

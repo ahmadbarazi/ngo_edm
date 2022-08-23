@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="ngo_file_type_view_form_action" model="ir.actions.act_window">
+            <field name="name">Application File Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">application.class.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="ngo_file_type_view_tree" model="ir.ui.view">
+            <field name="name">ngo_file_type_view_tree</field>
+            <field name="model">application.class.type</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="name"/>
+                    <field name="manager_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <menuitem id="menu_ngo_file_type_view_form_action" name="Application File Type" parent="ngo_menu_application"
+                  action="ngo_file_type_view_form_action"/>
+
+
+    </data>
+</odoo>

@@ -56,7 +56,6 @@ class NgoReportTemplate(models.Model):
     mohafaza = fields.Many2one('ngo.mohafaza', string=_("Mohafaza"))
     kadaa = fields.Many2one('ngo.kadaa', string=_("Kadaa"))
     city = fields.Many2one('ngo.city', string=_(u"City"))
-    region = fields.Many2one('ngo.region', string=_(u"Region"))
     neighborhood = fields.Many2one('ngo.neighborhood', string=_("Neighborhood"))
     age_from = fields.Float(string=_(u"From Age"))
     age_to = fields.Float(string=_(u"To Age"))
@@ -76,6 +75,11 @@ class NgoReportTemplate(models.Model):
     has_illness = fields.Boolean(string=_(u"Has Illness"))
     has_handicap = fields.Boolean(string=_(u"Has Handicap"))
     is_student = fields.Boolean(string=_(u"is Student"))
+
+    applications_class_id = fields.Many2many('ngo.application.class', string=_(u"Applications Class"))
+    date_begin_distribution = fields.Date()
+    date_end_distribution = fields.Date()
+    minimum_number_of_distribution = fields.Integer()
 
     ####################################
 

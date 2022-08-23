@@ -215,10 +215,10 @@ class BeneficiaryApplication(models.Model):
     application_date = fields.Date(index=True, default=datetime.today())
     registration_number = fields.Char(string=_(u"Registration Number"), track_visibility='onchange')
     registration_place = fields.Many2one('ngo.kadaa', string=_("Registration Place"), track_visibility='always')
-    application_class = fields.Many2many('ngo.application.class', string="application class", required=True)
+    application_class = fields.Many2many('ngo.application.class', string="Application class list", required=True)
     number_of_benef = fields.Char(string="Nb Of Beneficiaries", compute="family_member_count", store=True)
 
-    guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"), required=True)
+    guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"), required=True , default= lambda self: self.env.user.guide.id)
     partner_id = fields.Many2one('res.partner', string=_(u"Partner related"))
     reference = fields.Char(string=_(u"Reference"))
     application_revision_ids = fields.One2many(

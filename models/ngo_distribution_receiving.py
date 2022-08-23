@@ -19,8 +19,7 @@ class ngo_distribution_receiving(models.TransientModel):
     distribution_line_id = fields.Many2one('ngo.distribution.line', string=_(u"Distribution Line"), required=False)
     application_code = fields.Char(related='distribution_line_id.application_id.code', string=_(u"Application Code"),
                                    store=True, readonly=True)
-    application_name = fields.Char(related='distribution_line_id.application_id.name', string=_(u"Application name"),
-                                   store=True, readonly=True)
+    application_name = fields.Char(related='distribution_line_id.application_id.name',store=True, readonly=True)
     distribution_name = fields.Char(related='distribution_line_id.distribution_id.name', string=_(u"distribution name"),
                                     store=True, readonly=True)
     receipt_date = fields.Datetime(related='distribution_line_id.receipt_date', string=_(u"distribution name"),
