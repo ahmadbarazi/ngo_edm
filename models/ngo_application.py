@@ -23,7 +23,11 @@ from datetime import datetime
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.tools.misc import formatLang
 from odoo.exceptions import UserError, ValidationError, Warning
+
 from odoo import exceptions
+from odoo.exceptions import AccessError, ValidationError
+from odoo.tests import common
+from odoo.tools import mute_logger, view_validation
 
 import warnings
 import ast
@@ -215,9 +219,38 @@ class BeneficiaryApplication(models.Model):
     application_date = fields.Date(index=True, default=datetime.today())
     registration_number = fields.Char(string=_(u"Registration Number"), track_visibility='onchange')
     registration_place = fields.Many2one('ngo.kadaa', string=_("Registration Place"), track_visibility='always')
-    application_class = fields.Many2many('ngo.application.class', string="Application class list", required=True)
-    number_of_benef = fields.Char(string="Nb Of Beneficiaries", compute="family_member_count", store=True)
+    computed_reg_nb = fields.Char(compute='duplicate_registration_number')
+    computed_reg_place = fields.Char(compute='duplicate_registration_number')
 
+    @api.depends('registration_number', 'beneficiary_ids.nationality_id', 'registration_place')
+    def duplicate_registration_number(self):
+        for record in self:
+            if len(record.beneficiary_ids) < 0:
+                record.computed_reg_nb = False
+                record.computed_reg_place = False
+            else:
+                # if record.beneficiary_ids.nationality_id.name == 'lebabon' or record.beneficiary_ids.nationality_id.name == 'Syria' or record.beneficiary_ids.nationality_id.name == 'State of Palestine':
+                application_duplicate_code = record.env['ngo.beneficiary.application'].search([('registration_number','=',record.registration_number),('code','!=',record.code),('beneficiary_ids.nationality_id.name','=like',record.beneficiary_ids.nationality_id.name)])
+                if application_duplicate_code:
+                    application_duplicate_code_list = []
+                    application_duplicate_place_list = []
+                    for applicationCode in application_duplicate_code:
+                        application_duplicate_code_list.append(applicationCode.code)
+                        application_duplicate_place_list.append(applicationCode.registration_place.name)
+                        if False in application_duplicate_place_list:
+                            application_duplicate_place_list.remove(False)
+                    record.computed_reg_nb = ', '.join(str(e) for e in application_duplicate_code_list)
+                    record.computed_reg_place = ', '.join(str(e) for e in application_duplicate_place_list)
+                    if len(record.computed_reg_place) == 0:
+                        record.computed_reg_place = False
+                else:
+                    record.computed_reg_nb = False
+                    record.computed_reg_place = False
+
+
+
+    application_class = fields.One2many('ngo.application.class','reverse_id', string="Application class list", required=True)
+    number_of_benef = fields.Char(string="Nb Of Beneficiaries", compute="family_member_count", store=True)
     guide_id = fields.Many2one('ngo.guide', string=_(u"Guide"), required=True , default= lambda self: self.env.user.guide.id)
     partner_id = fields.Many2one('res.partner', string=_(u"Partner related"))
     reference = fields.Char(string=_(u"Reference"))
@@ -258,31 +291,6 @@ class BeneficiaryApplication(models.Model):
                 rec.father_name_computed = False
 
 
-    #todo fix the infinite loop that is triggered when saving
-
-    # @api.onchange('beneficiary_ids')
-    # def onchange_bene(self):
-    #     sequence = self.env['ir.sequence'].search([('code', '=', 'ngo.beneficiary')])
-    #     next = sequence.get_next_char(sequence.number_next_actual)
-    #     for rec in self:
-    #         benefData = rec.beneficiary_ids
-    #         lines = []
-    #         vals = {
-    #             'code': next,
-    #             'last_name': benefData[0].last_name,
-    #             'father_name': benefData[0].father_name,
-    #             'mother_name': benefData[0].mother_name,
-    #         }
-    #         lines.append((0, 0, vals))
-    #         rec.beneficiary_ids = lines
-
-
-    # @api.depends('beneficiary_ids')
-    # def _get_nextvalue(self):
-    #     if len(self.beneficiary_ids) == 0:
-    #         return ''
-    #     else:
-    #         first_line = self.beneficiary_ids[0].last_name
 
     ##### BEGIN ADDRESS DETAILS #####
     country_id = fields.Many2one('res.country', string=_("Country"))
@@ -316,51 +324,10 @@ class BeneficiaryApplication(models.Model):
         'ngo.beneficiary.house.asset', 'application_id', string=_(u"House Assets"))
     property_ids = fields.One2many(
         'ngo.beneficiary.property', 'application_id', string=_(u"Family Property"))
-
-    #todo track the expense_ids using message_post
     expense_ids = fields.One2many(
         'ngo.beneficiary.expense', 'application_id', string=_(u"Expenses"))
     income_ids = fields.One2many(
         'ngo.beneficiary.income', 'application_id', string=_(u"Income"))
-
-    users_to_notify = fields.Many2many('res.users', string=_(u"Users to notify"))
-
-    #bug using write the function dont work
-    # using _write works but cant check if the "expense_ids" nor the expense_amount changing
-    # cant track it in this class since it is not writing in this class but in its parent class
-
-    # def write(self, vals):
-    #     res = super(BeneficiaryApplication, self).write(vals)
-    #     if 'expense_ids' in vals:
-    #         for record in self:
-    #             partner_ids = []
-    #             for rec in record.expense_ids:
-    #                 for val in record.users_to_notify:
-    #                     partner_ids.append(val.partner_id.id)
-    #                     value_name = dict()
-    #                 record.sudo().message_post(
-    #                     body=(_(f"the expense has been changed to {record.expense_ids.expense_amount}")),
-    #                     partner_ids=partner_ids,
-    #                     message_type='notification',
-    #                     subtype_xmlid="mail.mt_comment",)
-    #     return res
-
-    #bug using onchange works but getting error that i cant use message_post and i should
-    # use message_notify which dont work
-
-    # @api.onchange('expense_ids')
-    # def onchange_expence(self):
-    #     for record in self:
-    #         partner_ids = []
-    #         for rec in record.expense_ids:
-    #             for val in record.users_to_notify:
-    #                 partner_ids.append(val.partner_id.id)
-    #                 value_name = dict()
-    #             record.sudo().message_post(
-    #                 body=(_(f"the expense has been changed to {record.expense_ids.expense_amount}")),
-    #                 partner_ids=partner_ids,
-    #                 message_type='notification',
-    #                 subtype_xmlid="mail.mt_comment", )
 
     ##### END FAMILY DETAILS #####
     # file_no=fields.Char(string=_(u"File Number"))
@@ -578,7 +545,7 @@ class BeneficiaryApplication(models.Model):
     def action_draft(self):
         # self.state = 'draft'
         # self.state = 'review'
-        return self.write({'state': 'draft'})
+        return self.write({'state': 'draft','approved_by_id':False})
 
     def action_review(self):
         # self.state = 'review'
@@ -948,7 +915,6 @@ class BeneficiaryExpense(models.Model):
         'ngo.expense.category', string=_("Expense Category"))
     expense_subcategory = fields.Many2one(
         'ngo.expense.category', string=_("Expense SubCategory"))
-    #todo track the change of the expense ammount
     expense_amount = fields.Float(string=_("Expense Amount"),track_visibility='onchange')
     currency_id = fields.Many2one('res.currency', string=_("Currency"))
     active = fields.Boolean(string=_("Active"), default=True)

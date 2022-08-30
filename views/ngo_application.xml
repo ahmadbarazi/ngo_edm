@@ -84,8 +84,26 @@
                                statusbar_visible="draft,managerapprove,review"
                                statusbar_colors='{"review":"blue"}'/>
                     </header>
-                    <sheet>
 
+                    <div class="alert alert-info text-center o_form_header" role="alert"
+                         attrs="{'invisible': [('computed_reg_nb', '=', False),('computed_reg_place','=',False)]}">
+                        <a class="close" data-dismiss="alert" href="#">x</a>
+
+                        <div attrs="{'invisible': [('computed_reg_nb', '=', False)]}">
+                            <p>Duplicate Registration Number <strong><field name="registration_number" readonly="1"/></strong> found in
+                                <strong><field name="computed_reg_nb"/></strong>
+                            </p>
+                        </div>
+
+                        <div  attrs="{'invisible': [('computed_reg_place','=',False)]}">
+                            <p> and have the same registration place
+                                <strong><field name="computed_reg_place" string="reg place"/></strong>
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <sheet>
                         <div class="oe_title">
                             <h1>
                                 <field name="code" placeholder="Application Number"/>
@@ -106,7 +124,6 @@
 
                                 <field name="application_date"/>
                                 <field name="beneficiary_id"/>
-                                <field name="application_class" widget="many2many_tags"/>
                                 <field name="guide_id"/>
                                 <!-- <field name="beneficiary_id" domain="[('detail', '=', '0')]" context="{'default_detail': '0'}"/> -->
                                 <!-- <label for="registration_number" string="رقم ومكان السجل" /> -->
@@ -139,7 +156,7 @@
                             </group>
                             <group>
                                 <label for="street" string="Address"/>
-                                <div class="o_address_format">
+                                <div class="o_address_format" name="benef_address">
                                     <field name="mohafaza" placeholder="Mohafaza" class="o_address_city"/>
                                     <field name="kadaa" domain="[('mohafaza_id','=', mohafaza)]" placeholder="Kadaa"
                                            class="o_address_city"/>
@@ -173,10 +190,20 @@
                                     <field name="application_longitude" nolabel="1" class="oe_inline"/>
                                     <span>)</span>
                                 </div>
-
+                                <field name="notes" string="Guide Notes"/>
                             </group>
                         </group>
                         <notebook>
+                            <page string="Application Class List ">
+                                <field name="application_class">
+                                    <tree editable="bottom">
+                                        <field name="filetype_id"/>
+                                        <field name="status"/>
+                                        <field name="remarks" attrs="{'required':[('status','=','rejected')]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+
                             <page string="Family Members">
                                 <field name="beneficiary_ids"
                                        context="{'default_application_id': active_id , 'form_view_ref': 'ngo_edm.create_beneficiary_form_view'}">
@@ -190,6 +217,8 @@
                                         <field name="family_name"/>
                                         <field name="last_name" invisible="1"/>
                                         <field name="mother_name"/>
+                                        <field name="family_relationship_id"/>
+                                        <field name="nationality_id" required="1"/>
                                         <field name="name" invisible="1"/>
                                         <field name="mobile"/>
                                         <field name="identity_no"/>
@@ -291,13 +320,6 @@
                                         <field name="revision_remark"/>
                                     </tree>
                                 </field>
-                            </page>
-
-                            <page string="Guide Comments" name="additional_info">
-                                <group>
-
-                                    <field name="notes"/>
-                                </group>
                             </page>
                             <page string="Requests" name="beneficiary_request">
                                 <field name="request_ids" context="{'default_application_id': active_id}">

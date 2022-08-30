@@ -214,7 +214,7 @@ class Beneficiary(models.Model):
     # )
 
     @api.constrains('mobile')
-    def check_name(self):
+    def check_mobile(self):
         for rec in self:
             number = self.env['ngo.beneficiary'].search([('mobile', '=', rec.mobile), ('id', '!=', rec.id)])
             if number:
