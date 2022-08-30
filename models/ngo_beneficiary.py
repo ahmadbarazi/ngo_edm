@@ -253,8 +253,11 @@ class Beneficiary(models.Model):
         res.update({
             'hide_benfeciary_expense': expense_hide,
             'hide_size': size_hide,
-            'father_name': app_id.application_id.father_name_computed.father_name,
-            'family_name': app_id.application_id.father_name_computed.family_name,
+            'father_name': app_id.application_id.computed_beneficiary_fields.father_name,
+            'family_name': app_id.application_id.computed_beneficiary_fields.family_name,
+            'registration_place': app_id.application_id.computed_beneficiary_fields.registration_place,
+            'registration_number': app_id.application_id.computed_beneficiary_fields.registration_number,
+            'nationality_id': app_id.application_id.computed_beneficiary_fields.nationality_id
         })
         return res
 

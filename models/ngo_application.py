@@ -277,18 +277,18 @@ class BeneficiaryApplication(models.Model):
 
     beneficiary_ids = fields.One2many('ngo.beneficiary', 'application_id', string=_(u"Application Members"))
 
-    father_name_computed = fields.Many2one('ngo.beneficiary',store=True, compute='get_fathername')
+    computed_beneficiary_fields = fields.Many2one('ngo.beneficiary', store=True, compute='get_computed_benef_fields')
 
 
     @api.depends('beneficiary_ids')
-    def get_fathername(self):
+    def get_computed_benef_fields(self):
         for rec in self:
             if len(rec.beneficiary_ids) > 0:
                 for line in rec.beneficiary_ids:
-                    rec.father_name_computed = line
+                    rec.computed_beneficiary_fields = line
                     break
             else:
-                rec.father_name_computed = False
+                rec.computed_beneficiary_fields = False
 
 
 
