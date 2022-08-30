@@ -90,12 +90,13 @@
                         <a class="close" data-dismiss="alert" href="#">x</a>
 
                         <div attrs="{'invisible': [('computed_reg_nb', '=', False)]}">
-                            <p>Duplicate Registration Number <strong><field name="registration_number" readonly="1"/></strong> found in
+                            <p>Duplicate Registration Number <strong><field name="registration_number"
+                                                                            readonly="1"/></strong> found in
                                 <strong><field name="computed_reg_nb"/></strong>
                             </p>
                         </div>
 
-                        <div  attrs="{'invisible': [('computed_reg_place','=',False)]}">
+                        <div attrs="{'invisible': [('computed_reg_place','=',False)]}">
                             <p> and have the same registration place
                                 <strong><field name="computed_reg_place" string="reg place"/></strong>
                             </p>
@@ -371,7 +372,9 @@
                     <field name="first_beneficiary_name"/>
                     <field name="second_beneficiary_name"/>
                     <field name="application_date"/>
+                    <field name="phone"/>
                     <field name="decision_id"/>
+                    <field name="number_of_benef"/>
                     <field name="state"/>
                     <field name="guide_id"/>
                     <field name="approved_by_id"/>
@@ -439,6 +442,7 @@
                                         <!-- <strong class="o_kanban_record_title"><span><t t-esc="record.name"/></span></strong> -->
                                         <strong>
                                             <span>
+                                                <label for="code">App code:</label>
                                                 <field name="code"/>
                                             </span>
                                         </strong>
@@ -467,6 +471,7 @@
 
                                         <strong>
                                             <span>
+                                                <label for="application_type_id">Location:</label>
                                                 <field name="application_type_id"/>
                                             </span>
                                         </strong>
@@ -477,12 +482,15 @@
                                     <!-- <li id="last_login"/> -->
                                     <!-- <li t-if="record.application_type_id.raw_value"><field name="application_type_id" /></li> -->
                                     <li t-if="record.guide_id">
+                                        <label for="guide_id">Guide:</label>
                                         <field name="guide_id"/>
                                     </li>
                                     <li t-if="record.beneficiay_count">
+                                        <label for="beneficiary_count">Beneficiary Count:</label>
                                         <field name="beneficiary_count"/>
                                     </li>
                                     <li t-if="record.decision_id">
+                                        <label for="decision_id">Decision:</label>
                                         <field name="decision_id"/>
                                     </li>
 
@@ -505,12 +513,16 @@
                                 <div class="o_kanban_record_bottom">
                                     <div class="oe_kanban_bottom_left">
                                         <span>
+                                            <label for="application_date">Application Date:</label>
                                             <t t-esc="record.application_date.value"/>
                                         </span>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
-                                        <field name="state" widget="label_selection" readonly="1"
-                                               options="{'classes': {'draft': 'default', 'managerapprove': 'success', 'review': 'warning'}}"/>
+                                        <span>
+                                            <label for="state">State:</label>
+                                            <field name="state" widget="label_selection" readonly="1"
+                                                   options="{'classes': {'draft': 'default', 'managerapprove': 'success', 'review': 'warning'}}"/>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -578,7 +590,7 @@
             <field name="name">Beneficiary Application</field>
             <field name="res_model">ngo.beneficiary.application</field>
             <field name="search_view_id" ref="view_beneficiary_application_search"/>
-            <field name="view_mode">kanban,tree,form,graph</field>
+            <field name="view_mode">tree,kanban,form,graph</field>
         </record>
 
 
