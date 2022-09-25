@@ -186,13 +186,15 @@ class BeneficiaryApplication(models.Model):
         income_type_count = self.env['ngo.income.type'].search_count([])
         vals = []
         vals2 = []
-        for expense in range(expense_category_count):
-            vals.append((0, 0, {'expense_category': expense+1, 'expense_amount': 0}))
-            res.update({'expense_ids': vals})
+        if expense_category_count > 0:
+            for expense in range(expense_category_count):
+                vals.append((0, 0, {'expense_category': expense+1, 'expense_amount': 0}))
+                res.update({'expense_ids': vals})
 
-        for income in range(income_type_count):
-            vals2.append((0, 0, {'income_type': income+1, 'income_amount': 0}))
-            res.update({'income_ids': vals2})
+        if income_type_count > 0:
+            for income in range(income_type_count):
+                vals2.append((0, 0, {'income_type': income+1, 'income_amount': 0}))
+                res.update({'income_ids': vals2})
         return res
 
 
