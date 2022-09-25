@@ -178,18 +178,36 @@ class BeneficiaryApplication(models.Model):
     #     next = sequence.get_next_char(sequence.number_next_actual)
     #     return next
 
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super(BeneficiaryApplication, self).default_get(fields_list)
+        expense_category_count = self.env['ngo.expense.category'].search_count([])
+        income_type_count = self.env['ngo.income.type'].search_count([])
+        vals = []
+        vals2 = []
+        for expense in range(expense_category_count):
+            vals.append((0, 0, {'expense_category': expense+1, 'expense_amount': 0}))
+            res.update({'expense_ids': vals})
+
+        for income in range(income_type_count):
+            vals2.append((0, 0, {'income_type': income+1, 'income_amount': 0}))
+            res.update({'income_ids': vals2})
+        return res
+
+
     @api.model
     def _get_default_Association(self):
         association = self.env['ngo.association'].search(
-            [('name', '=', 'عباد الرحمن')], limit=1)
+            [('name', '=', 'الأرشاد')], limit=1)
         if association:
-            self.application_id = association.id
+            self.association_id = association.id
             return association.id
 
     @api.model
     def _get_default_application_type(self):
         app_type = self.env['ngo.application.type'].search(
-            [('name', '=', 'عباد - بيروت')], limit=1)
+            [('name', '=', 'بيروت')], limit=1)
         if app_type:
             self.application_type_id = app_type.id
             return app_type.id
