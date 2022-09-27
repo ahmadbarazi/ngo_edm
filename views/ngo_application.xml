@@ -117,83 +117,111 @@
                                              placeholder="Application Type"/></span>
                             </h2>
                         </div>
-                        <group>
-                            <group>
-                                <!-- <field name="code" /> -->
-                                <!-- <field name="name" /> -->
                                 <field name="prefix" invisible="1"/>
 
-                                <field name="application_date"/>
-                                <field name="beneficiary_id"/>
-                                <field name="guide_id"/>
-                                <!-- <field name="beneficiary_id" domain="[('detail', '=', '0')]" context="{'default_detail': '0'}"/> -->
-                                <!-- <label for="registration_number" string="رقم ومكان السجل" /> -->
+                        <div>
+                            <div>
+                                <!-- <field name="code" /> -->
+                                <!-- <field name="name" /> -->
 
-                                <field name="registration_number"/>
-                                <field name="registration_place"/>
-                                <!-- <field name="file_no"/> -->
-                                <field name="name" readonly="False"/>
+                                <group>
+                                    <group>
+                                        <field name="first_beneficiary_name"/>
+                                        <field name="first_beneficiary_Fathername"/>
+                                        <field name="first_beneficiary_Lastname"/>
+                                        <field name="first_beneficiary_nationality"/>
+                                        <field name="first_beneficiary_mobile"/>
 
-                                <field name="decision_id"/>
-                                <field name="last_revision_date"/>
-                                <field name="first_beneficiary_name"/>
-                                <field name="second_beneficiary_name"/>
-                                <!-- <field name="reference"/> -->
-                                <field name="phone"/>
-                                <field name="electricity_meter_number" placeholder="Electricity Meter#"/>
-                                <label for="residence_description_id" string="Residence"/>
-                                <div class="o_address_format">
-                                    <field name="residence_description_id" placeholder="Residence Description..."
-                                           class="o_address_street"/>
-                                    <field name="residence_type_id" placeholder="Type" class="o_address_city"/>
-                                    <field name="residence_state_id" class="o_address_state" placeholder="State"
-                                           options='{"no_open": True}'/>
-                                </div>
+                                    </group>
+                                    <group>
+                                        <field name="first_beneficiary_identity_no"/>
+                                        <field name="registration_number"/>
+                                        <field name="registration_place"/>
+                                    </group>
+                                </group>
+                            </div>
+                            <div>
+                                <group>
+                                    <group>
+                                        <field name="beneficiary_id" invisible="1"/>
+                                        <!-- <field name="beneficiary_id" domain="[('detail', '=', '0')]" context="{'default_detail': '0'}"/> -->
+                                        <!-- <label for="registration_number" string="رقم ومكان السجل" /> -->
 
-                                <field name="family_number_reference"/>
-                                <field name="net_values" widget="monetary"/>
-                                <field name="currency_id"/>
-                                <field name="number_of_benef"/>
-                            </group>
-                            <group>
-                                <label for="street" string="Address"/>
-                                <div class="o_address_format" name="benef_address">
-                                    <field name="mohafaza" placeholder="Mohafaza" class="o_address_city"/>
-                                    <field name="kadaa" domain="[('mohafaza_id','=', mohafaza)]" placeholder="Kadaa"
-                                           class="o_address_city"/>
-                                    <field name="city" domain="[('kadaa_id','=', kadaa)]" placeholder="City"
-                                           class="o_address_city"/>
-                                    <field name="region" domain="[('city_id','=', city)]" class="o_address_state"
-                                           placeholder="Area" options='{"no_open": True}'/>
-                                    <!-- <field name="neighborhood" placeholder="Neighborhood..." class="o_address_street"/> -->
-                                    <field name="street" placeholder="Street..." class="o_address_zip"/>
-                                    <field name="street_number" placeholder="Street No" class="o_address_zip"/>
-                                    <field name="near" placeholder="Near..." class="o_address_street"/>
-                                    <field name="building" placeholder="Building" class="o_address_zip"/>
-                                    <field name="building_number" placeholder="Bldg No" class="o_address_zip"/>
-                                    <field name="floor" placeholder="Floor" class="o_address_zip"/>
-                                    <field name="appartment" placeholder="Appartment" class="o_address_zip"/>
-                                    <field name="rooms_count" placeholder="Rooms Count" class="o_address_zip"/>
-                                    <field name="address_remark" placeholder="Address Remark"/>
-                                    <!-- <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/> -->
-                                </div>
-                                <field name="address_checked"/>
-                                <field name="archive_document_number"/>
-                                <field name="beneficiaries_phones"/>
-                                <field name="like_share_data_with_other_associations" invisible="1"/>
-                                <label for="date_localization" string="Location Registration Date"/>
-                                <div name="location_box">
-                                    <span class="oe_inline">(</span>
-                                    <field name="date_localization" nolabel="1" class="oe_inline"/>
-                                    <span>: Lat :</span>
-                                    <field name="application_latitude" nolabel="1" class="oe_inline"/>
-                                    <span>; Long:</span>
-                                    <field name="application_longitude" nolabel="1" class="oe_inline"/>
-                                    <span>)</span>
-                                </div>
-                                <field name="notes" string="Guide Notes"/>
-                            </group>
-                        </group>
+                                        <!-- <field name="file_no"/> -->
+                                        <field name="name" readonly="False"/>
+                                        <field name="application_date"/>
+                                        <field name="guide_id"/>
+
+                                        <field name="decision_id" invisible="1"/>
+                                        <field name="last_revision_date" invisible="1"/>
+
+                                        <field name="second_beneficiary_name"/>
+                                        <!-- <field name="reference"/> -->
+                                        <field name="phone"/>
+                                        <field name="electricity_meter_number" placeholder="Electricity Meter#"/>
+                                        <label for="residence_description_id" string="Residence"/>
+                                        <div class="o_address_format">
+                                            <field name="residence_description_id"
+                                                   placeholder="Residence Description..."
+                                                   class="o_address_street"/>
+                                            <field name="residence_type_id" placeholder="Type" class="o_address_city"/>
+                                            <field name="residence_state_id" class="o_address_state" placeholder="State"
+                                                   options='{"no_open": True}'/>
+                                        </div>
+
+                                        <field name="family_number_reference"/>
+                                        <field name="net_values" widget="monetary"/>
+                                        <field name="currency_id"/>
+                                        <field name="number_of_benef"/>
+
+                                    </group>
+
+
+                                    <group>
+                                        <label for="street" string="Address"/>
+                                        <div class="o_address_format" name="benef_address">
+                                            <field name="mohafaza" placeholder="Mohafaza" class="o_address_city"/>
+                                            <field name="kadaa" domain="[('mohafaza_id','=', mohafaza)]"
+                                                   placeholder="Kadaa"
+                                                   class="o_address_city"/>
+                                            <field name="city" domain="[('kadaa_id','=', kadaa)]" placeholder="City"
+                                                   class="o_address_city"/>
+                                            <field name="region" domain="[('city_id','=', city)]"
+                                                   class="o_address_state"
+                                                   placeholder="Area" options='{"no_open": True}'/>
+                                            <!-- <field name="neighborhood" placeholder="Neighborhood..." class="o_address_street"/> -->
+                                            <field name="street" placeholder="Street..." class="o_address_zip"/>
+                                            <field name="street_number" placeholder="Street No" class="o_address_zip"/>
+                                            <field name="near" placeholder="Near..." class="o_address_street"/>
+                                            <field name="building" placeholder="Building" class="o_address_zip"/>
+                                            <field name="building_number" placeholder="Bldg No" class="o_address_zip"/>
+                                            <field name="floor" placeholder="Floor" class="o_address_zip"/>
+                                            <field name="appartment" placeholder="Appartment" class="o_address_zip"/>
+                                            <field name="rooms_count" placeholder="Rooms Count" class="o_address_zip"/>
+                                            <field name="address_remark" placeholder="Address Remark"/>
+                                            <!-- <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/> -->
+                                        </div>
+                                        <field name="address_checked"/>
+                                        <field name="archive_document_number"/>
+                                        <field name="beneficiaries_phones"/>
+                                        <field name="like_share_data_with_other_associations" invisible="1"/>
+                                        <label for="date_localization" string="Location Registration Date"/>
+                                        <div name="location_box">
+                                            <span class="oe_inline">(</span>
+                                            <field name="date_localization" nolabel="1" class="oe_inline"/>
+                                            <span>: Lat :</span>
+                                            <field name="application_latitude" nolabel="1" class="oe_inline"/>
+                                            <span>; Long:</span>
+                                            <field name="application_longitude" nolabel="1" class="oe_inline"/>
+                                            <span>)</span>
+                                        </div>
+                                        <field name="notes" string="Guide Notes"/>
+                                    </group>
+                                </group>
+                            </div>
+                        </div>
+
+
                         <notebook>
                             <page string="Application Class List ">
                                 <field name="application_class">

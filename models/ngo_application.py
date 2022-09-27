@@ -201,7 +201,7 @@ class BeneficiaryApplication(models.Model):
     @api.model
     def _get_default_Association(self):
         association = self.env['ngo.association'].search(
-            [('name', '=', 'الأرشاد')], limit=1)
+            [('name', '=', 'الإرشاد')], limit=1)
         if association:
             self.association_id = association.id
             return association.id
@@ -228,7 +228,15 @@ class BeneficiaryApplication(models.Model):
     code = fields.Char('Code', size=32, required=True,
                        track_visibility='onchange', copy=False)
 
-    name = fields.Char(string=_("Application name"),related='first_beneficiary_id.name')
+    name = fields.Char(string=_("Application name"),compute="_compute_application_name")
+
+    @api.depends('first_beneficiary_name','first_beneficiary_Fathername','first_beneficiary_Lastname')
+    def _compute_application_name(self):
+        for record in self:
+            if record.first_beneficiary_name and record.first_beneficiary_Fathername and record.first_beneficiary_Lastname:
+                record.name = f"{record.first_beneficiary_name} {record.first_beneficiary_Fathername} {record.first_beneficiary_Lastname.name}"
+            else:
+                record.name = " "
 
     application_type_id = fields.Many2one('ngo.application.type', string=_(
         u"Application Type"), default=_get_default_application_type)
@@ -353,10 +361,53 @@ class BeneficiaryApplication(models.Model):
     # file_no=fields.Char(string=_(u"File Number"))
     first_beneficiary_id = fields.One2many('ngo.beneficiary', 'application_id', domain=[
         ('is_first_beneficiary', '=', True)])
+
     second_beneficiary_id = fields.One2many('ngo.beneficiary', 'application_id', domain=[
         ('is_second_beneficiary', '=', True)])
-    first_beneficiary_name = fields.Char(related='first_beneficiary_id.name', string=_(
-        u"First Beneficiary"), store=True, readonly=True)
+
+    # first_beneficiary_name = fields.Char(related='first_beneficiary_id.name', string=_(
+    #     u"First Beneficiary"), store=True, readonly=True)
+
+    first_beneficiary_name = fields.Char(string=_(u"First Name"), required=True)
+    first_beneficiary_Fathername = fields.Char(string=_(u"Father Name"), required=True)
+    first_beneficiary_Lastname = fields.Many2one('partner.family.name', string=_(u"Last Name"), required=True)
+    first_beneficiary_nationality = fields.Many2one('res.country', string=_("Nationality"), required=True)
+    first_beneficiary_mobile = fields.Char(string=_("Mobile"), required=True)
+    first_beneficiary_identity_no = fields.Char(string=_("Identity Number"), required=True)
+
+    @api.onchange('first_beneficiary_name', 'first_beneficiary_Lastname', 'first_beneficiary_nationality',
+                  'first_beneficiary_mobile', 'first_beneficiary_identity_no')
+    def onchange_create_record(self):
+        if len(self.beneficiary_ids) == 0:
+            self.update({
+                'beneficiary_ids': [(0, 0, {'first_name': self.first_beneficiary_name, 'is_first_beneficiary': True})]
+            })
+        else:
+            self.update({
+                'beneficiary_ids': [(1, self.beneficiary_ids[0].id, {'first_name': self.first_beneficiary_name}),
+                                    (1, self.beneficiary_ids[0].id, {'father_name': self.first_beneficiary_Fathername}),
+                                    (1, self.beneficiary_ids[0].id, {'family_name': self.first_beneficiary_Lastname}),
+                                    (1, self.beneficiary_ids[0].id,{'nationality_id': self.first_beneficiary_nationality}),
+                                    (1, self.beneficiary_ids[0].id, {'mobile': self.first_beneficiary_mobile}),
+                                    (1, self.beneficiary_ids[0].id, {'identity_no': self.first_beneficiary_identity_no}),
+                                    (1, self.beneficiary_ids[0].id, {'registration_number': self.registration_number}),
+                                    (1, self.beneficiary_ids[0].id, {'registration_place': self.registration_place}),
+                                    ]})
+
+    @api.onchange('beneficiary_ids')
+    def _onchange_update_record(self):
+        for rec in self:
+            if len(rec.beneficiary_ids) > 0:
+                rec.first_beneficiary_name = rec.beneficiary_ids[0].first_name
+                rec.first_beneficiary_Fathername = rec.beneficiary_ids[0].father_name
+                rec.first_beneficiary_Lastname = rec.beneficiary_ids[0].family_name
+                rec.first_beneficiary_nationality = rec.beneficiary_ids[0].nationality_id
+                rec.first_beneficiary_mobile = rec.beneficiary_ids[0].mobile
+                rec.first_beneficiary_identity_no = rec.beneficiary_ids[0].identity_no
+                rec.registration_number = rec.beneficiary_ids[0].registration_number
+                rec.registration_place = rec.beneficiary_ids[0].registration_place
+
+
     second_beneficiary_name = fields.Char(related='second_beneficiary_id.name', string=_(
         u"Second Beneficiary"), store=True, readonly=True)
     family_number_reference = fields.Char(string=_("Family Number Reference"))
