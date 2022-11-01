@@ -117,7 +117,9 @@
                                              placeholder="Application Type"/></span>
                             </h2>
                         </div>
-                                <field name="prefix" invisible="1"/>
+                        <field name="prefix" invisible="1"/>
+                        <label for="create_date" string="Created on:"/>
+                        <field name="create_date" widget="date"/>
 
                         <div>
                             <div>
@@ -130,7 +132,7 @@
                                         <field name="first_beneficiary_Fathername"/>
                                         <field name="first_beneficiary_Lastname"/>
                                         <field name="first_beneficiary_nationality"/>
-                                        <field name="first_beneficiary_mobile"/>
+                                        <field name="first_beneficiary_mobile" attrs="{'required':[('phone','=',False)]}"/>
 
                                     </group>
                                     <group>
@@ -157,7 +159,7 @@
 
                                         <field name="second_beneficiary_name"/>
                                         <!-- <field name="reference"/> -->
-                                        <field name="phone"/>
+                                        <field name="phone" attrs="{'required':[('first_beneficiary_mobile','=',False)]}"/>
                                         <field name="electricity_meter_number" placeholder="Electricity Meter#"/>
                                         <label for="residence_description_id" string="Residence"/>
                                         <div class="o_address_format">
@@ -397,6 +399,7 @@
                     <field name="code"/>
                     <field name="name" invisible="1"/>
                     <field name="application_type_id"/>
+                    <field name="create_date" widget="date"/>
                     <field name="first_beneficiary_name"/>
                     <field name="second_beneficiary_name"/>
                     <field name="application_date"/>
@@ -566,7 +569,7 @@
             <field name="model">ngo.beneficiary.application</field>
             <field name="arch" type="xml">
                 <search string="Applications">
-                    <field name="name" filter_domain="['|', ('name','ilike',self), ('code','=like',str(self)+'%')]"
+                    <field name="name" filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]"
                            string="Application"/>
                     <field name="beneficiary_count"/>
                     <field name="application_class"/>

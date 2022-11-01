@@ -226,9 +226,9 @@ class BeneficiaryApplication(models.Model):
     net_values = fields.Monetary(string='NET VALUE', compute="_compute_value", readonly="1")
     currency_id = fields.Many2one('res.currency', string=_("Currency"))
     code = fields.Char('Code', size=32, required=True,
-                       track_visibility='onchange', copy=False)
+                       track_visibility='onchange', copy=False ,store=True)
 
-    name = fields.Char(string=_("Application name"),compute="_compute_application_name")
+    name = fields.Char(string=_("Application name"),compute="_compute_application_name" ,store=True)
 
     @api.depends('first_beneficiary_name','first_beneficiary_Fathername','first_beneficiary_Lastname')
     def _compute_application_name(self):
@@ -372,7 +372,7 @@ class BeneficiaryApplication(models.Model):
     first_beneficiary_Fathername = fields.Char(string=_(u"Father Name"), required=True)
     first_beneficiary_Lastname = fields.Many2one('partner.family.name', string=_(u"Last Name"), required=True)
     first_beneficiary_nationality = fields.Many2one('res.country', string=_("Nationality"), required=True)
-    first_beneficiary_mobile = fields.Char(string=_("Mobile"), required=True)
+    first_beneficiary_mobile = fields.Char(string=_("Mobile"))
     first_beneficiary_identity_no = fields.Char(string=_("Identity Number"), required=True)
 
     @api.onchange('first_beneficiary_name', 'first_beneficiary_Lastname', 'first_beneficiary_nationality',
@@ -411,7 +411,7 @@ class BeneficiaryApplication(models.Model):
     second_beneficiary_name = fields.Char(related='second_beneficiary_id.name', string=_(
         u"Second Beneficiary"), store=True, readonly=True)
     family_number_reference = fields.Char(string=_("Family Number Reference"))
-    phone = fields.Char(string=_("Phone"), track_visibility='always', required=True)
+    phone = fields.Char(string=_("Phone"), track_visibility='always')
     address_checked = fields.Boolean(
         string=_(u"Address Checked"), default=False)
     street_number = fields.Char(string=_("Street Number"))
@@ -482,9 +482,10 @@ class BeneficiaryApplication(models.Model):
     @api.constrains('phone')
     def check_number(self):
         for rec in self:
-            number = self.env['ngo.beneficiary.application'].search([('phone', '=', rec.phone), ('id', '!=', rec.id)])
-            if number:
-                raise ValidationError(_("number %s is already exist" % rec.phone))
+            if rec.phone:
+                number = self.env['ngo.beneficiary.application'].search([('phone', '=', rec.phone), ('id', '!=', rec.id)])
+                if number:
+                    raise ValidationError(_("Phone number %s already exist" % rec.phone))
 
     @api.depends('beneficiary_ids')
     def family_member_count(self):
@@ -737,6 +738,8 @@ class BeneficiaryApplication(models.Model):
 
     def write(self, values):
         res = super(BeneficiaryApplication, self).write(values)
+        if len(self.application_class) == 0:
+            raise ValidationError("Application class is required")
         if self.partner_id:
             partnerrecords = self.env['res.partner'].search(
                 [('id', '=', self.partner_id.id)])
@@ -764,73 +767,76 @@ class BeneficiaryApplication(models.Model):
         rec = super(BeneficiaryApplication, self).create(vals)
         sequence_code = 'ngo.beneficiary.application'
         partnervals = []
-        if vals.get('prefix', '') != False:
-            sequence_code = 'ngo.beneficiary.application.' + \
-                            vals.get('prefix', '')
+        if len(vals.get('application_class')) == 0:
+            raise UserError(_("You can't create application without application class"))
         else:
-            sequence_code = 'ngo.beneficiary.application'
+            if vals.get('prefix', '') != False:
+                sequence_code = 'ngo.beneficiary.application.' + \
+                                vals.get('prefix', '')
+            else:
+                sequence_code = 'ngo.beneficiary.application'
 
-        if vals['state'] == 'draft':
-            sequence = self.env['ir.sequence'].search(
-                [('code', '=', sequence_code)])
+            if vals['state'] == 'draft':
+                sequence = self.env['ir.sequence'].search(
+                    [('code', '=', sequence_code)])
 
-        if vals['code'] == sequence.get_next_char(sequence.number_next_actual):
-            vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
+            if vals['code'] == sequence.get_next_char(sequence.number_next_actual):
+                vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
 
-        if self.region:
-            vals['region'] = self.region
-            partnervals['region'] = self.region
-        if self.near:
-            vals['near'] = self.near
-            partnervals['near'] = self.near
-        if self.building:
-            vals['building'] = self.building
-            partnervals['building'] = self.building
-        if self.floor:
-            vals['floor'] = self.floor
-            partnervals['floor'] = self.floor
-        if self.mohafaza:
-            vals['mohafaza'] = self.mohafaza
-            partnervals['mohafaza'] = self.mohafaza
-        if self.kadaa:
-            vals['kadaa'] = self.kadaa
-            partnervals['kadaa'] = self.kadaa
-        if self.appartment:
-            vals['appartment'] = self.appartment
-            partnervals['appartment'] = self.appartment
-        if self.neighborhood:
-            vals['neighborhood'] = self.neighborhood
-            partnervals['neighborhood'] = self.neighborhood
-        if self.building_number:
-            vals['building_number'] = self.building_number
-            partnervals['building_number'] = self.building_number
+            if self.region:
+                vals['region'] = self.region
+                partnervals['region'] = self.region
+            if self.near:
+                vals['near'] = self.near
+                partnervals['near'] = self.near
+            if self.building:
+                vals['building'] = self.building
+                partnervals['building'] = self.building
+            if self.floor:
+                vals['floor'] = self.floor
+                partnervals['floor'] = self.floor
+            if self.mohafaza:
+                vals['mohafaza'] = self.mohafaza
+                partnervals['mohafaza'] = self.mohafaza
+            if self.kadaa:
+                vals['kadaa'] = self.kadaa
+                partnervals['kadaa'] = self.kadaa
+            if self.appartment:
+                vals['appartment'] = self.appartment
+                partnervals['appartment'] = self.appartment
+            if self.neighborhood:
+                vals['neighborhood'] = self.neighborhood
+                partnervals['neighborhood'] = self.neighborhood
+            if self.building_number:
+                vals['building_number'] = self.building_number
+                partnervals['building_number'] = self.building_number
 
-            partnervals['is_application'] = True
+                partnervals['is_application'] = True
 
-        if vals:
-            rec.sudo().message_post(
-                body=_(f"Application class is changed"),
+            if vals:
+                rec.sudo().message_post(
+                    body=_(f"Application class is changed"),
 
-                message_type='notification',
-                subtype_xmlid="mail.mt_comment",
-            )
-        # if self.beneficiary_name:
-        #     vals['name'] =self.beneficiary_name
+                    message_type='notification',
+                    subtype_xmlid="mail.mt_comment",
+                )
+            # if self.beneficiary_name:
+            #     vals['name'] =self.beneficiary_name
 
-        # vals['name'] = 'Application ' + vals['code']
-        # str(sequence.number_next_actual)
+            # vals['name'] = 'Application ' + vals['code']
+            # str(sequence.number_next_actual)
 
-        # hajjar 220601: partner_ids must be concifgured
-        # check with ahmad barazi concerning message_post
-        # rec.message_post(body="Test Message",  message_type="email",
-        #                  subtype="mail.mt_comment", partner_ids=[1])
-        # vals['is_application'] = True
+            # hajjar 220601: partner_ids must be concifgured
+            # check with ahmad barazi concerning message_post
+            # rec.message_post(body="Test Message",  message_type="email",
+            #                  subtype="mail.mt_comment", partner_ids=[1])
+            # vals['is_application'] = True
 
-        partner_id = self.env['res.partner'].create(partnervals)
+            partner_id = self.env['res.partner'].create(partnervals)
 
-        rec.partner_id = partner_id.id
-        # rec.code = rec.id
-        return rec
+            rec.partner_id = partner_id.id
+            # rec.code = rec.id
+            return rec
 
 
 class BeneficiaryApplicationRevision(models.Model):

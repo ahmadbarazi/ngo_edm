@@ -216,16 +216,18 @@ class Beneficiary(models.Model):
     @api.constrains('mobile')
     def check_mobile(self):
         for rec in self:
-            number = self.env['ngo.beneficiary'].search([('mobile', '=', rec.mobile), ('id', '!=', rec.id)])
-            if number:
-                raise ValidationError(_("number %s is already exist" % rec.mobile))
+            if rec.mobile:
+                number = self.env['ngo.beneficiary'].search([('mobile', '=', rec.mobile), ('id', '!=', rec.id)])
+                if number:
+                    raise ValidationError(_("Mobile number %s already exist" % rec.mobile))
 
     @api.constrains('identity_no')
     def check_identity_no(self):
         for rec in self:
-            number = self.env['ngo.beneficiary'].search([('identity_no', '=', rec.identity_no), ('id', '!=', rec.id)])
-            if number:
-                raise ValidationError(_("number %s is already exist" % rec.identity_no))
+            if rec.identity_no:
+                number = self.env['ngo.beneficiary'].search([('identity_no', '=', rec.identity_no), ('id', '!=', rec.id)])
+                if number:
+                    raise ValidationError(_("Identity number %s already exist" % rec.identity_no))
 
     @api.depends("hide_benfeciary_expense")
     def _compute_expense(self):
