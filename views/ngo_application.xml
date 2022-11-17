@@ -240,7 +240,7 @@
                                        context="{'default_application_id': active_id , 'form_view_ref': 'ngo_edm.create_beneficiary_form_view'}">
 
                                     <tree editable="1">
-                                        <!--                                        <field name="id"/>-->
+                                        <!--<field name="id"/>-->
                                         <button name="action_open_contract_form" type="object" icon="fa-external-link"/>
                                         <field name="code"/>
                                         <field name="first_name"/>
@@ -397,7 +397,7 @@
             <field name="arch" type="xml">
                 <tree string="application Tree">
                     <field name="code"/>
-                    <field name="name" invisible="1"/>
+                    <field name="name"/>
                     <field name="application_type_id"/>
                     <field name="create_date" widget="date"/>
                     <field name="first_beneficiary_name"/>
