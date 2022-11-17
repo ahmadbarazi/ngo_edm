@@ -255,11 +255,13 @@ class Beneficiary(models.Model):
         res.update({
             'hide_benfeciary_expense': expense_hide,
             'hide_size': size_hide,
+            # creating new beneficiary_ids
             'father_name': app_id.application_id.computed_beneficiary_fields.father_name,
             'family_name': app_id.application_id.computed_beneficiary_fields.family_name,
             'registration_place': app_id.application_id.computed_beneficiary_fields.registration_place,
             'registration_number': app_id.application_id.computed_beneficiary_fields.registration_number,
-            'nationality_id': app_id.application_id.computed_beneficiary_fields.nationality_id
+            'nationality_id': app_id.application_id.computed_beneficiary_fields.nationality_id,
+            'mobile': app_id.application_id.computed_beneficiary_fields.mobile,
         })
         return res
 
