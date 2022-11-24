@@ -231,6 +231,7 @@
                                         <field name="filetype_id"/>
                                         <field name="status"/>
                                         <field name="remarks" attrs="{'required':[('status','=','rejected')]}"/>
+                                        <field name="create_date" widget="date"/>
                                     </tree>
                                 </field>
                             </page>
