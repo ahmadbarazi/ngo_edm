@@ -230,6 +230,7 @@
                                     <tree editable="bottom">
                                         <field name="filetype_id"/>
                                         <field name="status"/>
+                                        <field name="status_change_date"/>
                                         <field name="remarks" attrs="{'required':[('status','=','rejected')]}"/>
                                         <field name="create_date" widget="date"/>
                                     </tree>
