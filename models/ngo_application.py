@@ -374,10 +374,12 @@ class BeneficiaryApplication(models.Model):
     first_beneficiary_nationality = fields.Many2one('res.country', string=_("Nationality"), required=True)
     first_beneficiary_mobile = fields.Char(string=_("Mobile"))
     first_beneficiary_identity_no = fields.Char(string=_("Identity Number"), required=True)
+    first_beneficiary_mothername = fields.Char(string=_(u"Mother Name"))
 
     @api.onchange('first_beneficiary_name', 'first_beneficiary_Lastname', 'first_beneficiary_nationality',
-                  'first_beneficiary_mobile', 'first_beneficiary_identity_no')
-    def onchange_create_record(self):
+                  'first_beneficiary_mobile', 'first_beneficiary_identity_no','first_beneficiary_Fathername','registration_number',
+                  'registration_place','first_beneficiary_mothername')
+    def onchange_create_record(self): # change the first beneficiary data
         if len(self.beneficiary_ids) == 0:
             self.update({
                 'beneficiary_ids': [(0, 0, {'first_name': self.first_beneficiary_name, 'is_first_beneficiary': True})]
@@ -392,6 +394,7 @@ class BeneficiaryApplication(models.Model):
                                     (1, self.beneficiary_ids[0].id, {'identity_no': self.first_beneficiary_identity_no}),
                                     (1, self.beneficiary_ids[0].id, {'registration_number': self.registration_number}),
                                     (1, self.beneficiary_ids[0].id, {'registration_place': self.registration_place}),
+                                    (1, self.beneficiary_ids[0].id, {'mother_name': self.first_beneficiary_mothername}),
                                     ]})
 
     @api.onchange('beneficiary_ids')
@@ -406,6 +409,7 @@ class BeneficiaryApplication(models.Model):
                 rec.first_beneficiary_identity_no = rec.beneficiary_ids[0].identity_no
                 rec.registration_number = rec.beneficiary_ids[0].registration_number
                 rec.registration_place = rec.beneficiary_ids[0].registration_place
+                rec.first_beneficiary_mothername = rec.beneficiary_ids[0].mother_name
 
 
     second_beneficiary_name = fields.Char(related='second_beneficiary_id.name', string=_(

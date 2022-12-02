@@ -131,6 +131,7 @@
                                         <field name="first_beneficiary_name"/>
                                         <field name="first_beneficiary_Fathername"/>
                                         <field name="first_beneficiary_Lastname"/>
+                                        <field name="first_beneficiary_mothername"/>
                                         <field name="first_beneficiary_nationality"/>
                                         <field name="first_beneficiary_mobile" attrs="{'required':[('phone','=',False)]}"/>
 
