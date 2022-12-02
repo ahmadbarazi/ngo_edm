@@ -61,7 +61,7 @@ class PartnerFamilyName(models.Model):
 class Beneficiary(models.Model):
     _name = 'ngo.beneficiary'
     _description = "Beneficiary"
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'resource.mixin', 'image.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
 
     def action_open_contract_form(self):
@@ -98,7 +98,7 @@ class Beneficiary(models.Model):
 
     ##### BEGIN PERSONAL DETAILS #####
     code = fields.Char(string=_(u"Code"), required=True, default=_get_default_code, track_visibility='onchange',
-                       copy=False, readonly=True)
+                       copy=False, readonly=False)
     first_name = fields.Char(string=_(u" First Name"), default='')
     father_name = fields.Char(string=_(u"Father Name"))
     mother_name = fields.Char(string=_(u"Mother Name"))
@@ -300,8 +300,8 @@ class Beneficiary(models.Model):
     @api.model
     def create(self, vals):
         ### Create beneficiary
-
-        vals['code'] = self.env['ir.sequence'].next_by_code('ngo.beneficiary')
+        if vals['code'] == False:
+            vals['code'] = self.env['ir.sequence'].next_by_code('ngo.beneficiary')
         name = vals['first_name']
         if vals['first_name'] and vals['father_name'] and vals['last_name']:
             name = str(vals['first_name'] or '') + ' ' + str(vals['father_name'] or '') + ' ' + str(
