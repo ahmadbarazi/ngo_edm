@@ -558,7 +558,7 @@ class BeneficiaryApplication(models.Model):
             # sequence = application.env['ir.sequence'].search([('code','=','ngo.beneficiary.application')])
             # next= sequence.get_next_char(sequence.number_next_actual)
             application.prefix = prefix
-
+            sequence = False
             if prefix:
                 sequence = self.env['ir.sequence'].search(
                     [('code', '=', 'ngo.beneficiary.application.' + prefix)])
@@ -779,13 +779,13 @@ class BeneficiaryApplication(models.Model):
                                 vals.get('prefix', '')
             else:
                 sequence_code = 'ngo.beneficiary.application'
-
+            sequence = False
             if vals['state'] == 'draft':
                 sequence = self.env['ir.sequence'].search(
                     [('code', '=', sequence_code)])
-
-            if vals['code'] == sequence.get_next_char(sequence.number_next_actual):
-                vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
+            if sequence:
+                if vals['code'] == sequence.get_next_char(sequence.number_next_actual):
+                    vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
 
             if self.region:
                 vals['region'] = self.region
