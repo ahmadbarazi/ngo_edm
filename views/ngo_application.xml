@@ -245,7 +245,7 @@
                                     <tree editable="1">
                                         <!--<field name="id"/>-->
                                         <button name="action_open_contract_form" type="object" icon="fa-external-link"/>
-                                        <field name="code"/>
+                                        <field name="code" readonly="1"/>
                                         <field name="first_name"/>
                                         <field name="father_name" readonly="0"/>
                                         <field name="family_name"/>

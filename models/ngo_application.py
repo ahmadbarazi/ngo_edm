@@ -178,6 +178,7 @@ class BeneficiaryApplication(models.Model):
     #     next = sequence.get_next_char(sequence.number_next_actual)
     #     return next
 
+    create_date = fields.Datetime(string='Created on',readonly=False)
 
     @api.model
     def default_get(self, fields_list):
@@ -258,7 +259,7 @@ class BeneficiaryApplication(models.Model):
                 record.computed_reg_place = False
             else:
                 # if record.beneficiary_ids.nationality_id.name == 'lebabon' or record.beneficiary_ids.nationality_id.name == 'Syria' or record.beneficiary_ids.nationality_id.name == 'State of Palestine':
-                application_duplicate_code = record.env['ngo.beneficiary.application'].search([('registration_number','=',record.registration_number),('code','!=',record.code),('beneficiary_ids.nationality_id.name','=like',record.beneficiary_ids.nationality_id.name)])
+                application_duplicate_code = record.env['ngo.beneficiary.application'].search([('registration_number','=',record.registration_number),('code','!=',record.code)])
                 if application_duplicate_code:
                     application_duplicate_code_list = []
                     application_duplicate_place_list = []
@@ -483,13 +484,13 @@ class BeneficiaryApplication(models.Model):
     _sql_constraints = [('code_unique', 'unique(code)',
                          _('Application Code already exists!'))]
 
-    @api.constrains('phone')
-    def check_number(self):
-        for rec in self:
-            if rec.phone:
-                number = self.env['ngo.beneficiary.application'].search([('phone', '=', rec.phone), ('id', '!=', rec.id)])
-                if number:
-                    raise ValidationError(_("Phone number %s already exist" % rec.phone))
+    # @api.constrains('phone')
+    # def check_number(self):
+    #     for rec in self:
+    #         if rec.phone:
+    #             number = self.env['ngo.beneficiary.application'].search([('phone', '=', rec.phone), ('id', '!=', rec.id)])
+    #             if number:
+    #                 raise ValidationError(_("Phone number %s already exist" % rec.phone))
 
     @api.depends('beneficiary_ids')
     def family_member_count(self):

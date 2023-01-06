@@ -79,25 +79,24 @@ class Beneficiary(models.Model):
         image_path = get_module_resource('ngo_edm', 'static/src/img', 'default_image.png')
         return base64.b64encode(open(image_path, 'rb').read())
 
-    @api.model
-    def _get_default_code(self):
-        sequence = self.env['ir.sequence'].search([('code', '=', 'ngo.beneficiary')])
-        next = sequence.get_next_char(sequence.number_next_actual)
-        return next
+    # @api.model
+    # def _get_default_code(self):
+    #     sequence = self.env['ir.sequence'].search([('code', '=', 'ngo.beneficiary')])
+    #     next = sequence.get_next_char(sequence.number_next_actual)
+    #     return next
 
-    @api.depends('family_name')
-    @api.model
-    def _get_lastname(self):
-        # lastname = ''
-        for i in self:
-            if i.family_name.name:
-                i.last_name = i.family_name.name
-                # lastname = i.last_name
-        # raise UserError(lastname)
-        # return lastname
+    # @api.depends('family_name')
+    # @api.model
+    # def _get_lastname(self):
+    #     # lastname = ''
+    #     for i in self:
+    #         if i.family_name.name:
+    #             i.last_name = i.family_name.name
+    #             lastname = i.last_name
+    #     return lastname
 
     ##### BEGIN PERSONAL DETAILS #####
-    code = fields.Char(string=_(u"Code"), required=True, default=_get_default_code, track_visibility='onchange',
+    code = fields.Char(string=_(u"Code"), required=True, default=lambda self: _('New'), track_visibility='onchange',
                        copy=False, readonly=False)
     first_name = fields.Char(string=_(u" First Name"), default='')
     father_name = fields.Char(string=_(u"Father Name"))
@@ -138,6 +137,8 @@ class Beneficiary(models.Model):
     is_second_beneficiary = fields.Boolean(String=_(u"Second Beneficiary"), default=False)
     detail = fields.Selection(string=_(u"Type"), selection=[('0', 'عائلة'), ('1', 'فرد')], required=True, default='1')
     image_1920 = fields.Image(default=_default_image)
+    orphan_number = fields.Char(string=_(u"Orphan Number"))
+    family_member_number = fields.Char(string=_(u"Family Member Number"))
 
     ##### END PERSONAL DETAILS #####
 
@@ -213,21 +214,21 @@ class Beneficiary(models.Model):
     #     states={'done': [('readonly', True)]},
     # )
 
-    @api.constrains('mobile')
-    def check_mobile(self):
-        for rec in self:
-            if rec.mobile:
-                number = self.env['ngo.beneficiary'].search([('mobile', '=', rec.mobile), ('id', '!=', rec.id)])
-                if number:
-                    raise ValidationError(_("Mobile number %s already exist" % rec.mobile))
+    # @api.constrains('mobile')
+    # def check_mobile(self):
+    #     for rec in self:
+    #         if rec.mobile:
+    #             number = self.env['ngo.beneficiary'].search([('mobile', '=', rec.mobile), ('id', '!=', rec.id)])
+    #             if number:
+    #                 raise ValidationError(_("Mobile number %s already exist" % rec.mobile))
 
-    @api.constrains('identity_no')
-    def check_identity_no(self):
-        for rec in self:
-            if rec.identity_no:
-                number = self.env['ngo.beneficiary'].search([('identity_no', '=', rec.identity_no), ('id', '!=', rec.id)])
-                if number:
-                    raise ValidationError(_("Identity number %s already exist" % rec.identity_no))
+    # @api.constrains('identity_no')
+    # def check_identity_no(self):
+    #     for rec in self:
+    #         if rec.identity_no:
+    #             number = self.env['ngo.beneficiary'].search([('identity_no', '=', rec.identity_no), ('id', '!=', rec.id)])
+    #             if number:
+    #                 raise ValidationError(_("Identity number %s already exist" % rec.identity_no))
 
     @api.depends("hide_benfeciary_expense")
     def _compute_expense(self):
@@ -300,18 +301,21 @@ class Beneficiary(models.Model):
     @api.model
     def create(self, vals):
         ### Create beneficiary
-        if vals['code'] == False:
+        # if vals['code'] == False:
+        #     vals['code'] = self.env['ir.sequence'].next_by_code('ngo.beneficiary')
+
+        if vals.get('code', _('New')) == _('New'):
             vals['code'] = self.env['ir.sequence'].next_by_code('ngo.beneficiary')
         name = vals['first_name']
-        if vals['first_name'] and vals['father_name'] and vals['last_name']:
-            name = str(vals['first_name'] or '') + ' ' + str(vals['father_name'] or '') + ' ' + str(
-                vals['last_name'] or '')
-        elif vals['first_name'] and vals['father_name']:
-            name = str(vals['first_name'] or '') + ' ' + str(vals['father_name'] or '')
-        elif vals['first_name'] and vals['last_name']:
-            name = str(vals['first_name'] or '') + ' ' + str(vals['last_name'] or '')
-        else:
-            name = str(vals['first_name'] or '')
+        # if vals['first_name'] and vals['father_name'] and vals['last_name']:
+        #     name = str(vals['first_name'] or '') + ' ' + str(vals['father_name'] or '') + ' ' + str(
+        #         vals['last_name'] or '')
+        # elif vals['first_name'] and vals['father_name']:
+        #     name = str(vals['first_name'] or '') + ' ' + str(vals['father_name'] or '')
+        # elif vals['first_name'] and vals['last_name']:
+        #     name = str(vals['first_name'] or '') + ' ' + str(vals['last_name'] or '')
+        # else:
+        #     name = str(vals['first_name'] or '')
 
         self.name = name
         vals['name'] = name

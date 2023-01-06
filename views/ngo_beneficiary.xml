@@ -60,6 +60,7 @@
                             <field name="code"/>
                             <!-- <field name="parent_id" attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
                             <field name="father_name" readonly="0" attrs="{'invisible': [('is_responsible','=', True)]}"/>
+                            <field name="family_name"/>
                             <field name="mother_name" attrs="{'invisible': [('is_responsible','=', True)]}"/>
 
                             <field name="active" invisible="1"/>
@@ -129,6 +130,8 @@
                             <field name="registration_place" placeholder="Registration Place" class="o_address_city"/>
                             </div> -->
                             <field name="identity_no"/>
+                            <field name="orphan_number"/>
+                            <field name="family_member_number"/>
                             <field name="mobile"/>
                             <!-- <field name="phone"/> -->
                             <field name="email"/>
@@ -302,7 +305,7 @@
 
                         <page string="Applications">
                             <group>
-                                <field name="application_id" readonly="1"/>
+                                <field name="application_id"/>
                             </group>
                         </page>
                         <page string="Additional Info" name="additional_info">
