@@ -118,10 +118,13 @@ class Beneficiary(models.Model):
                               selection=[('male', _(u'Male')), ('female', _(u'Female'))], readonly=False)
     birth_date = fields.Date(_(u'BirthDate'))
     marital_status = fields.Selection(string=_(u"Marital Status"),
-                                      selection=[('single', _(u'Single')), ('married', _(u'Married')),
+                                      selection=[('single', _(u'Single')),
+                                                 ('married', _(u'Married')),
                                                  ('widow', _(u'Widow')),
-                                                 ('divorced', _(u'Divorced')), ('seperated', _(u'Separated')),
+                                                 ('divorced', _(u'Divorced')),
+                                                 ('seperated', _(u'Separated')),
                                                  ('multiplemarriages', _(u'Multiple Marriages')),
+                                                 ('engaged', _(u'Engaged')),
                                                  ('undefined', _(u'Undefined'))], readonly=False)
     family_relationship_id = fields.Many2one('ngo.family.relationship', string=_("Family Relationship"))
 
