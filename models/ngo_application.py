@@ -227,7 +227,7 @@ class BeneficiaryApplication(models.Model):
     net_values = fields.Monetary(string='NET VALUE', compute="_compute_value", readonly="1")
     currency_id = fields.Many2one('res.currency', string=_("Currency"))
     code = fields.Char('Code', size=32, required=True,
-                       track_visibility='onchange', copy=False ,store=True)
+                       track_visibility='onchange', copy=False ,store=True, default= lambda self: self.env['ir.sequence'].next_by_code('ngo.beneficiary.application'))
 
     name = fields.Char(string=_("Application name"),compute="_compute_application_name" ,store=True)
 
@@ -250,6 +250,16 @@ class BeneficiaryApplication(models.Model):
     registration_place = fields.Many2one('ngo.kadaa', string=_("Registration Place"), track_visibility='always')
     computed_reg_nb = fields.Char(compute='duplicate_registration_number')
     computed_reg_place = fields.Char(compute='duplicate_registration_number')
+    can_edit = fields.Boolean()
+
+    def check_write(self):
+        current_user = self.env['res.users'].browse(self.env.uid)
+        if current_user.has_group('ngo_edm.ngo_manager'):
+            self.can_edit = True
+        else:
+            self.can_edit = False
+
+
 
     @api.depends('registration_number', 'beneficiary_ids.nationality_id', 'registration_place')
     def duplicate_registration_number(self):
@@ -376,10 +386,20 @@ class BeneficiaryApplication(models.Model):
     first_beneficiary_mobile = fields.Char(string=_("Mobile"))
     first_beneficiary_identity_no = fields.Char(string=_("Identity Number"), required=True)
     first_beneficiary_mothername = fields.Char(string=_(u"Mother Name"))
+    first_beneficiary_dob = fields.Date(string=_(u"Date of Birth"))
+    first_beneficiary_marital_status = fields.Selection( string=_(u"Marital Status"),
+                                                         selection=[('single', _(u'Single')),
+                                                                    ('married', _(u'Married')),
+                                                                    ('widow', _(u'Widow')),
+                                                                    ('divorced', _(u'Divorced')),
+                                                                    ('seperated', _(u'Separated')),
+                                                                    ('multiplemarriages', _(u'Multiple Marriages')),
+                                                                    ('engaged', _(u'Engaged')),
+                                                                    ('undefined', _(u'Undefined'))])
 
     @api.onchange('first_beneficiary_name', 'first_beneficiary_Lastname', 'first_beneficiary_nationality',
                   'first_beneficiary_mobile', 'first_beneficiary_identity_no','first_beneficiary_Fathername','registration_number',
-                  'registration_place','first_beneficiary_mothername')
+                  'registration_place','first_beneficiary_mothername','first_beneficiary_dob','first_beneficiary_marital_status')
     def onchange_create_record(self): # change the first beneficiary data
         if len(self.beneficiary_ids) == 0:
             self.update({
@@ -390,13 +410,35 @@ class BeneficiaryApplication(models.Model):
                 'beneficiary_ids': [(1, self.beneficiary_ids[0].id, {'first_name': self.first_beneficiary_name}),
                                     (1, self.beneficiary_ids[0].id, {'father_name': self.first_beneficiary_Fathername}),
                                     (1, self.beneficiary_ids[0].id, {'family_name': self.first_beneficiary_Lastname}),
-                                    (1, self.beneficiary_ids[0].id,{'nationality_id': self.first_beneficiary_nationality}),
+                                    (1, self.beneficiary_ids[0].id, {'nationality_id': self.first_beneficiary_nationality.id}),
                                     (1, self.beneficiary_ids[0].id, {'mobile': self.first_beneficiary_mobile}),
                                     (1, self.beneficiary_ids[0].id, {'identity_no': self.first_beneficiary_identity_no}),
                                     (1, self.beneficiary_ids[0].id, {'registration_number': self.registration_number}),
                                     (1, self.beneficiary_ids[0].id, {'registration_place': self.registration_place}),
                                     (1, self.beneficiary_ids[0].id, {'mother_name': self.first_beneficiary_mothername}),
+                                    (1, self.beneficiary_ids[0].id, {'birth_date': self.first_beneficiary_dob}),
+                                    (1, self.beneficiary_ids[0].id, {'marital_status': self.first_beneficiary_marital_status})
                                     ]})
+
+    def create_members(self):
+        applications_withno_beneficiary = self.env['ngo.beneficiary.application'].search([('beneficiary_ids','=',False)])
+
+        for rec in applications_withno_beneficiary:
+            rec.update({
+                'beneficiary_ids': [(0, 0, {'first_name': rec.first_beneficiary_name,
+                                            'father_name': rec.first_beneficiary_Fathername,
+                                            'family_name': rec.first_beneficiary_Lastname.id,
+                                            'nationality_id':rec.first_beneficiary_nationality.id,
+                                            'mobile':rec.first_beneficiary_mobile,
+                                            'identity_no':rec.first_beneficiary_identity_no,
+                                            'registration_number':rec.registration_number,
+                                            'registration_place':rec.registration_place.id,
+                                            'mother_name':rec.first_beneficiary_mothername,
+                                            'birth_date':rec.first_beneficiary_dob,
+                                            'marital_status':rec.first_beneficiary_marital_status,
+                                            'is_first_beneficiary':True
+                                            })]
+            })
 
     @api.onchange('beneficiary_ids')
     def _onchange_update_record(self):
@@ -411,6 +453,8 @@ class BeneficiaryApplication(models.Model):
                 rec.registration_number = rec.beneficiary_ids[0].registration_number
                 rec.registration_place = rec.beneficiary_ids[0].registration_place
                 rec.first_beneficiary_mothername = rec.beneficiary_ids[0].mother_name
+                rec.first_beneficiary_dob = rec.beneficiary_ids[0].birth_date
+                rec.first_beneficiary_marital_status = rec.beneficiary_ids[0].marital_status
 
 
     second_beneficiary_name = fields.Char(related='second_beneficiary_id.name', string=_(
@@ -574,7 +618,6 @@ class BeneficiaryApplication(models.Model):
             while self.check_applicaton_duplication(next):
                 next = self.env['ir.sequence'].next_by_code(sequence_code)
 
-            self.code = next
 
     # @api.onchange('name','code', 'address')
     # def _compute_application_prefix(self):

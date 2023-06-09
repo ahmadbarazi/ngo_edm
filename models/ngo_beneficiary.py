@@ -50,7 +50,7 @@ class PartnerFamilyName(models.Model):
     _name = 'partner.family.name'
     _description = 'Partner Family Name'
     _order = "name"
-    1
+
     name = fields.Char(
         string=_(u"Family Name"),
         required=True,
@@ -113,7 +113,7 @@ class Beneficiary(models.Model):
     registration_place = fields.Many2one('ngo.kadaa', string=_("Registration Place"))
 
     phone = fields.Char(string=_("Phone"))
-    mobile = fields.Char(string=_("Mobile"), track_visibility='always', required=True)
+    mobile = fields.Char(string=_("Mobile"), track_visibility='always')
     gender = fields.Selection(string=_(u"Gender"),
                               selection=[('male', _(u'Male')), ('female', _(u'Female'))], readonly=False)
     birth_date = fields.Date(_(u'BirthDate'))

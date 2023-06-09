@@ -137,6 +137,9 @@
 
                                     </group>
                                     <group>
+                                        <field name="can_edit" invisible="True"/>
+                                        <field name="first_beneficiary_dob"/>
+                                        <field name="first_beneficiary_marital_status"/>
                                         <field name="first_beneficiary_identity_no"/>
                                         <field name="registration_number"/>
                                         <field name="registration_place"/>
@@ -252,6 +255,8 @@
                                         <field name="last_name" invisible="1"/>
                                         <field name="mother_name"/>
                                         <field name="family_relationship_id"/>
+                                        <field name="birth_date"/>
+                                        <field name="marital_status"/>
                                         <field name="nationality_id" required="1"/>
                                         <field name="name" invisible="1"/>
                                         <field name="mobile"/>
@@ -383,6 +388,10 @@
                                         <field name="distribution_id"/>
                                     </tree>
                                 </field>
+                            </page>
+                            <page string="create members" name="creat_members" groups="base.group_no_one">
+                                <button class="btn btn-primary" name="create_members" type="object"
+                                        string="Create Memebers"/>
                             </page>
                         </notebook>
                     </sheet>
@@ -572,18 +581,32 @@
             <field name="model">ngo.beneficiary.application</field>
             <field name="arch" type="xml">
                 <search string="Applications">
-                    <field name="name" filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]"
+                    <field name="name" filter_domain="['|','|','|','|','|','|','|',
+                                                                ('first_beneficiary_name','ilike',self),
+                                                                ('code','ilike',self),
+                                                                ('name','ilike',self),
+                                                                ('first_beneficiary_mobile','ilike',self),
+                                                                ('phone','ilike',self),
+                                                                ('first_beneficiary_identity_no','ilike',self),
+                                                                ('registration_number','ilike',self),
+                                                                ('registration_place','ilike',self)]"
                            string="Application"/>
+
+                    <field name="registration_number" filter_domain="[('registration_number','=',self)]"/>
                     <field name="beneficiary_count"/>
-                    <field name="application_class"/>
-                    <field name="beneficiary_ids" string="identity Number"
+
+                    <field name="application_class" filter_domain="[('application_class.filetype_id','ilike',self)]"/>
+
+                    <field name="beneficiary_ids" string="Identity Number for Beneficiary"
                            filter_domain="[('beneficiary_ids.identity_no' , 'ilike' , self)]"/>
-                    <field name="beneficiary_ids" string="name"
+
+                    <field name="beneficiary_ids" string="Beneficiary name in application"
                            filter_domain="[('beneficiary_ids.name' , 'ilike' , self)]"/>
-                    <field name="beneficiary_ids" string="mobile"
+
+                    <field name="beneficiary_ids" string="Benefeciary mobile"
                            filter_domain="[('beneficiary_ids.mobile' , 'ilike' , self)]"/>
 
-                    <field name="beneficiary_ids" string="code"
+                    <field name="beneficiary_ids" string="Benefeciary code"
                            filter_domain="[('beneficiary_ids.code' , 'ilike' , self)]"/>
 
                     <field name="request_ids" string="Request"

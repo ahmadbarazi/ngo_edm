@@ -226,7 +226,7 @@
                 <field name="partner_id"/>
                 <separator/>
                 <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
-                <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                <filter name="done" string="Done" domain="[('state', '=', 'processed')]"/>
                 <filter name="cancel" string="Cancelled" domain="[('state', '=', 'cancel')]"/>
                 <group string="Group By" name="groupby">
                     <filter name="date_groupby" string="Date" context="{'group_by': 'distribution_date'}"/>

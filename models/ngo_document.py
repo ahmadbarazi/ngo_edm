@@ -257,10 +257,11 @@ class NgoApplication(models.Model):
         for doc in application_docs:
             current_app_doc = self.document_ids.filtered(lambda x: x.document_name.id == doc.id)
             if current_app_doc:
-                if current_app_doc.description and current_app_doc.description != '':
-                    doc_ref = doc_ref + doc.name + " " + current_app_doc.description + " - "
-                else:
-                    doc_ref = doc_ref + doc.name + " - "
+                for doc in current_app_doc:
+                    if doc.description and doc.description != '':
+                        doc_ref = doc_ref + doc.name + " " + doc.description + " - "
+                    else:
+                        doc_ref = doc_ref + doc.name + " - "
             else:
                 doc_ref = doc_ref + doc.name + " - "
         self.document_ref = doc_ref

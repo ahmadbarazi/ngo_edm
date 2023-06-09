@@ -17,6 +17,6 @@ class ApplicationType(models.Model):
     reverse_id = fields.Many2one('ngo.beneficiary.application')
 
     def write(self, values):
-        if values['status']:
+        if values.get('status'):
             values['status_change_date'] = datetime.utcnow()
         return super(ApplicationType, self).write(values)
