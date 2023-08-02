@@ -101,8 +101,9 @@
         <field name="inherit_id" ref="create_beneficiary_form_view"/>
         <field name="arch" type="xml">
             <div class="oe_button_box" position="inside">
-                <button class="oe_stat_button" name="document_view" type="object" icon="fa-list-ol">
-                    <field string="Documents" name="document_count" widget="statinfo"/>
+                <button class="oe_stat_button" name="document_view" type="object" icon="fa-list-ol"
+                        context="{'default_application_id':application_id,'default_beneficiary_id':active_id}">
+                    <field string="Documents" name="document_count" widget="statinfo" />
                 </button>
             </div>
             <xpath expr="//field[@name='stop_reason']" position="after">

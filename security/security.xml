@@ -2,6 +2,9 @@
     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
 	<data>
+		<record id="ngo_admin" model="res.groups">
+			<field name="name">admin</field>
+		</record>
 		<record id="ngo_manager" model="res.groups">
 			<field name="name">Manager/مدير</field>
 		</record>
@@ -13,6 +16,9 @@
 		</record>	
 		<record id="ngo_viewonly" model="res.groups">
 			<field name="name">Viewing/إطلاع</field>
-		</record>			
+		</record>
+		<record id="ngo_user" model="res.groups">
+			<field name="name">User/مستخدم</field>
+		</record>
 	</data>
 </odoo>

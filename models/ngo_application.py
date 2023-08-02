@@ -178,7 +178,23 @@ class BeneficiaryApplication(models.Model):
     #     next = sequence.get_next_char(sequence.number_next_actual)
     #     return next
 
+    search_ids = fields.Char(compute="_compute_search_ids",search='search_ids_search')
+
     create_date = fields.Datetime(string='Created on',readonly=False)
+    department_id = fields.Many2one('res.users',default=lambda self: self.env.user.application_type_id)
+
+    @api.depends('department_id')
+    def _compute_search_ids(self):
+        print('my compute')
+
+    def search_ids_search(self, operator, operand):
+        if self.env.user.has_group('ngo_edm.ngo_admin'):
+            return [('id', 'in', self.env['ngo.beneficiary.application'].search([]).ids)]
+        elif self.env.user.has_group('ngo_edm.ngo_user'):
+            return [('id', 'in', self.env['ngo.beneficiary.application'].search([('id','=',-1)]).ids)]
+        else:
+            obj = self.env['ngo.beneficiary.application'].search([('application_type_id', '=',self.env.user.application_type_id.id)]).ids
+            return [('id', 'in', obj)]
 
     @api.model
     def default_get(self, fields_list):

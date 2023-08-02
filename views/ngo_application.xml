@@ -648,6 +648,7 @@
             <field name="res_model">ngo.beneficiary.application</field>
             <field name="search_view_id" ref="view_beneficiary_application_search"/>
             <field name="view_mode">tree,kanban,form,graph</field>
+            <field name="domain">[('search_ids','=',1)]</field>
         </record>
 
 
