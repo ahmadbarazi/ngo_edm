@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="seq_ngo_beneficiary_application" model="ir.sequence">
+            <field name="name">NGO Beneficiary Application</field>
+            <field name="code">ngo.beneficiary.application</field>
+<!--            <field name="prefix">P-</field>-->
+            <field name="padding">6</field>
+        </record>
+
+        <record id="seq_ngo_beneficiary_application_ib" model="ir.sequence">
+            <field name="name">NGO Beneficiary Application IB</field>
+            <field name="code">ngo.beneficiary.application.IB</field>
+            <field name="prefix">IB-</field>
+            <field name="padding">6</field>
+        </record>
+        <record id="seq_ngo_beneficiary_application_ik" model="ir.sequence">
+            <field name="name">NGO Beneficiary Application IK</field>
+            <field name="code">ngo.beneficiary.application.IK</field>
+            <field name="prefix">IK-</field>
+            <field name="padding">6</field>
+        </record>
+
+        <record id="seq_ngo_beneficiary" model="ir.sequence">
+            <field name="name">NGO Beneficiary</field>
+            <field name="code">ngo.beneficiary</field>
+            <field name="prefix">B-</field>
+            <field name="padding">6</field>
+        </record>
+
+        <record id="seq_ngo_guide" model="ir.sequence">
+            <field name="name">NGO Guide</field>
+            <field name="code">ngo.guide</field>
+            <field name="prefix">G-</field>
+            <field name="padding">6</field>
+        </record>
+        <record id="seq_ngo_sponsor" model="ir.sequence">
+            <field name="name">NGO Sponsor</field>
+            <field name="code">ngo.sponsor</field>
+            <field name="prefix">S-</field>
+            <field name="padding">6</field>
+        </record>
+        <record id="seq_ngo_association" model="ir.sequence">
+            <field name="name">NGO Association</field>
+            <field name="code">ngo.association</field>
+            <field name="prefix">A-</field>
+            <field name="padding">6</field>
+        </record>
+
+        <record id="seq_ngo_distribution" model="ir.sequence">
+            <field name="name">NGO Distribution</field>
+            <field name="code">ngo.distribution</field>
+            <field name="prefix">D-</field>
+            <field name="padding">6</field>
+        </record>
+        
+        <record id="seq_ngo_beneficiary_document" model="ir.sequence">
+            <field name="name">NGO Beneficiary Document</field>
+            <field name="code">ngo.beneficiary.document</field>
+            <field name="prefix"></field>
+            <field name="padding">10</field>
+        </record>
+
+    </data>
+
+</odoo>
