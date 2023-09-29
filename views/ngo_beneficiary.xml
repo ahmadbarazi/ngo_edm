@@ -1,0 +1,633 @@
+<!-- Copyright 2017 Navybits 
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- <data> -->
+    <record id="beneficiary_medical_visit_action" model="ir.actions.act_window">
+        <field name="name">Beneficiary Medical Visits</field>
+        <field name="res_model">ngo.beneficiary.medical.visit</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_beneficiary_id': active_id, 'default_beneficiary_id': active_id,
+            'create': False}
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No medical visits to display
+            </p>
+            <p>
+                The medical visits of your beneficiary will be displayed here.
+            </p>
+        </field>
+    </record>
+
+    <record id="create_beneficiary_form_view" model="ir.ui.view">
+        <field name="name">beneficiary.form</field>
+        <field name="model">ngo.beneficiary</field>
+        <field name="arch" type="xml">
+            <form string="beneficiary form">
+                <sheet>
+
+                    <div name="button_box" class="oe_button_box">
+                        <button name="%(beneficiary_medical_visit_action)d"
+                                type="action"
+                                icon="fa-bars"
+                                string="Medical Visits"
+                                id="beneficiary_medical_visit_button"
+                                class="oe_stat_button">
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger"
+                            attrs="{'invisible': [('active', '=', True)]}"/>
+                    <!-- <field name="image_1920" widget='image' class="oe_avatar" options='{"zoom": true, "preview_image":"image_128"}' attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
+                    <field name="image_1920" widget='image' class="oe_avatar"
+                           options='{"zoom": true, "preview_image":"image_128"}'/>
+
+                    <div class="oe_title">
+                        <h1>
+                            <div class="o_address_format">
+                                <field name="first_name" required="True" placeholder="Member/Family"
+                                       class="o_address_city"/>
+                                <field name="family_name" placeholder="Last Name" class="o_address_city oe_edit_only"/>
+                                <field name="last_name" class="oe_read_only"/>
+                            </div>
+                        </h1>
+                        <!-- <h2> -->
+                        <!-- <field name="detail" invisible="1" options="{'horizontal': true}" widget="radio" attrs="{'readonly': [('id', '>', 0)]}" placeholder="Beneficiary Type" /> -->
+                        <!-- </h2> -->
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <!-- <field name="parent_id" attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
+                            <field name="father_name" readonly="0" attrs="{'invisible': [('is_responsible','=', True)]}"/>
+                            <field name="family_name"/>
+                            <field name="mother_name" attrs="{'invisible': [('is_responsible','=', True)]}"/>
+
+                            <field name="active" invisible="1"/>
+                            <field name="gender" widget="radio" options="{'horizontal': true}"
+                                   attrs="{'invisible': [('is_responsible','=', True)]}"/>
+                            <field name="is_responsible" invisible="1"/>
+                            <!-- <field name="responsible_id" attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
+                            <field name="marital_status" attrs="{'invisible': [('is_responsible','=', True)]}"/>
+                            <field name="family_relationship_id" attrs="{'invisible': [('is_responsible','=', True)]}"/>
+                            <!-- <field name="nationality_id" attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
+                            <label for="nationality_id" string="Nationality"
+                                   attrs="{'invisible': [('is_responsible','=', True)]}"/>
+                            <div class="o_address_format" attrs="{'invisible': [('is_responsible','=', True)]}">
+                                <field name="nationality_id" placeholder="Nationality" class="o_address_city"/>
+                                <field name="doctrine_id" placeholder="Doctrine" class="o_address_city"/>
+                            </div>
+                            <!-- <field name="doctrine_id" attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
+                            <label for="birth_date" string="Birth Dates"
+                                   attrs="{'invisible': [('is_responsible','=', True)]}"/>
+                            <div class="o_address_format" attrs="{'invisible': [('is_responsible','=', True)]}">
+                                <field name="birth_date" placeholder="Birth Date" class="o_address_city"/>
+                                <field name="decease_date" placeholder="Decease Date" class="o_address_state"/>
+                                <label for="age" string="Age" attrs="{'invisible': [('age','=', 0.00)]}"
+                                       style="font-weight:bold;"/>
+                                <field name="age" attrs="{'invisible': [('age','=', 0.00)]}"/>
+
+                            </div>
+                            <field name="last_name" invisible="1"/>
+                            <field name="detail" invisible="1" options="{'horizontal': true}" widget="radio" attrs="{'readonly': [('id', '>', 0)]}" placeholder="Beneficiary Type"/>
+<!--                            <label for="is_first_beneficiary" string="المستفيد الأول"-->
+<!--                                   attrs="{'invisible': [('is_second_beneficiary','=', True)]}"/>-->
+<!--                            <div class="o_address_format" attrs="{'invisible': [('is_responsible','=', True)]}">-->
+                                <field name="is_first_beneficiary" attrs="{'invisible': [('is_second_beneficiary','=', True)]}"/>
+<!--                                <span class="o_form_label" style="width: 30% !important"></span>-->
+<!--                                <label for="is_second_beneficiary" string="المستفيد الثاني"-->
+<!--                                       attrs="{'invisible': [('is_first_beneficiary','=', True)]}"-->
+<!--                                       style="font-weight:bold;"/>-->
+                                <field name="is_second_beneficiary" attrs="{'invisible': [('is_first_beneficiary','=', True)]}"/>
+<!--                            </div>-->
+
+                            <field name="is_student"/>
+                            <field name="has_handicap"/>
+                            <field name="has_illness"/>
+                            <field name="zakat_fund_number"/>
+                            <field name="hide_benfeciary_expense" invisible="1"/>
+                            <field name="hide_size" invisible="1"/>
+
+
+                            <!-- <label for="street" string="Address" attrs="{'invisible': [('is_responsible','=', False)]}"/> -->
+                            <!-- <div class="o_address_format" attrs="{'invisible': [('is_responsible','=', False)]}"> -->
+                            <!-- <field name="street" placeholder="Street..." class="o_address_street"/> -->
+                            <!-- <field name="near" placeholder="Near..." class="o_address_street"/> -->
+                            <!-- <field name="city" placeholder="City" class="o_address_city"/> -->
+                            <!-- <field name="region" class="o_address_state" placeholder="Area" options='{"no_open": True}'/> -->
+                            <!-- <field name="building" placeholder="Building" class="o_address_zip"/> -->
+                            <!-- <field name="floor" placeholder="Floor" class="o_address_zip"/> -->
+                            <!-- <field name="rooms_count" placeholder="Rooms Count" class="o_address_zip"/> -->
+                            <!-- <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/> -->
+                            <!-- </div> -->
+
+                        </group>
+                        <group>
+                            <!-- <label for="registration_number" string="رقم ومكان السجل" /> -->
+                            <field name="family_number_reference"/>
+                            <!-- <div class="o_address_format" >
+                            <field name="registration_number" class="o_address_zip" placeholder="Registration Number"/>
+                            <field name="registration_place" placeholder="Registration Place" class="o_address_city"/>
+                            </div> -->
+                            <field name="identity_no"/>
+                            <field name="orphan_number"/>
+                            <field name="family_member_number"/>
+                            <field name="mobile"/>
+                            <!-- <field name="phone"/> -->
+                            <field name="email"/>
+                            <field name="size" widget="many2many_tags"
+                                   attrs="{'invisible': [('hide_size','=', True)]}"/>
+
+                            <!-- <label for="is_first_beneficiary" string="المستفيد الأول" attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
+                            <!-- <div class="o_address_format" attrs="{'invisible': [('is_responsible','=', True)]}"> -->
+                            <!-- <field name="is_first_beneficiary" /> -->
+                            <!-- <span class="o_form_label" style="width: 30% !important">         </span> -->
+                            <!-- <label for="is_second_beneficiary" string="المستفيد الثاني" style="font-weight:bold;"/> -->
+                            <!-- <field name="is_second_beneficiary"  /> -->
+                            <!-- </div> -->
+                            <field name="guide_id" invisible="1"/>
+                            <!-- <field name="application_id" readonly="1"/> -->
+                            <!-- <field name="partner_id" /> -->
+                            <field name="is_stopped"/>
+                            <field name="stop_date"/>
+                            <field name="stop_reason"/>
+
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- <page string="Family Members" attrs="{'invisible': [('is_responsible','=', False)]}"> -->
+                        <!-- <field name="child_ids" context="{'default_parent_id': active_id}"/> -->
+                        <!-- <field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_lang': lang, 'default_user_id': user_id, 'default_type': 'other'}"> -->
+
+                        <!-- </page> -->
+                        <!-- <page string="Housing Info" attrs="{'invisible': [('is_responsible','=', False)]}"> -->
+                        <!-- <label for="house_loan_ids" string="قرض السكن"/> -->
+
+                        <!-- <field name="house_loan_ids"> -->
+                        <!-- <tree editable="bottom"> -->
+                        <!-- <field name="loan_type"/> -->
+                        <!-- <field name="loan_amount"/> -->
+                        <!-- <field name="currency_id"/> -->
+                        <!-- <field name="start_date"/> -->
+                        <!-- <field name="bank"/> -->
+                        <!-- <field name="payment_frequency"/> -->
+                        <!-- <field name="stop_date"/> -->
+                        <!-- <field name="stop_reason"/> -->
+                        <!-- </tree> -->
+                        <!-- </field> -->
+                        <!-- <label for="house_asset_ids" string="موجودات المنزل"/> -->
+
+                        <!-- <field name="house_asset_ids"> -->
+                        <!-- <tree editable="bottom"> -->
+                        <!-- <field name="asset_type"/> -->
+                        <!-- <field name="asset_count"/> -->
+                        <!-- <field name="asset_kind"/> -->
+                        <!-- <field name="asset_state"/> -->
+                        <!-- </tree> -->
+                        <!-- </field> -->
+                        <!-- <label for="property_ids" string="الممتلكات"/> -->
+                        <!-- <field name="property_ids"> -->
+                        <!-- <tree string="الممتلكات" editable="bottom"> -->
+                        <!-- <field name="property_type"/> -->
+                        <!-- <field name="current_value"/> -->
+                        <!-- <field name="currency_id"/> -->
+                        <!-- <field name="ownership_act"/> -->
+                        <!-- <field name="owner_name"/> -->
+                        <!-- <field name="property_area"/> -->
+                        <!-- <field name="manufacture_year"/> -->
+                        <!-- <field name="property_kind"/> -->
+                        <!-- <field name="property_usage"/> -->
+                        <!-- <field name="monthly_income"/> -->
+                        <!-- <field name="active"/> -->
+                        <!-- <field name="aquisition_date"/> -->
+                        <!-- <field name="stop_date"/> -->
+                        <!-- </tree> -->
+                        <!-- </field> -->
+
+                        <!-- </page> -->
+
+                        <!-- <page string="Medical Record" attrs="{'invisible': [('is_responsible','=', True)]}"> -->
+                        <page string="Medical Record">
+
+                            <field name="medical_record_ids" context="{'default_beneficiary_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="illness_type"/>
+                                    <field name="handicap_type"/>
+                                    <field name="start_date"/>
+                                    <!-- <field name="active"/> -->
+                                    <field name="stop_date"/>
+
+                                    <!-- <field name="name" readonly="1" /> -->
+                                    <!-- <field name="product_id" /> -->
+                                    <!-- <field -->
+                                    <!-- name="product_uom_id" -->
+                                    <!-- options="{'no_open': True, 'no_create': True}" -->
+                                    <!-- groups="uom.group_uom" -->
+                                    <!-- /> -->
+                                    <!-- <field -->
+                                    <!-- name="route_id" -->
+                                    <!-- options="{'no_create': True}" -->
+                                    <!-- groups="stock.group_stock_multi_locations" -->
+                                    <!-- /> -->
+                                    <!-- <field name="route_ids" invisible="1" /> -->
+                                    <!-- <field name="product_uom_qty" /> -->
+                                    <!-- <field name="qty_in_progress" /> -->
+                                    <!-- <field name="qty_done" /> -->
+                                    <!-- <field name="expected_date" invisible="1" /> -->
+                                    <!-- <field name="picking_policy" invisible="1" /> -->
+                                    <!-- <field name="warehouse_id" invisible="1" /> -->
+                                    <!-- <field name="location_id" invisible="1" /> -->
+                                    <!-- <field name="procurement_group_id" invisible="1" /> -->
+                                    <!-- <field name="company_id" invisible="1" /> -->
+                                    <!-- <field name="state" /> -->
+                                </tree>
+                            </field>
+                            <!-- <field name="medical_visit_ids"/> -->
+                        </page>
+                        <page string="Education Record">
+                            <field name="education_record_ids" context="{'default_beneficiary_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="beneficiary_id" invisible="1"/>
+                                    <field name="academic_year"/>
+                                    <field name="education_institution_type"/>
+                                    <field name="education_institution"/>
+                                    <field name="education_level"/>
+                                    <field name="education_class"/>
+                                    <field name="is_student" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Employment History">
+                            <field name="job_history_ids" context="{'default_beneficiary_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="beneficiary_id" invisible="1"/>
+                                    <field name="job_title"/>
+                                    <field name="job_area"/>
+                                    <field name="job_type"/>
+                                    <field name="job_state"/>
+                                    <field name="start_date"/>
+                                    <field name="stop_date"/>
+                                    <field name="stop_reason"/>
+                                </tree>
+                            </field>
+
+                        </page>
+                        <page class="income" string="Income">
+                            <field name="income_ids" context="{'default_beneficiary_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="beneficiary_id"/>
+                                    <field name="application_id" readonly="1" force_save="1"/>
+                                    <field name="income_type"/>
+                                    <field name="income_amount" sum="Total Income"/>
+                                    <field name="currency_id"/>
+                                    <field name="association_id"/>
+                                    <field name="sponsor_id"/>
+                                    <field name="start_date"/>
+                                    <field name="stop_date"/>
+                                </tree>
+                            </field>
+
+                        </page>
+
+                        <page class="expenses" string="Expenses" attrs="{'invisible': [('hide_benfeciary_expense','=', True)]}">
+                            <field name="expense_ids" context="{'default_beneficiary_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="expense_category"/>
+                                    <field name="expense_subcategory"/>
+                                    <field name="expense_amount"/>
+                                    <field name="currency_id"/>
+                                    <field name="active"/>
+                                    <field name="stop_date"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Applications">
+                            <group>
+                                <field name="application_id"/>
+                            </group>
+                        </page>
+                        <page string="Additional Info" name="additional_info">
+                            <group>
+                                <field name="notes"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">-->
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="beneficiary_form_view" model="ir.ui.view">
+        <field name="name">beneficiary.tree</field>
+        <field name="model">ngo.beneficiary</field>
+        <field name="arch" type="xml">
+            <tree string="beneficiary Tree">
+                <field name="id" invisible="1"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="registration_number"/>
+                <field name="registration_place"/>
+                <field name="application_id"/>
+                <field name="guide_id" invisible="1"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="is_stopped"/>
+                <field name="is_first_beneficiary" optional="hide"/>
+                <field name="is_second_beneficiary" optional="hide"/>
+                <field name="stop_date" optional="hide"/>
+                <field name="active" optional="hide"/>
+                <field name="street" optional="hide"/>
+                <field name="region" optional="hide"/>
+                <field name="city" optional="hide"/>
+
+                <!-- <field name="is_responsible"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <!-- <record id="beneficiary_loan_form_view" model="ir.ui.view"> -->
+    <!-- <field name="name">beneficiary.loan.form</field> -->
+    <!-- <field name="model">ngo.beneficiary.loan</field> -->
+    <!-- <field name="arch" type="xml"> -->
+    <!-- <form string="beneficiary form"> -->
+    <!-- <field name="loan_type"/> -->
+    <!-- <field name="loan_amount"/> -->
+    <!-- <field name="currency_id"/> -->
+    <!-- <field name="start_date"/> -->
+    <!-- <field name="bank"/> -->
+    <!-- <field name="payment_frequency"/> -->
+    <!-- <field name="stop_date"/> -->
+    <!-- <field name="stop_reason"/> -->
+    <!-- </form> -->
+    <!-- </field> -->
+    <!-- </record> -->
+
+    <record id="beneficiary_loan_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.loan.tree</field>
+        <field name="model">ngo.beneficiary.loan</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary Loan Tree">
+                <field name="application_id" invisible="1"/>
+                <field name="loan_type"/>
+                <field name="loan_amount"/>
+                <field name="currency_id"/>
+                <field name="start_date"/>
+                <field name="bank"/>
+                <field name="payment_frequency"/>
+                <field name="stop_date"/>
+                <field name="stop_reason"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="beneficiary_house_asset_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.house.asset.tree</field>
+        <field name="model">ngo.beneficiary.house.asset</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary House Asset Tree">
+                <field name="application_id" invisible="1"/>
+                <field name="asset_type"/>
+                <field name="asset_count"/>
+                <field name="asset_kind"/>
+                <field name="asset_state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="beneficiary_property_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.property.tree</field>
+        <field name="model">ngo.beneficiary.property</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary Property Tree">
+                <field name="application_id" invisible="1"/>
+                <field name="property_type"/>
+                <field name="current_value"/>
+                <field name="currency_id"/>
+                <field name="ownership_act"/>
+                <field name="owner_name"/>
+                <field name="property_area"/>
+                <field name="manufacture_year"/>
+                <field name="property_kind"/>
+                <field name="property_usage"/>
+                <field name="monthly_income"/>
+                <field name="active"/>
+                <field name="aquisition_date"/>
+                <field name="stop_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="beneficiary_medical_record_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.medical.record.tree</field>
+        <field name="model">ngo.beneficiary.medical.record</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary Medical Record Tree">
+                <field name="beneficiary_id" invisible="1"/>
+                <field name="illness_type"/>
+                <field name="handicap_type"/>
+                <field name="start_date"/>
+                <!-- <field name="active"/> -->
+                <field name="stop_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="beneficiary_medical_visit_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.medical.visit.tree</field>
+        <field name="model">ngo.beneficiary.medical.visit</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary Property Tree">
+                <field name="beneficiary_id" invisible="1"/>
+                <field name="illness_type"/>
+                <field name="handicap_type"/>
+                <field name="medicine"/>
+                <field name="visit_date"/>
+                <field name="next_visit_date"/>
+                <field name="amount_to_pay"/>
+                <field name="currency_id"/>
+                <field name="visit_month"/>
+                <field name="visit_year"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="beneficiary_education_record_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.education.record.tree</field>
+        <field name="model">ngo.beneficiary.education.record</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary Property Tree">
+                <field name="beneficiary_id" invisible="1"/>
+                <field name="academic_year"/>
+                <field name="education_institution_type"/>
+                <field name="education_institution"/>
+                <field name="education_level"/>
+                <field name="education_class" domain="[('education_level_id','=', education_level)]"/>
+                <field name="is_student"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="beneficiary_employment_history_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.employment.history.tree</field>
+        <field name="model">ngo.beneficiary.employment.history</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary Employment History Tree">
+                <field name="beneficiary_id" invisible="1"/>
+                <field name="career"/>
+                <field name="job_title"/>
+                <field name="job_area"/>
+                <field name="job_type"/>
+                <field name="job_state"/>
+                <field name="start_date"/>
+                <field name="stop_date"/>
+                <field name="stop_reason"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="beneficiary_income_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.income.tree</field>
+        <field name="model">ngo.beneficiary.income</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary Income Tree">
+                <field name="beneficiary_id" invisible="1"/>
+                <field name="income_type"/>
+                <field name="income_amount"/>
+                <field name="currency_id"/>
+                <field name="association_id"/>
+                <field name="sponsor_id"/>
+                <field name="start_date"/>
+                <field name="stop_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="beneficiary_expense_tree_view" model="ir.ui.view">
+        <field name="name">beneficiary.expense.tree</field>
+        <field name="model">ngo.beneficiary.expense</field>
+        <field name="arch" type="xml">
+            <tree string="Beneficiary Expense Tree">
+                <field name="expense_category"/>
+                <field name="expense_subcategory"/>
+                <field name="expense_amount"/>
+                <field name="currency_id"/>
+                <field name="active"/>
+                <field name="stop_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_beneficiary_search" model="ir.ui.view">
+        <field name="name">ngo.beneficiary.search</field>
+        <field name="model">ngo.beneficiary</field>
+        <field name="arch" type="xml">
+            <search string="Beneficiaries">
+                <field name="name" filter_domain="['|', ('name','ilike',self), ('code','=like',str(self)+'%')]"
+                       string="Beneficiary"/>
+                <filter string="Archived" name="inactivesponsorfltr" domain="[('active','=',False)]"/>
+                <filter string="Stopped" name="stoppedbeneficiaryfltr" domain="[('is_stopped','=',True)]"/>
+                <separator/>
+                <filter string="First Beneficiary" name="firstbeneficiaryfltr"
+                        domain="[('is_first_beneficiary','=',True)]"/>
+                <filter string="Second Beneficiary" name="secondbeneficiaryfltr"
+                        domain="[('is_second_beneficiary','=',True)]"/>
+                <separator/>
+
+                <!-- <filter string="Equity" name="equityacc" domain="[('internal_group','=', 'equity')]"/> -->
+                <!-- <separator/> -->
+                <!-- <filter string="Account with Entries" name="used" domain="[('used', '=', True)]"/> -->
+                <!-- <separator/> -->
+                <!-- <field name="user_type_id"/> -->
+                <group expand="0" string="Group By">
+                    <!-- <filter string="Active Guide" name="activeguidegrp" domain="" context="{'group_by':'active'}"/> -->
+                    <filter string="Guide" name="guidegrp" domain="" context="{'group_by':'guide_id'}"/>
+                    <filter string="Family Name" name="familygrp" domain="" context="{'group_by':'family_name'}"/>
+                    <separator/>
+                    <filter string="City" name="citybeneficiarygrp" domain="" context="{'group_by':'city'}"/>
+                    <filter string="Region" name="regionbeneficiarygrp" domain="" context="{'group_by':'region'}"/>
+                    <separator/>
+
+                </group>
+                <!-- <searchpanel class="account_root"> -->
+                <!-- <field name="root_id" icon="fa-filter"/> -->
+                <!-- </searchpanel> -->
+            </search>
+        </field>
+    </record>
+
+    <record id="beneficiary_list_action" model="ir.actions.act_window">
+        <field name="name">Beneficiary List</field>
+        <field name="res_model">ngo.beneficiary</field>
+        <field name="search_view_id" ref="view_beneficiary_search"/>
+        <field name="view_id" ref="beneficiary_form_view"/>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="association_beneficiary_income_action" model="ir.actions.act_window">
+        <field name="name">Association Beneficiary Income List</field>
+        <field name="res_model">ngo.beneficiary.income</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_association_id': active_id, 'default_association_id': active_id,
+            'create': False}
+        </field>
+        <field name="domain">[('association_id','=',active_id)]</field>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No beneficiary income records to display
+            </p>
+            <p>
+                The beneficiary income records of your association will be displayed here.
+            </p>
+        </field>
+    </record>
+
+    <record id="sponsor_beneficiary_income_action" model="ir.actions.act_window">
+        <field name="name">Sposnor Beneficiary Income List</field>
+        <field name="res_model">ngo.beneficiary.income</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_sponsor_id': active_id, 'default_sponsor_id': active_id, 'create':
+            False}
+        </field>
+        <field name="domain">[('sponsor_id','=',active_id)]</field>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No beneficiary income records to display
+            </p>
+            <p>
+                The beneficiary income records of your sposnor will be displayed here.
+            </p>
+        </field>
+
+    </record>
+    <record id="guide_beneficiary_action" model="ir.actions.act_window">
+        <field name="name">Guide Beneficiary List</field>
+        <field name="res_model">ngo.beneficiary</field>
+        <!-- <field name="view_mode">tree,form</field> -->
+        <field name="context">{'search_default_guide_id': [active_id], 'default_guide_id': active_id, 'create': False}
+        </field>
+        <field name="view_id" ref="beneficiary_form_view"/>
+        <field name="domain">[('guide_id','=',active_id)]</field>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No beneficiary records to display
+            </p>
+            <p>
+                The beneficiary records of your guide will be displayed here.
+            </p>
+        </field>
+
+    </record>
+
+    <!-- </data> -->
+</odoo>

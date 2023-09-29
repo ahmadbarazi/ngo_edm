@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <record model="ir.ui.view" id="view_ngo_report_standard_ledger_line_tree">
+        <field name="name">ngoo.report.standard.ledger.line</field>
+        <field name="model">ngo.report.standard.ledger.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0">
+                <field name="line_type"/>
+                <field name="date"/>
+                <field name="move_id"/>
+                <field name="partner_id"/>
+            </tree>
+        </field>
+    </record> -->
+
+    <record model="ir.ui.view" id="view_aged_tree">
+        <field name="name">ngo.report.standard.ledger.line</field>
+        <field name="model">ngo.report.standard.ledger.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0">
+                <field name="template_id" invisible="1"/>
+                <field name="beneficiary_id"/>
+                <field name="application_id"/>
+                <field name="guide_id"/>
+                <field name="beneficiary_code"/>
+                <!-- <field name="beneficiary_name" /> -->
+                <field name="first_name"/>
+                <field name="father_name"/>
+                <field name="mother_name"/>
+                <field name="family_name"/>
+                <field name="age"/>
+                <field name="gender"/>
+                <field name="marital_status" optional="hide"/>
+                <field name="file_no"/>
+                <field name="decision_id"/>
+                <field name="application_type_id"/>
+                <field name="residence_type_id" optional="hide"/>
+                <field name="application_date"/>
+                <field name="mohafaza" optional="hide"/>
+                <field name="kadaa" optional="hide"/>
+                <field name="city" optional="hide"/>
+                <field name="region" optional="hide"/>
+                <!-- <field name="neighborhood" optional="hide"/> -->
+                <!-- <field name="balance" sum="Total"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="ngo_report_standard_ledger_line_form" model="ir.ui.view">
+        <field name="name">ngo.report.standard.ledger.line.form</field>
+        <field name="model">ngo.report.standard.ledger.line</field>
+        <field name="arch" type="xml">
+            <form string="Journal Item">
+                <sheet>
+                    <group>
+                        <!-- <field name="line_type"/> -->
+                        <!-- <field name="move_line_id"/> -->
+                        <field name="beneficiary_id"/>
+                        <field name="application_id"/>
+                        <field name="guide_id"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <group>
+                        <!-- <group col="4"> -->
+                        <group string="تفاصيل الاستمارة">
+                            <field name="file_no"/>
+                            <field name="decision_id"/>
+                            <field name="application_type_id"/>
+                            <field name="residence_type_id"/>
+                            <field name="application_date"/>
+                            <field name="mohafaza"/>
+                            <field name="kadaa"/>
+                            <field name="city"/>
+                            <field name="region"/>
+                            <!-- <field name="neighborhood" /> -->
+
+                        </group>
+
+                        <!-- <group col="4"> -->
+                        <group string="تفاصيل المستفيد">
+                            <field name="first_name"/>
+                            <field name="father_name"/>
+                            <field name="mother_name"/>
+                            <field name="family_name"/>
+                            <field name="gender"/>
+                            <field name="marital_status"/>
+                            <field name="age"/>
+                        </group>
+                    </group>
+                    <!-- <notebook colspan="4"> -->
+                    <!-- <page string="Information"> -->
+                    <!-- <group> -->
+                    <!-- <group string="Amount"> -->
+                    <!-- </group> -->
+                    <!-- <group string="Accounting Documents"> -->
+                    <!-- </group> -->
+                    <!-- <group string="Dates"> -->
+                    <!-- </group> -->
+                    <!-- <group string="Matching"> -->
+                    <!-- </group> -->
+                    <!-- </group> -->
+                    <!-- </page> -->
+                    <!-- <page string="Other"> -->
+                    <!-- <group> -->
+                    <!-- </group> -->
+                    <!-- </page> -->
+                    <!-- </notebook> -->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- search view -->
+    <record id="ngo_report_standard_beneficiary_line_search_view" model="ir.ui.view">
+        <field name="name">ngo.report.standard.beneficiary.line.search</field>
+        <field name="model">ngo.report.standard.ledger.line</field>
+        <field name="arch" type="xml">
+            <search string="Beneficiaries">
+                <field name="beneficiary_id"/>
+                <field name="application_id"/>
+                <field name="guide_id"/>
+                <field name="first_name"/>
+                <field name="father_name"/>
+                <field name="mother_name"/>
+                <field name="family_name"/>
+                <field name="file_no"/>
+                <field name="decision_id"/>
+                <field name="application_type_id"/>
+                <field name="mohafaza"/>
+                <field name="kadaa"/>
+                <field name="city"/>
+                <field name="region"/>
+                <!-- <field name="neighborhood" /> -->
+                <!-- <separator/> -->
+                <!-- <filter string="Unposted" domain="[('move_id.state','=','draft')]" help="Unposted Journal Items"/> -->
+                <!-- <filter name="posted" string="Posted" domain="[('move_id.state','=','posted')]" help="Posted Journal Items"/> -->
+                <!-- <separator/> -->
+                <!-- <filter string="Supplier" domain="[('account_id.type_third_parties', '=', 'supplier')]" help="From Supplier accounts" name="supplier"/> -->
+                <!-- <filter string="Customer" domain="[('account_id.type_third_parties', '=', 'customer')]" help="From Customer accounts" name="customer"/> -->
+                <!-- <separator/> -->
+                <!-- <filter string="General" context="{'group_by':'account_id'}" name="general"/> -->
+                <!-- <filter string="Partner" context="{'group_by':'partner_id'}" name="partner"/> -->
+                <group expand="0" name="group_by" string="Group By">
+                    <filter name="group_guide" string="Guide" domain="[]" context="{'group_by' : 'guide_id'}"/>
+                    <filter name="group_application" string="Application" context="{'group_by': 'application_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="search_report_graph" model="ir.ui.view">
+        <field name="name">search.report.graph</field>
+        <field name="model">ngo.report.standard.ledger.line</field>
+        <field name="arch" type="xml">
+            <graph string="Search Analysis">
+                <field name="application_type_id"/>
+                <field name="guide_id"/>
+                <field name="age"/>
+                <field name="beneficiary_id" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="search_report_pivot" model="ir.ui.view">
+        <field name="name">search.report.pivot</field>
+        <field name="model">ngo.report.standard.ledger.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Search Analysis">
+                <field name="application_type_id" type="row"/>
+                <field name="guide_id" type="row"/>
+                <field name="application_date" type="row" interval="month"/>
+                <field name="file_no" type="row"/>
+
+                <field name="application_type_id" type="col"/>
+                <field name="beneficiary_id" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+</odoo>

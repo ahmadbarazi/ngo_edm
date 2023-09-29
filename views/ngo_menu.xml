@@ -1,0 +1,41 @@
+<!-- Copyright 2017 Navybits 
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <data>
+        <record id="make_invisible" model="res.groups">
+            <field name="name">Invisible</field>
+        </record>
+
+        <record model="ir.ui.menu" id="account.menu_finance">
+            <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+        </record>
+
+<!--        <record model="ir.ui.menu" id="website.menu_website_configuration">-->
+<!--            <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>-->
+<!--        </record>-->
+
+        <menuitem id="main_ngo_menu" name="NGO Management" web_icon="ngo_edm,static/description/icon.png" action="create_application_list_action"/>
+        <!-- A first level in the left side menu is needed
+             before using action= attribute -->
+        <menuitem id="ngo_menu_application" name="Application" parent="main_ngo_menu" sequence="2"/>
+        <menuitem id="ngo_menu_master_data" name="Master Data" parent="main_ngo_menu" sequence="3"/>
+        <menuitem id="ngo_menu_services" name="Services" parent="main_ngo_menu" sequence="4"/>
+        <menuitem id="ngo_menu_reports" name="Reports" parent="main_ngo_menu" sequence="6"/>
+        <menuitem id="ngo_menu_configuration" name="Configuration" parent="main_ngo_menu" sequence="7"/>
+        <menuitem id="ngo_menu_find" name="Find" parent="main_ngo_menu" sequence="1"/>
+        <menuitem id="services_menu" name="Services" parent="main_ngo_menu" sequence="5"/>
+
+        <menuitem action="create_application_list_action" id="application_menu" name="Beneficiary Application"
+                  parent="ngo_menu_application"/>
+        <menuitem action="beneficiary_list_action" id="beneficiaires_menu" name="Beneficiaries"
+                  parent="ngo_menu_master_data"/>
+        <menuitem action="guide_list_action" id="guides_menu" name="Guides" parent="ngo_menu_master_data"/>
+        <menuitem action="sponsor_list_action" id="sponsors_menu" name="Sponsors" parent="ngo_menu_master_data"/>
+        <menuitem action="association_list_action" id="associations_menu" name="Associations"
+                  parent="ngo_menu_master_data"/>
+        <menuitem action="ngo_settings_action" id="settings_menu" name="Settings" parent="ngo_menu_configuration"/>
+        <!-- <menuitem action="action_wizard_beneficiary_search" id="beneficiary_search_menu" name="Benenficiaries Search" parent="ngo_menu_reports"/> -->
+
+        <!-- <menuitem action="donation_list_action" id="donations_menu" name="donation" parent="test4_menu_2"/> -->
+    </data>
+</odoo>

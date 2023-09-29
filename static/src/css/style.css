@@ -1,0 +1,37 @@
+.table-responsive .table {
+    table-layout: auto !important;
+}
+
+.table-responsive th {
+    min-width: 150px !important;
+    width: fit-content !important;
+}
+
+.table-responsive th:last-child {
+    min-width: fit-content !important;
+    width: fit-content !important;
+}
+
+.table-responsive th:first-child {
+    min-width: fit-content !important;
+    width: fit-content !important;
+}
+
+.customTreee .table-responsive th:nth-child(2) {
+    min-width: fit-content !important;
+    width: fit-content !important;
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 2 !important;
+    background: #eeeeee !important;
+}
+
+.customTreee .o_data_cell:nth-child(2) {
+    min-width: fit-content !important;
+    width: fit-content !important;
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 2 !important;
+    background: white !important;
+
+}

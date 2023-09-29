@@ -1,0 +1,68 @@
+<openerp>
+    <data>
+        <record model="report.paperformat" id="paperformat_distribution_food_portion_report">
+            <field name="name">paperformat.distribution.food.portion.report</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_right">5</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report id="distribution_food_portion_report"
+                model="ngo_edm.ngo.distribution.food.portion.report.model"
+                string="Distribut food Portion"
+                report_type="qweb-pdf"
+                name="ngo_edm.distribution_food_portion_report_view"
+                file="ngo_edm.distribution_food_portion"
+                paperformat="paperformat_distribution_food_portion_report"
+                menu="False"
+        />
+
+        <template id="distribution_food_portion_report_view">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <div class="header" style="border-bottom: 2px solid black">
+                        <h3 class="text-center">Distribution Food Portion</h3>
+                    </div>
+                    <div class="article">
+                        <table class="table table-bordered" style="width: 100%">
+                            <thead>
+                                <th class="text-center col-2">Distribution Name</th>
+                                <th class="text-center col-2">First Beneficiary</th>
+                                <th class="text-center col-2">Second Beneficiary</th>
+                                <th class="text-center col-2">Speciality</th>
+                                <th class="text-center col-2">Decision</th>
+
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr style="  text-align: center;">
+                                        <td class="text-center col-2">
+                                            <span t-esc="doc['distribution_name']"/>
+                                        </td>
+                                        <td class="text-center col-2">
+                                            <span t-esc="doc['first_beneficiary']"/>
+                                        </td>
+                                        <td class="text-center col-2">
+                                            <span t-esc="doc['second_beneficiary']"/>
+                                        </td>
+                                        <td class="text-center col-2">
+                                            <span t-esc="doc['decision']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>
