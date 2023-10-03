@@ -181,7 +181,7 @@ class BeneficiaryApplication(models.Model):
     search_ids = fields.Char(compute="_compute_search_ids",search='search_ids_search')
 
     create_date = fields.Datetime(string='Created on',readonly=False)
-    department_id = fields.Many2one('res.users',default=lambda self: self.env.user.application_type_id)
+    department_id = fields.Many2one('res.users')
 
     @api.depends('department_id')
     def _compute_search_ids(self):
@@ -195,6 +195,11 @@ class BeneficiaryApplication(models.Model):
         else:
             obj = self.env['ngo.beneficiary.application'].search([('application_type_id', '=',self.env.user.application_type_id.id)]).ids
             return [('id', 'in', obj)]
+
+    def update_sequance(self):
+        records = self.env['ngo.beneficiary.application'].search([])
+        for rec in records:
+            rec.code = rec.code.replace('P-','')
 
     @api.model
     def default_get(self, fields_list):
@@ -834,18 +839,18 @@ class BeneficiaryApplication(models.Model):
         if len(vals.get('application_class')) == 0:
             raise UserError(_("You can't create application without application class"))
         else:
-            if vals.get('prefix', '') != False:
-                sequence_code = 'ngo.beneficiary.application.' + \
-                                vals.get('prefix', '')
-            else:
-                sequence_code = 'ngo.beneficiary.application'
-            sequence = False
-            if vals['state'] == 'draft':
-                sequence = self.env['ir.sequence'].search(
-                    [('code', '=', sequence_code)])
-            if sequence:
-                if vals['code'] == sequence.get_next_char(sequence.number_next_actual):
-                    vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
+            if vals.get('code') == False or vals.get('code') == '' or vals.get('code') == 'New':
+                rec.code = self.env['ir.sequence'].next_by_code('ngo.beneficiary.application')
+            # if vals.get('prefix', '') != False:
+            #     sequence_code = 'ngo.beneficiary.application.' + vals.get('prefix', '')
+            # else:
+            #     sequence_code = 'ngo.beneficiary.application'
+            # sequence = False
+            # if vals['state'] == 'draft':
+            #     sequence = self.env['ir.sequence'].search([('code', '=', sequence_code)])
+            # if sequence:
+            #     if vals['code'] == sequence.get_next_char(sequence.number_next_actual):
+            #         vals['code'] = self.env['ir.sequence'].next_by_code(sequence_code)
 
             if self.region:
                 vals['region'] = self.region

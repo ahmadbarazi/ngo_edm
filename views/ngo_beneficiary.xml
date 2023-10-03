@@ -58,7 +58,10 @@
                     <group>
                         <group>
                             <field name="code"/>
+                            <button name="update_sequance" type="object" string="Update code" groups="base.group_no_one"/>
+                            <button name="update_partner_name" type="object" string="Update partner name" groups="base.group_no_one"/>
                             <!-- <field name="parent_id" attrs="{'invisible': [('is_responsible','=', True)]}"/> -->
+                            <field name="partner_id"/>
                             <field name="father_name" readonly="0" attrs="{'invisible': [('is_responsible','=', True)]}"/>
                             <field name="family_name"/>
                             <field name="mother_name" attrs="{'invisible': [('is_responsible','=', True)]}"/>

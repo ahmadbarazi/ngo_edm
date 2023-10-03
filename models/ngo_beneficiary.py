@@ -308,7 +308,9 @@ class Beneficiary(models.Model):
         #     vals['code'] = self.env['ir.sequence'].next_by_code('ngo.beneficiary')
 
         if vals.get('code', _('New')) == _('New'):
-            vals['code'] = self.env['ir.sequence'].next_by_code('ngo.beneficiary')
+            application_id = self.env['ngo.beneficiary.application'].browse(vals['application_id'])
+            application_code = application_id.code
+            vals['code'] = application_code +'/'+ self.env['ir.sequence'].next_by_code('ngo.beneficiary')
         name = vals['first_name']
         # if vals['first_name'] and vals['father_name'] and vals['last_name']:
         #     name = str(vals['first_name'] or '') + ' ' + str(vals['father_name'] or '') + ' ' + str(
@@ -339,9 +341,10 @@ class Beneficiary(models.Model):
         # })
 
         # beneficiary_application = self.env['ngo.beneficiary.application'].browse(vals['application_id'])
+        family_name = self.env['partner.family.name'].search([('id','=',vals['family_name'])]).name
         partner_id = self.env['res.partner'].create({
-            'name': vals['name'],
-            'display_name': vals['name'],
+            'name': vals['first_name'] + ' ' +vals['father_name'] + ' ' + family_name,
+            # 'display_name': vals['name'],
             'active': True,
             'type': 'contact',
             'is_company': False,
@@ -350,6 +353,29 @@ class Beneficiary(models.Model):
         sp.partner_id = partner_id.id
 
         return sp
+
+    def update_sequance(self):
+        records = self.env['ngo.beneficiary'].search([])
+        for rec in records:
+            if rec.application_id:
+                application_code = rec.application_id.code
+                rec.code = application_code + '/' + rec.code.replace('B-','')
+            else:
+                rec.code = rec.code.replace('B-','')
+
+    def update_partner_name(self):
+        records = self.env["ngo.beneficiary"].search([])
+        for rec in records:
+            if rec.first_name and rec.father_name and rec.family_name:
+                rec.partner_id.name = rec.first_name + ' ' + rec.father_name + ' ' + rec.family_name.name
+            elif rec.first_name and not rec.father_name and rec.family_name:
+                rec.partner_id.name = rec.first_name + ' ' + rec.family_name.name
+            else:
+                rec.partner_id.name = rec.name
+
+
+
+
 
     @api.onchange('family_name')
     def _onchange_family_name(self):

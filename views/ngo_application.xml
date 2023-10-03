@@ -128,6 +128,7 @@
 
                                 <group>
                                     <group>
+                                        <button name="update_sequance" type="object" string="update code" groups="base.group_no_one"/>
                                         <field name="first_beneficiary_name"/>
                                         <field name="first_beneficiary_Fathername"/>
                                         <field name="first_beneficiary_Lastname"/>
